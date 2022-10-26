@@ -28,7 +28,7 @@ const options = [
 //     disabled: true,
 //   },
 // ];
-const RadioButtons = (props) => {
+const MaterialToggle = (props) => {
   // const [value1, setValue1] = useState('Apple');
   // const [value2, setValue2] = useState('Apple');
   const [checked, setChecked] = useState('Apple');
@@ -69,4 +69,4 @@ const RadioButtons = (props) => {
     </div>
   );
 };
-export default RadioButtons;
+export default MaterialToggle;

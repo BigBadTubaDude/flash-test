@@ -1,21 +1,24 @@
 import React from "react"
-import './FaultInput.css'
+import './BarTypePanel.css'
 import { DownOutlined, UpOutlined} from '@ant-design/icons';
 import { Button } from 'antd';
 import 'antd/dist/antd.css';
 
 
-export default function(props) {
+export default function BarTypePanel(props) {
   const [size, setSize] = React.useState('large');
   return (
-  <div className="fault">
+  <div 
+    className="barTypePanel" 
+    // onClick={}
+  >
       <h1>{props.barType}</h1>
       {/* <div> */}
       <Button 
         type="default" 
         block 
         style={{ border:"1px solid black"}} 
-        onClick={props.increaseFaultCount} 
+        onClickCapture={props.increaseFaultCount} 
         // className="OSE/EIncreaseButton" 
         value={props.barType}
         size={size}>
@@ -34,20 +37,19 @@ export default function(props) {
         <DownOutlined 
         />
       </Button>             
-        <input 
-        
+      {/* <input 
         className="quantityOfFaults" 
-        min="0" 
-        type="number" 
+        type="radio" 
+        name="barType"
+        value={props.barType}
+        // onChange={props.}
+
+
         // onChange={(props.barType == props.currentBarType || props.currentBarType == "") 
         //   ? props.setCurrentNumFaults(oldNum => {oldNum + 1}) 
         //   : props.setCurrentNumFaults(oldNum => {oldNum}) } 
-        defaultValue={props.barType == props.currentBarType 
-          ? props.barNumFaults 
-          : 0
-        } 
-        readOnly={true}
-        />
+        // defaultValue={props.barType == props.currentBarType} 
+      /> */}
   </div>
   )
 

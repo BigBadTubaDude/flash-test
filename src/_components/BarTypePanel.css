@@ -1,12 +1,12 @@
 @import '~antd/dist/antd.css';
-.fault {
-    height: 3em;
+.barTypePanel {
+    height: 2.5em;
     background-color: rgb(100,100,100);
-    /* width: fit-content; */
+    width: 400px;
     display: grid;
-    grid-template-columns: 42% 42% 16%;
-    grid-template-rows: 55% 45%;
-
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 65% 35%;
+    margin-top: 20px;
 }
 h1 {
     font-size: 20px;
