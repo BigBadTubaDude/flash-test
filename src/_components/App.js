@@ -3,45 +3,73 @@ import React from 'react'
 import FaultInput from "./FaultInput"
 import RadioButtons from './ANTRadio';
 function App() {
-  const [numfaults, setnumFaults] = React.useState([
-    {barType: "DL Straight", numFaults : 0},
-    {barType: "FL Straight", numFaults : 0},
-    {barType: "CU Straight", numFaults : 0},
-    {barType: "OFFSET: EOL/EOR", numFaults : 0},
-    {barType: "PANEL FLANGE", numFaults : 0},
-    {barType: "COMBO FLG", numFaults : 0},
-    {barType: "ELBOW: EL", numFaults : 0},
-    {barType: "ELBOW ER", numFaults : 0},
-    {barType: "FLAT TEE", numFaults : 0},
-  ]);
-  const [selectedMaterialType, setSelectedMaterialType] = React.useState("");
-  const faultNumberInputs = numfaults.map(barType => {
-    function increaseFaultCount(event) {
-      event.preventDefault();
-       // setnumfaults()
-      console.log(event.target.value);
-  
-      //Sets material type based on FaultInput clicked
-      // setSelectedMaterialType((event.target.value).slice(0,2));
-      // setnumFaults((event.target.value).slice(2));
-      // if () { //depending on first 
-      // }
-    }
-      return (
-        <FaultInput 
-          barNumFaultsInfo={barType.numFaults}
-          barType={barType.barType}
-          key={barType.barType}
-          increaseFaultCount={increaseFaultCount}
-        />
-      )
-  });
+  const [currentBarType, setCurrentBarType] = React.useState("");
+  const [currentMaterialType, setCurrentMaterialType] = React.useState("");
+  const [currentNumFaults, setCurrentNumFaults] = React.useState(0);
 
+  const barTypes = ["DL Straight", "FL Straight", "CU Straight", "OFFSET: EOL/EOR", "PANEL FLANGE", "COMBO FLG", "ELBOW: EL", "ELBOW ER", "FLAT TEE"]
+  function updateFaultNumbers() {
+    let faultNumberInputs = barTypes.map(barType => {
+      function increaseFaultCount(event) {
+        event.preventDefault();
+        //Icon was blocking onClick event (it was grabbing the value of the icon not the button). Used currentTarget to fix this
+        console.log(event.currentTarget.value);
+        setCurrentBarType(event.currentTarget.value)
+        setCurrentNumFaults(oldNum => { return (oldNum + 1)})
+      }
+      function decreaseFaultCount(event) {
+        setCurrentBarType(event.currentTarget.value)
+        setCurrentNumFaults(oldNum => { return (oldNum - 1)})      
+      }
+        return (
+          <FaultInput 
+            barNumFaults={currentNumFaults}
+            setCurrentNumFaults={setCurrentNumFaults}
+            barType={barType}
+            currentBarType={currentBarType}
+            key={barType}
+            // disable={currentNumFaults > 0 && currentBarType != barType} // passes a true value if 
+            increaseFaultCount={increaseFaultCount}
+            decreaseFaultCount={decreaseFaultCount}
+          />
+        )
+    })
+  }
+  updateFaultNumbers();
+  // React.useEffect( updateFaultNumbers(),
+  //   [currentBarType]
+  // )
+      const faultNumberInputs = barTypes.map(barType => {
+      function increaseFaultCount(event) {
+        event.preventDefault();
+        //Icon was blocking onClick event (it was grabbing the value of the icon not the button). Used currentTarget to fix this
+        console.log(event.currentTarget.value);
+        setCurrentBarType(event.currentTarget.value)
+        setCurrentNumFaults(oldNum => { return (oldNum + 1)})
+      }
+      function decreaseFaultCount(event) {
+        setCurrentBarType(event.currentTarget.value)
+        setCurrentNumFaults(oldNum => { return oldNum > 0 ?  (oldNum - 1) : 0})      
+      }
+        return (
+          <FaultInput 
+            barNumFaults={currentNumFaults}
+            setCurrentNumFaults={setCurrentNumFaults}
+            barType={barType}
+            currentBarType={currentBarType}
+            key={barType}
+            // disable={currentNumFaults > 0 && currentBarType != barType} // passes a true value if 
+            increaseFaultCount={increaseFaultCount}
+            decreaseFaultCount={decreaseFaultCount}
+          />
+        )
+    })
+/////////////// FINAL HTML
   return (
     <div className="App">
       <header className="App-header">
         {/* {FaultInput} */}
-          <RadioButtons selectedMaterial={selectedMaterialType} handleChange={setSelectedMaterialType}/>
+          <RadioButtons selectedMaterial={currentMaterialType} handleChange={setCurrentMaterialType}/>
       {faultNumberInputs}
       </header>
     </div>

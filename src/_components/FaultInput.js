@@ -20,14 +20,34 @@ export default function(props) {
         value={props.barType}
         size={size}>
         <UpOutlined 
-          style={{width:"100%"}}
         />
       </Button>   
-
-
-      <Button type="default" block style={{color:"white", border:"1px solid black"}} onClick={props.increaseFaultCount} className="OSE/EDecreaseButton" value="OFFSET: EOL/EOR" size={size} icon={<DownOutlined style={{zIndex:-1, color:"white"}}/>} />              
-        <input className="quantityOfFaults" min="0" type="number">{}</input>
-      {/* </div> */}
+      <Button 
+        type="default" 
+        block 
+        style={{ border:"1px solid black"}} 
+        onClickCapture={props.decreaseFaultCount} 
+        // className="OSE/EIncreaseButton" 
+        value={props.barType}
+        size={size}
+        >
+        <DownOutlined 
+        />
+      </Button>             
+        <input 
+        
+        className="quantityOfFaults" 
+        min="0" 
+        type="number" 
+        // onChange={(props.barType == props.currentBarType || props.currentBarType == "") 
+        //   ? props.setCurrentNumFaults(oldNum => {oldNum + 1}) 
+        //   : props.setCurrentNumFaults(oldNum => {oldNum}) } 
+        defaultValue={props.barType == props.currentBarType 
+          ? props.barNumFaults 
+          : 0
+        } 
+        readOnly={true}
+        />
   </div>
   )
 
