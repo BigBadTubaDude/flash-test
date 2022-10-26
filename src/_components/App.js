@@ -7,6 +7,7 @@ function App() {
   const [currentBarType, setCurrentBarType] = React.useState("");
   const [currentMaterialType, setCurrentMaterialType] = React.useState("");
   const [currentNumFaults, setCurrentNumFaults] = React.useState(1);
+  const [currentRackPosition, setCurrentRackPosition] = React.useState("")
 
   ///////////////////////////////EFFECTS
   
@@ -79,10 +80,22 @@ function App() {
       <div className="App">
       <header className="App-header">
           <header className='panel1Header'>
-            <MaterialToggle 
+            <div className='materialSelectSection'>
+              <h1>{currentMaterialType}</h1>
+              <MaterialToggle 
               selectedMaterial={currentMaterialType} 
               setCurrentMaterialType={setCurrentMaterialType}
-            />
+              />
+            </div>
+            <h1 className='barTypeh1'>{currentBarType}</h1>
+            <label for="materialInput">Number of Faults</label>
+            <input type="number" name="materialInput" className='currentNumFaultsInput' />
+            <div className='rackPositionRadioButtons'>              
+              <input type="radio" value="1" name="rackPosition"></input>
+              <input type="radio" value="2" name="rackPosition"></input>
+              <input type="radio" value="3" name="rackPosition"></input>
+              <input type="radio" value="4" name="rackPosition"></input>
+            </div>
           </header>
 
           <div className="barTypePanelContainer">
