@@ -6,11 +6,10 @@ import 'antd/dist/antd.css';
 
 
 export default function BarTypePanel(props) {
-  const [size, setSize] = React.useState('large');
   return (
   <div 
     className="barTypePanel" 
-    // onClick={}
+    onClick={() => {props.setCurrentBarType(props.barType)}} //Sets current bar type state to this panel when anywhere on panel is clicked
   >
       <h1>{props.barType}</h1>
       {/* <div> */}
@@ -19,9 +18,8 @@ export default function BarTypePanel(props) {
         block 
         style={{ border:"1px solid black"}} 
         onClickCapture={props.increaseFaultCount} 
-        // className="OSE/EIncreaseButton" 
         value={props.barType}
-        size={size}>
+        size={"medium"}>
         <UpOutlined 
         />
       </Button>   
@@ -30,9 +28,8 @@ export default function BarTypePanel(props) {
         block 
         style={{ border:"1px solid black"}} 
         onClickCapture={props.decreaseFaultCount} 
-        // className="OSE/EIncreaseButton" 
         value={props.barType}
-        size={size}
+        size={"medium"}
         >
         <DownOutlined 
         />

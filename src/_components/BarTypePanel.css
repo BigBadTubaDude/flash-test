@@ -1,13 +1,5 @@
 @import '~antd/dist/antd.css';
-.barTypePanel {
-    height: 2.5em;
-    background-color: rgb(100,100,100);
-    width: 400px;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 65% 35%;
-    margin-top: 20px;
-}
+
 h1 {
     font-size: 20px;
     grid-column: 1 / 4;
@@ -22,3 +14,13 @@ h1 {
 .quantityOfFaults {
     grid-column-start: 3;
 }
+/*MMoved to app.css for use of size vaiables
+/* .barTypePanel {
+    height: 2.5em;
+    background-color: rgb(100,100,100);
+    width: 400px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 65% 35%;
+    margin-top: 20px;
+} */

@@ -1,9 +1,14 @@
 @import '~antd/dist/antd.css';
-.App {
-  text-align: center;
+/*********Variables*/
+:root {
+  --bar-type-panel-width: 300px;
 }
 
 
+
+.App {
+  text-align: center;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -12,8 +17,29 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  /* color: white; */
 }
 select.typeBar {
   display: none;
+}
+
+/*****************Panel 1 header*/
+/*Material toggle button*/
+.materialToggle {
+  
+}
+
+/******************BAR TYPE PANEL CONTAINER*/
+.barTypePanelContainer {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: var(--bar-type-panel-width) var(--bar-type-panel-width) var(--bar-type-panel-width);
+}
+.barTypePanelContainer > * {
+  height: 2.5em;
+  background-color: rgb(100,100,100);
+  width: var(--bar-type-panel-width);
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 65% 35%;
+  margin-top: 20px;
 }

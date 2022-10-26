@@ -6,14 +6,26 @@ function App() {
   //////////////////////////////////States
   const [currentBarType, setCurrentBarType] = React.useState("");
   const [currentMaterialType, setCurrentMaterialType] = React.useState("");
-  const [currentNumFaults, setCurrentNumFaults] = React.useState(0);
+  const [currentNumFaults, setCurrentNumFaults] = React.useState(1);
 
   ///////////////////////////////EFFECTS
-  React.useEffect( () => {
-    setCurrentNumFaults(1);
+  
+  React.useEffect( () => {//On change of current bar type
+    setCurrentNumFaults(1);// Resets number of faults to 1
+    if (currentBarType == "CU Straight") { //if bar type is switched to CU Straight, current material is set to Copper
+      setCurrentMaterialType("Copper");
+    }
   },
   [currentBarType]
-  )
+    );
+    React.useEffect( () => {//On change of current material type
+      if (currentBarType == "CU Straight") {//If bar type is CU Straight and user tries to change material to AL, will not let them
+        setCurrentMaterialType("Copper");
+      }
+    },  [currentMaterialType]
+      
+  );
+
   ////////////////////////////////Variables
   //Holds all bar types. add or subtract from this array and the corresponding panel will be added/deleted automatically
   const barTypes = [
@@ -29,23 +41,8 @@ function App() {
     "COMBO ELBOW",
     "FLAT TEE"
   ]
-  //Maps through each bar type in barTypes array to return one panel per bar type
-  const barTypePanels = barTypes.map(barType => {
-    return (
-      <BarTypePanel 
-      barNumFaults={currentNumFaults}
-      setCurrentNumFaults={setCurrentNumFaults}
-      barType={barType}
-      currentBarType={currentBarType}
-      key={barType}
-      // disable={currentNumFaults > 0 && currentBarType != barType} // passes a true value if 
-      increaseFaultCount={increaseFaultCount}
-      decreaseFaultCount={decreaseFaultCount}
-      />
-      )
-    })
-
-  //////////////////////FUNCTIONS
+  
+  /////////////////////////FUNCTIONS
   //These two functions increase and decrease currentNumberFaults State in App
   function increaseFaultCount(event) {
     event.preventDefault();
@@ -59,13 +56,38 @@ function App() {
     setCurrentNumFaults(oldNum => { return oldNum > 0 ?  (oldNum - 1) : 0})      
   }
 
-    /////////////// FINAL HTML
+
+  //////////////////////////Create HTML elements in variables
+  //Maps through each bar type in barTypes array to return one panel per bar type
+  const barTypePanels = barTypes.map(barType => {
+    return (
+      <BarTypePanel 
+      barNumFaults={currentNumFaults}      
+      barType={barType}
+      currentBarType={currentBarType}
+      increaseFaultCount={increaseFaultCount}
+      decreaseFaultCount={decreaseFaultCount}
+      setCurrentNumFaults={setCurrentNumFaults}
+      setCurrentBarType={setCurrentBarType}
+      key={barType}
+      />
+      )
+    })
+
+  /////////////// FINAL HTML
     return (
       <div className="App">
       <header className="App-header">
-        {/* {BarTypePanel} */}
-          <MaterialToggle selectedMaterial={currentMaterialType} handleChange={setCurrentMaterialType}/>
-      {barTypePanels}
+          <header className='panel1Header'>
+            <MaterialToggle 
+              selectedMaterial={currentMaterialType} 
+              setCurrentMaterialType={setCurrentMaterialType}
+            />
+          </header>
+
+          <div className="barTypePanelContainer">
+            {barTypePanels}
+          </div>
       </header>
     </div>
   );
