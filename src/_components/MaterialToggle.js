@@ -15,11 +15,19 @@ const options = [
 const MaterialToggle = (props) => {
   const [checked, setChecked] = useState('');
   const setType = ({ target: { value } }) => {
-    props.setCurrentMaterialType(value);
+    props.setCurrentMaterialType(() => {
+      return (
+        props.currentBarType != "CU Straight" // Use effect in App was setting back to Copper, but user could see Aluminum flash for a split second, this disallows switching in the first place
+          ? value
+          : "Copper"
+      )
+    })
+
   };
 
   return (
-    <div className='materialToggle'>
+    <div className='materialSelectSection'>
+      <h1>{props.currentMaterialType}</h1>
       <Radio.Group 
         className="materialRadio" 
         options={options} 

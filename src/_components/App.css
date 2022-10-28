@@ -1,45 +1,172 @@
 @import '~antd/dist/antd.css';
 /*********Variables*/
 :root {
-  --bar-type-panel-width: 300px;
+  --panel-1-width: 50vw;
+  --bar-type-card-width: calc(var(--panel-1-width) / 3.8);
+  --text-color: rgb(255,255,255);
+  --card-text-color: rgb(245,245,245);
+  --background-color:#282c34;
+  --needs-attention-color: rgb(185, 1, 1);
+  --card-background: rgb(60,60,60);
+
 }
 
 
-
-.App {
+#root  {
   text-align: center;
+  background-color: var(--background-color);
+  
 }
-.App-header {
-  background-color: #282c34;
+.Panel1 {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: var(--panel-1-width);
   justify-content: center;
   font-size: calc(10px + 2vmin);
 }
-select.typeBar {
-  display: none;
-}
 
 /*****************Panel 1 header*/
-/*Material toggle button*/
-.materialToggle {
-  
+.panel1Header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+  justify-items: stretch;
+  align-items: stretch;
+  height: 75px;
+  font-size: calc(15px + 2vmin);
+  color: var(--text-color);
 }
 
-/******************BAR TYPE PANEL CONTAINER*/
-.barTypePanelContainer {
+/*Material toggle button and h1 display*/
+.materialSelectSection {
+  display:flex;
+  flex-direction: column;
+  width:4em;
+  height: 2.5em;
+  position: relative;
+}
+.materialSelectSection > h1 {/*Material label*/
+  /* height: 26px; */
+  width: 4em;
+  margin-bottom: 2px;
+  font-size: calc(8px + 2vmin);
+  color: var(--text-color);
+  /* content:" "; */
+}
+.materialRadio {
+  position: absolute;
+  bottom:0;
+  left:0;
+  right:0;
+}
+/*************BAR TYPE*/
+h1.barTypeh1 { /*Bar type label*/
+  width: 8.5em;
+  font-size: calc(10px + 2vmin);
+  color: var(--text-color);
+  margin-left: 10px;
+
+}
+/******************FAULT COUNT SECTION*/
+.faultCountSection {
+  display: flex;
+  width: 200px;
+  align-items: stretch;
+  justify-content: space-between;
+}
+.faultCountSection > h3 {
+  font-size: calc(5px + 2vmin);
+  color: var(--text-color);
+  width: 4em;
+}
+.currentFaultCountInput { 
+  width: 43px;
+  height: 40px;
+  color:black;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {/*Hides the arrow buttons on number of faults number text input box*/
+  display: none;
+}
+.rackPositionRadioButtons {
+  font-size: .5em;
+  line-height: 1.4;
+  align-self: end;
+  width:25px;
+}
+
+.rackPositionRadioButtons > label {
+  padding-left: 2.5px;
+}
+
+.rackPositionSection {
+  display:flex;
+  position: relative;
+}
+button.rackResetButton{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--card-background);
+  border-color: var(--text-color);
+
+}
+button.rackResetButton > span {
+  font-size: 1em;
+  color: var(--text-color);
+}
+.rackPositionSection > h3 {
+  font-size: calc(3px + 2vmin);
+  color: var(--text-color);
+  width: 5em;
+  text-align: left;
+  padding-left: 10px;
+}
+
+
+
+/******************BAR TYPE CARD CONTAINER*/
+.barTypeCardContainer {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: var(--bar-type-panel-width) var(--bar-type-panel-width) var(--bar-type-panel-width);
+  /* grid-template-columns: var(--bar-type-card-width) var(--bar-type-card-width) var(--bar-type-card-width); */
+  grid-template-columns: repeat(6, 1fr);
+  justify-content: center;
 }
-.barTypePanelContainer > * {
+.barTypeCardContainer > * {
   height: 2.5em;
-  background-color: rgb(100,100,100);
-  width: var(--bar-type-panel-width);
+  background-color: var(--card-background);
+  width: var(--bar-type-card-width);
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 65% 35%;
   margin-top: 20px;
+}
+
+
+.barTypeCard {
+  grid-column: span 2;
+  cursor: pointer;
+
+}
+.barTypeCard > h1 {
+  color: var(--card-text-color);
+}
+/***********************Spreads last items ofbar type cards if not a multiple of 3  */
+.barTypeCard:nth-last-child(2):nth-child(3n + 1) {/*Second to last item if there are two widows*/
+  grid-column-end: 4;
+}
+.barTypeCard:last-child:nth-child(3n - 1) { /*last item if there are 2 widows*/
+  grid-column-end: -2;
+}
+.barTypeCard:last-child:nth-child(3n - 2) { /*last item if one widow*/
+  grid-column-end:  5;
+}
+
+.barTypeCard:nth-last-child(2) {
+  
 }

@@ -1,7 +1,7 @@
 @import '~antd/dist/antd.css';
 
-h1 {
-    font-size: 20px;
+.barTypeCard > h1 {
+    font-size: calc(2px + 2vmin);
     grid-column: 1 / 4;
     margin: 0;
 }
@@ -15,7 +15,7 @@ h1 {
     grid-column-start: 3;
 }
 /*MMoved to app.css for use of size vaiables
-/* .barTypePanel {
+/* .barTypeCard {
     height: 2.5em;
     background-color: rgb(100,100,100);
     width: 400px;

@@ -1,18 +1,17 @@
 import React from "react"
-import './BarTypePanel.css'
+import './BarTypeCard.css'
 import { DownOutlined, UpOutlined} from '@ant-design/icons';
 import { Button } from 'antd';
 import 'antd/dist/antd.css';
 
 
-export default function BarTypePanel(props) {
+export default function BarTypeCard(props) {
   return (
   <div 
-    className="barTypePanel" 
-    onClick={() => {props.setCurrentBarType(props.barType)}} //Sets current bar type state to this panel when anywhere on panel is clicked
+    className="barTypeCard" 
+    onClick={() => {props.setCurrentBarType(props.barType)}} //Sets current bar type state to this card when anywhere on card is clicked
   >
-      <h1>{props.barType}</h1>
-      {/* <div> */}
+      <h1 >{props.barType}</h1>
       <Button 
         type="default" 
         block 
@@ -23,7 +22,7 @@ export default function BarTypePanel(props) {
         <UpOutlined 
         />
       </Button>   
-      <Button 
+      <Button       
         type="default" 
         block 
         style={{ border:"1px solid black"}} 
@@ -34,11 +33,12 @@ export default function BarTypePanel(props) {
         <DownOutlined 
         />
       </Button>             
-      {/* <input 
+      <input //invisible radio button for use with css and emphesize selected bartype
         className="quantityOfFaults" 
         type="radio" 
         name="barType"
         value={props.barType}
+        style={{display: "none"}}
         // onChange={props.}
 
 
@@ -46,7 +46,7 @@ export default function BarTypePanel(props) {
         //   ? props.setCurrentNumFaults(oldNum => {oldNum + 1}) 
         //   : props.setCurrentNumFaults(oldNum => {oldNum}) } 
         // defaultValue={props.barType == props.currentBarType} 
-      /> */}
+      />
   </div>
   )
 
