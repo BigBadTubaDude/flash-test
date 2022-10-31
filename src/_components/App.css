@@ -175,7 +175,3 @@ button.rackResetButton > span {
 .barTypeCard:last-child:nth-child(3n - 2) { /*last item if one widow*/
   grid-column-end:  5;
 }
-
-.barTypeCard:nth-last-child(2) {
-  
-}
