@@ -2,14 +2,14 @@ import MaterialToggle from './MaterialToggle';
 import React from 'react';
 import ANTButton from "./ANTRackResetButton.js";
 export default function HeaderPanel1(props) {
-    // var faultCountRef = React.createRef();
+    // var defectCountRef = React.createRef();
     // React.useEffect( () => {
 
-    // }, [props.currentFaultCount]
+    // }, [props.currentDefectCount]
     // );
  
-    function changeFaultCountState(event) {
-        props.setCurrentFaultCount(event.target.value);
+    function changeDefectCountState(event) {
+        props.setCurrentDefectCount(event.target.value);
     }  
 
     return (
@@ -22,17 +22,17 @@ export default function HeaderPanel1(props) {
         />
         {/* </div> */}
         <h1 className='barTypeh1'>{props.currentBarType}</h1>
-        <div className='faultCountSection'>   
+        <div className='defectCountSection'>   
             <h3>with</h3>
             <input 
                 type="number" 
                 name="materialInput" 
-                onChange={changeFaultCountState}  
-                className='currentFaultCountInput'
+                onChange={changeDefectCountState}  
+                className='currentDefectCountInput'
                 min={1} 
-                value={props.currentFaultCountDisplay}
+                value={props.currentDefectCountDisplay}
             />
-            <h3>faults</h3>
+            <h3>defects</h3>
         </div>
 
 

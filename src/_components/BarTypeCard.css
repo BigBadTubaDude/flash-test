@@ -11,7 +11,7 @@
 .copperButton {
     grid-column-start: 2;
 }
-.quantityOfFaults {
+.quantityOfDefects {
     grid-column-start: 3;
 }
 /*MMoved to app.css for use of size vaiables

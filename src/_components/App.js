@@ -3,12 +3,13 @@ import './App.css';
 import React from 'react'
 import BarTypeCard from "./BarTypeCard"
 import HeaderPanel1 from './HeaderPanel1';
+import DefectItems from './DefecttItems';
 
 export default function App() {
   //////////////////////////////////States
   const [currentBarType, setCurrentBarType] = React.useState("");
   const [currentMaterialType, setCurrentMaterialType] = React.useState("");
-  const [currentFaultCount, setCurrentFaultCount] = React.useState(1);
+  const [currentDefectCount, setCurrentDefectCount] = React.useState(1);
   const [currentRackPosition, setCurrentRackPosition] = React.useState("")
 
   ///////////////////////////////EFFECTS
@@ -27,9 +28,9 @@ export default function App() {
     },  [currentMaterialType]
   );
 
-  React.useEffect( () => {//On change of current number of faults
-      currentFaultCountDisplay = currentFaultCount;
-  },  [currentFaultCount]
+  React.useEffect( () => {//On change of current number of Defects
+      currentDefectCountDisplay = currentDefectCount;
+  },  [currentDefectCount]
   );
 
   React.useEffect( () => {
@@ -59,14 +60,14 @@ export default function App() {
     "COMBO ELBOW",
     "FLAT TEE"
   ]
-  var currentFaultCountDisplay = currentFaultCount; //using this variable allows changing of state in one componet(BarTypeCard where up and down buttons are pressed) to be passed up and then passed down as a variable to panel 1 header to be displayed
+  var currentDefectCountDisplay = currentDefectCount; //using this variable allows changing of state in one componet(BarTypeCard where up and down buttons are pressed) to be passed up and then passed down as a variable to panel 1 header to be displayed
   /////////////////////////FUNCTIONS
-  //These two functions increase and decrease currentNumberFaults State in App
-  function increaseFaultCount(event) {
+  //These two functions increase and decrease currentNumberDefects State in App
+  function increaseDefectCount(event) {
     event.preventDefault();
     //Icon was blocking onClick event (it was grabbing the value of the icon not the button). Used currentTarget to fix this
     const eventValue = event.currentTarget.value
-    setCurrentFaultCount((oldCount) => { 
+    setCurrentDefectCount((oldCount) => { 
       var oldCountParsed = parseInt(oldCount, 10);//converts from string to integer
       return (
       //   (currentBarType === "" ||
@@ -80,10 +81,10 @@ export default function App() {
     setCurrentBarType(event.currentTarget.value)
         
   }
-  function decreaseFaultCount(event) {
+  function decreaseDefectCount(event) {
     event.preventDefault();
     const eventValue = event.currentTarget.value
-    setCurrentFaultCount(oldCount => { 
+    setCurrentDefectCount(oldCount => { 
       var oldCountParsed = parseInt(oldCount, 10);//converts from string to integer
       return (
         // (currentBarType === "" || // reset feature removed
@@ -105,9 +106,9 @@ export default function App() {
   }  
 
 
-  // function changeFaultCountState(event) {
+  // function changeDefectCountState(event) {
   //   console.log(event.target.value);
-  //   setCurrentFaultCount(event.target.value);
+  //   setCurrentDefectCount(event.target.value);
   // }  
 
   //////////////////////////Create HTML elements in variables
@@ -115,12 +116,12 @@ export default function App() {
   const barTypeCards = barTypes.map(barType => {
     return (
       <BarTypeCard 
-        barNumFaults={currentFaultCount}      
+        barNumDefects={currentDefectCount}      
         barType={barType}
         currentBarType={currentBarType}
-        increaseFaultCount={increaseFaultCount}
-        decreaseFaultCount={decreaseFaultCount}
-        setCurrentFaultCount={setCurrentFaultCount}
+        increaseDefectCount={increaseDefectCount}
+        decreaseDefectCount={decreaseDefectCount}
+        setCurrentDefectCount={setCurrentDefectCount}
         setCurrentBarType={setCurrentBarType}
         key={barType}
       />
@@ -128,22 +129,30 @@ export default function App() {
     })
 
   /////////////// FINAL HTML
-    return (
-      <div className="Panel1">
-        <HeaderPanel1 
-          currentRackPosition={currentRackPosition}
-          currentMaterialType={currentMaterialType}
-          currentBarType={currentBarType}
-          changeRackState={changeRackState}
-          currentFaultCountDisplay={currentFaultCountDisplay}
-          currentFaultCount={currentFaultCount}
-          setCurrentMaterialType={setCurrentMaterialType}
-          setCurrentRackPosition={setCurrentRackPosition}
-          setCurrentFaultCount={setCurrentFaultCount}
+  return (
+    <div>
+        <div className="Panel1">
+          <HeaderPanel1 
+            currentRackPosition={currentRackPosition}
+            currentMaterialType={currentMaterialType}
+            currentBarType={currentBarType}
+            changeRackState={changeRackState}
+            currentDefectCountDisplay={currentDefectCountDisplay}
+            currentDefectCount={currentDefectCount}
+            setCurrentMaterialType={setCurrentMaterialType}
+            setCurrentRackPosition={setCurrentRackPosition}
+            setCurrentDefectCount={setCurrentDefectCount}
+          />
+          <div className="barTypeCardContainer">
+            {barTypeCards}
+          </div>
+      </div>
+
+      <div className='Panel2'>
+        <DefectItems 
+          currentDefectCount={currentDefectCount}
         />
-        <div className="barTypeCardContainer">
-          {barTypeCards}
-        </div>
+      </div>
     </div>
   );
 }

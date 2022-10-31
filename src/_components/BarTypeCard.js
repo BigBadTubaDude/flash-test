@@ -16,7 +16,7 @@ export default function BarTypeCard(props) {
         type="default" 
         block 
         style={{ border:"1px solid black"}} 
-        onClickCapture={props.increaseFaultCount} 
+        onClickCapture={props.increaseDefectCount} 
         value={props.barType}
         size={"medium"}>
         <UpOutlined 
@@ -26,7 +26,7 @@ export default function BarTypeCard(props) {
         type="default" 
         block 
         style={{ border:"1px solid black"}} 
-        onClickCapture={props.decreaseFaultCount} 
+        onClickCapture={props.decreaseDefectCount} 
         value={props.barType}
         size={"medium"}
         >
@@ -34,7 +34,7 @@ export default function BarTypeCard(props) {
         />
       </Button>             
       <input //invisible radio button for use with css and emphesize selected bartype
-        className="quantityOfFaults" 
+        className="quantityOfDefects" 
         type="radio" 
         name="barType"
         value={props.barType}
@@ -43,9 +43,9 @@ export default function BarTypeCard(props) {
 
 
         // onChange={(props.barType == props.currentBarType || props.currentBarType == "") 
-        //   ? props.setCurrentNumFaults(oldNum => {oldNum + 1}) 
-        //   : props.setCurrentNumFaults(oldNum => {oldNum}) } 
-        // defaultValue={props.barType == props.currentBarType} 
+        //   ? props.setCurrentNumDefects(oldNum => {oldNum + 1}) 
+        //   : props.setCurrentNumDefects(oldNum => {oldNum}) } 
+        // defaulttValue={props.barType == props.currentBarType} 
       />
   </div>
   )
