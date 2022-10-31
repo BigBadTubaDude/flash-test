@@ -2,6 +2,7 @@
 /*********Variables*/
 :root {
   --panel-1-width: 50vw;
+  --panel-2-width: 50vw;
   --bar-type-card-width: calc(var(--panel-1-width) / 3.8);
   --text-color: rgb(255,255,255);
   --card-text-color: rgb(245,245,245);
@@ -15,7 +16,11 @@
 #root  {
   text-align: center;
   background-color: var(--background-color);
-  
+
+}
+.appContainer {
+  display: grid;
+  grid-template-columns: var(--panel-1-width) 1fr;
 }
 .Panel1 {
   min-height: 100vh;
@@ -47,6 +52,7 @@
   width:4em;
   height: 2.5em;
   position: relative;
+  align-items: center;
 }
 .materialSelectSection > h1 {/*Material label*/
   /* height: 26px; */
@@ -54,6 +60,8 @@
   margin-bottom: 2px;
   font-size: calc(8px + 2vmin);
   color: var(--text-color);
+  
+
   /* content:" "; */
 }
 .materialRadio {
@@ -183,6 +191,25 @@ button.rackResetButton > span {
 
 
 /******************Panel 2*/
-.defectNumDefectTypeContainer > h2{
+.Panel2 {
+  max-height: 100vh;
+  display: flex;
+  /* align-items: center; */
+  
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  grid-column-start: 2;
+  
+}
+/******************* Defect Number and defect type drop down*/
+.defectNumTypeContainer > h2{
   color: white;
 }
+.DefectItem {
+  list-style: none;
+}
+
+/*****************************Location radio buttons */
+
+
+/******************************* Orientation toggle*/

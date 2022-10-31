@@ -130,7 +130,7 @@ export default function App() {
 
   /////////////// FINAL HTML
   return (
-    <div>
+    <div className='appContainer'>
         <div className="Panel1">
           <HeaderPanel1 
             currentRackPosition={currentRackPosition}
