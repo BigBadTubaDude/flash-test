@@ -49,6 +49,7 @@ export default function HeaderPanel1(props) {
             </div>
             <h3>{`on rack ${props.currentRackPosition}`}</h3>
             <ANTButton 
+                resetRadioButtons={props.resetRadioButtons}
                 setCurrentRackPosition={props.setCurrentRackPosition}
                 currentRackPosition={props.currentRackPosition}
             />

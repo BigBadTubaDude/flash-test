@@ -35,7 +35,6 @@ export default function App() {
   React.useEffect( () => {
     // if(currentRackPosition == "") {
         document.getElementsByClassName("rackPositionRadioButton").checked = false;
-        console.log("hi")
     // }
 
 
@@ -104,6 +103,7 @@ export default function App() {
   function changeRackState(event) { //Onchange of rack position radio buttons
     setCurrentRackPosition(event.target.value);
   }  
+
 
   // function changeFaultCountState(event) {
   //   console.log(event.target.value);

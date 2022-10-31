@@ -113,10 +113,12 @@ button.rackResetButton{
   right: 0;
   background-color: var(--card-background);
   border-color: var(--text-color);
+  transform: translate(12%, 0);
 
 }
 button.rackResetButton > span {
   font-size: 1em;
+
   color: var(--text-color);
 }
 .rackPositionSection > h3 {
