@@ -1,4 +1,6 @@
 import React from 'react'
+import { Switch } from 'antd';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 
 export default function DefectItems(props) {
     ////////////////Variables
@@ -19,15 +21,29 @@ export default function DefectItems(props) {
         defectItemsArray.push(i + 1)
     }
 
-    const locationOptions = [
+    const locationOptionsArray = [
         "Body",
         "Edge",
         "Jog",
         "Tab Edge",
         "Tag"
     ]
+    const locationRadioButtons = locationOptionsArray.map( (option, number) => {
+        return ( 
+            <div key={`${option} ${number}`}>
+                <input 
+                    className='locationRadioButton'
+                    type="radio"                
+                    name={`location${number}`} 
+                    id={number}
+                    value={option}>
+                </input>
+                <label>{option}</label>
+            </div>
+            )
+    })
     //////////////////////Sub-components
-    const DefectOptions =  defectTypeList.map( item => { //Creates each <option> tag for each dropdown. One <option> per item in defectTypeList
+    const DefectOptionsHTML =  defectTypeList.map( item => { //Creates each <option> tag for each dropdown. One <option> per item in defectTypeList
         return (
             <option 
                 value={item}
@@ -39,26 +55,28 @@ export default function DefectItems(props) {
 
     const ListItems = defectItemsArray.map( defectNumber => {  //Creates a list item for every defect count passed down from app
             return (
-                <li 
+                <li
                 className='DefectItem' 
                 key={defectNumber}
                 >
-                    <div className='DefectNumTypeContainer'>
+                    <div className='defectNumTypeContainer'>
                         <h2>{defectNumber}</h2>
                         <select htmlFor="defectType" id='defectType'>
-                            {DefectOptions}
+                            {DefectOptionsHTML}
                         </select>                
                     </div>
-                    <form>
-                        <input 
-                        type="radio" 
-                        id={defectNumber}>
-
-                        </input>
+                    <form className='locationRadioButtons'>
+                         {locationRadioButtons} {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
                     </form>
+                    <Switch checkedChildren="Top" unCheckedChildren="Bottom" defaultChecked />
                 </li>
             )
         })
+
+    /////ANTD radio button
+    const onChange = (checked) => {
+        console.log(`switch to ${checked}`);
+      };
 
     //////////////HTML final Return
     return (
