@@ -114,13 +114,20 @@ button.rackResetButton{
   background-color: var(--card-background);
   border-color: var(--text-color);
   transform: translate(12%, 0);
-
 }
 button.rackResetButton > span {
   font-size: 1em;
-
   color: var(--text-color);
 }
+/* Keeps Unknown label from acting like a clickable button when hovered over*/
+  button.noHighlight:hover { 
+    background-color: var(--card-background);
+    border-color: var(--text-color);
+  }
+  button.noHighlight:focus { 
+    background-color: var(--card-background);
+    border-color: var(--text-color);
+  }
 .rackPositionSection > h3 {
   font-size: calc(3px + 2vmin);
   color: var(--text-color);

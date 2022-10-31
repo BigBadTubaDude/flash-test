@@ -10,10 +10,19 @@ export default function ANTButton(props) {
         }
       }
     return (
-        <Button type="primary" onClick={resetRadioButtons} shape="round" className="rackResetButton" size={"small"}>
-        {props.currentRackPosition != "" 
-        ? "Reset"
-        : "Unknown"}
+        <Button 
+            type="primary" 
+            onClick={resetRadioButtons} 
+            shape="round" 
+            className={props.currentRackPosition != "" 
+                ? "rackResetButton"
+                : "rackResetButton noHighlight"
+            }
+            size={"small"}
+        >
+            {props.currentRackPosition != "" 
+                ? "Reset"
+                : "Unknown"}
       </Button>
     )
 }
