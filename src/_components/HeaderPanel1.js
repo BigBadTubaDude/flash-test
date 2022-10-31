@@ -39,13 +39,13 @@ export default function HeaderPanel1(props) {
         <div className='rackPositionSection'>
             <div className="rackPositionRadioButtons" onChange={props.changeRackState}>  
                 <input type="radio" value="1" name="rackPosition" className="rackPositionRadioButton"></input>
-                <label for="1">1</label><br />          
+                <label htmlFor="1">1</label><br />          
                 <input type="radio" value="2" name="rackPosition" className="rackPositionRadioButton"></input>
-                <label for="2">2</label><br />
+                <label htmlFor="2">2</label><br />
                 <input type="radio" value="3" name="rackPosition" className="rackPositionRadioButton"></input>
-                <label for="3">3</label><br />
+                <label htmlFor="3">3</label><br />
                 <input type="radio" value="4" name="rackPosition" className="rackPositionRadioButton"></input>
-                <label for="4">4</label><br />
+                <label htmlFor="4">4</label><br />
             </div>
             <h3>{`on rack ${props.currentRackPosition}`}</h3>
             <ANTButton 
