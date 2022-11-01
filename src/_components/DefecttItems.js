@@ -29,6 +29,7 @@ export default function DefectItems(props) {
         "Tag"
     ]
     const locationRadioButtons = locationOptionsArray.map( (option, number) => {
+        console.log(`location${number}`)
         return ( 
             <div key={`${option} ${number}`}>
                 <input 
@@ -38,7 +39,9 @@ export default function DefectItems(props) {
                     id={number}
                     value={option}>
                 </input>
-                <label>{option}</label>
+                <label>
+                    {/* {option} */}{`${option} ${number}`}
+                    </label>
             </div>
             )
     })
@@ -66,7 +69,66 @@ export default function DefectItems(props) {
                         </select>                
                     </div>
                     <form className='locationRadioButtons'>
-                         {locationRadioButtons} {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
+                        <div key={`Body ${defectNumber}`}>
+                            <input 
+                                className='locationRadioButton'
+                                type="radio"                
+                                name={`location${defectNumber}`} 
+                                id={defectNumber}
+                                value="body">
+                            </input>
+                            <label>
+                                Body
+                            </label>
+                        </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
+                        <div key={`Edge ${defectNumber}`}>
+                            <input 
+                                className='locationRadioButton'
+                                type="radio"                
+                                name={`location${defectNumber}`} 
+                                id={defectNumber}
+                                value="edge">
+                            </input>
+                            <label>
+                                Edge
+                            </label>
+                        </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
+                        <div key={`Jog ${defectNumber}`}>
+                            <input 
+                                className='locationRadioButton'
+                                type="radio"                
+                                name={`location${defectNumber}`} 
+                                id={defectNumber}
+                                value="jog">
+                            </input>
+                            <label>
+                                Jog
+                            </label>
+                        </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
+                        <div key={`Tab Edge ${defectNumber}`}>
+                            <input 
+                                className='locationRadioButton'
+                                type="radio"                
+                                name={`location${defectNumber}`} 
+                                id={defectNumber}
+                                value="tabEdge">
+                            </input>
+                            <label>
+                                Tab Edge
+                            </label>
+                        </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
+                        <div key={`Tag ${defectNumber}`}>
+                            <input 
+                                className='locationRadioButton'
+                                type="radio"                
+                                name={`location${defectNumber}`} 
+                                id={defectNumber}
+                                value="tag">
+                            </input>
+                            <label>
+                                Tag
+                            </label>
+                        </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}                                                                        
                     </form>
                     <Switch checkedChildren="Top" unCheckedChildren="Bottom" defaultChecked />
                 </li>

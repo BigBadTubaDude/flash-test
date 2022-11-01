@@ -68,6 +68,9 @@ export default function App() {
     //Icon was blocking onClick event (it was grabbing the value of the icon not the button). Used currentTarget to fix this
     const eventValue = event.currentTarget.value
     setCurrentDefectCount((oldCount) => { 
+      if (oldCount == "") {
+        return 1;
+      } else {
       var oldCountParsed = parseInt(oldCount, 10);//converts from string to integer
       return (
       //   (currentBarType === "" ||
@@ -76,7 +79,7 @@ export default function App() {
       //   ? 1 + 1 
       //   : 
       oldCountParsed + 1 // No reset
-      )
+      )}
     })
     setCurrentBarType(event.currentTarget.value)
         
