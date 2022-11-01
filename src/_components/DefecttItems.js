@@ -72,16 +72,18 @@ export default function DefectItems(props) {
                             {DefectOptionsHTML}
                         </select>                
                     </div>
-                    <form className='locationRadioButtons'>
+                    <form 
+                    className='locationRadioButtons'
+                    onChange={(event) => props.onLocationChange(event, defectNumber)}>
                         <div key={`Body ${defectNumber}`}>
                             <input 
                                 className='locationRadioButton'
                                 type="radio"                
                                 name={`location${defectNumber}`} 
-                                id={'body${defectNumber}'}
+                                id={`body${defectNumber}`}
                                 value="body">
                             </input>
-                            <label htmlFor={'body${defectNumber}'}>
+                            <label htmlFor={`body${defectNumber}`}>
                                 Body
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
@@ -90,10 +92,10 @@ export default function DefectItems(props) {
                                     className='locationRadioButton'
                                     type="radio"                
                                     name={`location${defectNumber}`} 
-                                    id={'edge${defectNumber}'}
+                                    id={`edge${defectNumber}`}
                                     value="edge">
                                 </input>
-                            <label htmlFor={'edge${defectNumber}'}>
+                            <label htmlFor={`edge${defectNumber}`}>
                                 Edge
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
@@ -102,10 +104,10 @@ export default function DefectItems(props) {
                                 className='locationRadioButton'
                                 type="radio"                
                                 name={`location${defectNumber}`} 
-                                id={'jog${defectNumber}'}
+                                id={`jog${defectNumber}`}
                                 value="jog">
                             </input>
-                            <label htmlFor={'jog${defectNumber}'}>
+                            <label htmlFor={`jog${defectNumber}`}>
                                 Jog
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
@@ -114,10 +116,10 @@ export default function DefectItems(props) {
                                 className='locationRadioButton'
                                 type="radio"                
                                 name={`location${defectNumber}`} 
-                                id={'tabEdge${defectNumber}'}
+                                id={`tabEdge${defectNumber}`}
                                 value="tabEdge">
                             </input>
-                            <label htmlFor={'tabEdge${defectNumber}'}>
+                            <label htmlFor={`tabEdge${defectNumber}`}>
                                 Tab Edge
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
@@ -126,10 +128,10 @@ export default function DefectItems(props) {
                                 className='locationRadioButton'
                                 type="radio"                
                                 name={`location${defectNumber}`} 
-                                id={'tag${defectNumber}'}
+                                id={`tag${defectNumber}`}
                                 value="tag">
                             </input>
-                            <label htmlFor={'tag${defectNumber}'}>
+                            <label htmlFor={`tag${defectNumber}`}>
                                 Tag
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}                                                                        

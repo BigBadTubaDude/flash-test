@@ -240,7 +240,7 @@ div.defectNumTypeContainer > select { /*dropdown select box*/
 
 /*****************************Location radio buttons */
 form.locationRadioButtons { /*Location radio buttons CONTAINER*/
-  width: 90%;
+  width: 94%;
   grid-area: loc;
   display: flex;
   flex-direction: row;
@@ -253,19 +253,17 @@ form.locationRadioButtons > div { /*INDIVIDUAL location radio buttons*/
 
 }
 form.locationRadioButtons > div label { /*Individual location radio button labels*/
-  margin: 10px;
+  margin-left: 10px;
   cursor: pointer;
+  
 }
 
 /******************************* Orientation toggle*/
 
 li.DefectItem > button.ant-switch { /*Top/Bottom toggle button*/
   grid-area: orientation;
-  width: 5em;
+  width: 3.5em;
   /* height: 2em; */
   font-size: .8em;
 
 }
-/* li.DefectItem > button.ant-switch span{ 
-  font-size: .7em;  */
- /* } */

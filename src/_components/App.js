@@ -126,7 +126,13 @@ export default function App() {
         ...oldArray,
         "Top"
       ])
-    })           
+    })  
+    setLocationArray( oldArray => {
+      return([
+        ...oldArray,
+        ""
+      ])
+    })         
   };
   function decreaseDefectCount(event) {
     event.preventDefault();
@@ -135,7 +141,6 @@ export default function App() {
     setCurrentDefectCount(oldCountParsed > 1 ? oldCountParsed - 1 : 1) // Sets defect count State to one lower but does not allow it to go below 1                            
     setTypeDefectArray( oldArray => { //On reducing number of defects by clicking down arrow button, an item from the end of defectTypeArray State is deleted. 
       let newArray = oldArray.slice(0, currentDefectCount - 1);
-      
       return (
         newArray
       )
@@ -145,9 +150,14 @@ export default function App() {
       return (
         newArray
       )
-    }
+    })
+    setLocationArray( oldArray => {
+      let newArray = oldArray.slice(0, currentDefectCount - 1);
+      return (
+        newArray
+      )
+    })
 
-    );
     setCurrentBarType(event.currentTarget.value)
   }
   //Onchange of rack position radio buttons, sets rack position state
@@ -155,13 +165,12 @@ export default function App() {
     setCurrentRackPosition(event.target.value);
   }  
 
-  //Panel 2
+  /////////////////////////////////////Panel 2
   function onDefectChange(event, number) {
     event.preventDefault();
     setTypeDefectArray(oldArray => {
       let newArray = [...oldArray];
       newArray[number - 1] = event.target.value //Changes State associated with defect item changed
-
       return (
         newArray
       )
@@ -183,6 +192,14 @@ export default function App() {
         newArray
       )
     });
+  }
+  function onLocationChange(event, number) {
+    setLocationArray(oldArray => {
+      let newArray = [...oldArray];
+      newArray[number - 1] = event.target.value
+      return newArray;
+    })
+
   }
 
   //////////////////////////Create HTML elements in variables
@@ -228,6 +245,7 @@ export default function App() {
         onDefectChange={onDefectChange}
         currentDefectCount={currentDefectCount}
         onOrientationChange={onOrientationChange}
+        onLocationChange={onLocationChange}
       />
 
     </div>
