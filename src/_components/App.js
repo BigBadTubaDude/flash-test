@@ -6,14 +6,22 @@ import HeaderPanel1 from './HeaderPanel1';
 import DefectItems from './DefecttItems';
 
 export default function App() {
+
+
+
   //////////////////////////////////States
+  //Panel 1 States
   const [currentBarType, setCurrentBarType] = React.useState("");
   const [currentMaterialType, setCurrentMaterialType] = React.useState("");
   const [currentDefectCount, setCurrentDefectCount] = React.useState(1);
   const [currentRackPosition, setCurrentRackPosition] = React.useState("")
+  //Panel 2 States
+  const [locationArray, setLocationArray] = React.useState([""]);
+  const [orientationArray, setOrientationArray] = React.useState(["Top"]);
+  const [typeDefectArray, setTypeDefectArray] = React.useState([""]);
 
   ///////////////////////////////EFFECTS
-  
+  //Panel 1
   React.useEffect( () => {//On change of current bar type
     if(currentBarType == "CU Straight") {
       setCurrentMaterialType("Copper")
@@ -37,11 +45,31 @@ export default function App() {
     // if(currentRackPosition == "") {
         document.getElementsByClassName("rackPositionRadioButton").checked = false;
     // }
+  }, [currentRackPosition]
+  );
 
+  //Panel 2
+  React.useEffect( () => { //When number of defects is reduced, State arrays are truncated so as not to include extra data
+    if (currentDefectCount != "") {
+      setLocationArray(oldArray => {
+        return oldArray.slice(0, currentDefectCount)
+      })
+      setOrientationArray(oldArray => {
+        return oldArray.slice(0, currentDefectCount)
+      })
+      setTypeDefectArray(oldArray => {
+        return oldArray.slice(0, currentDefectCount)
+      })
+    }
 
-}, [currentRackPosition]
+  }, [currentDefectCount]
+  );
 
-);
+// React.useEffect( () => {
+
+// }, []
+
+// );
   ////////////////////////////////REFS
 
 
@@ -62,16 +90,19 @@ export default function App() {
   ]
   var currentDefectCountDisplay = currentDefectCount; //using this variable allows changing of state in one componet(BarTypeCard where up and down buttons are pressed) to be passed up and then passed down as a variable to panel 1 header to be displayed
   /////////////////////////FUNCTIONS
+  //Panel1
   //These two functions increase and decrease currentNumberDefects State in App
   function increaseDefectCount(event) {
     event.preventDefault();
     //Icon was blocking onClick event (it was grabbing the value of the icon not the button). Used currentTarget to fix this
     const eventValue = event.currentTarget.value
+    
+
     setCurrentDefectCount((oldCount) => { 
       if (oldCount == "") {
         return 1;
       } else {
-      var oldCountParsed = parseInt(oldCount, 10);//converts from string to integer
+      let oldCountParsed = parseInt(oldCount, 10);//converts from string to integer
       return (
       //   (currentBarType === "" ||
       //   eventValue != currentBarType//if no bartype is selected, or bar type is changing, reset to 1 and increment to 2
@@ -81,38 +112,78 @@ export default function App() {
       oldCountParsed + 1 // No reset
       )}
     })
-    setCurrentBarType(event.currentTarget.value)
-        
-  }
+    setCurrentBarType(event.currentTarget.value)  //Adjusts bar type State
+    //On adding a defect, adds an empty item to defectTypeArray State. 
+    setTypeDefectArray( oldArray => { 
+      return ([
+        ...oldArray,
+        ""
+      ])
+    });
+    //On adding a defect, adds "Top" item to orientationArray State. 
+    setOrientationArray( oldArray => { 
+      return ([
+        ...oldArray,
+        "Top"
+      ])
+    })           
+  };
   function decreaseDefectCount(event) {
     event.preventDefault();
     const eventValue = event.currentTarget.value
-    setCurrentDefectCount(oldCount => { 
-      var oldCountParsed = parseInt(oldCount, 10);//converts from string to integer
+    var oldCountParsed = parseInt(currentDefectCount, 10);//converts from string to integer
+    setCurrentDefectCount(oldCountParsed > 1 ? oldCountParsed - 1 : 1) // Sets defect count State to one lower but does not allow it to go below 1                            
+    setTypeDefectArray( oldArray => { //On reducing number of defects by clicking down arrow button, an item from the end of defectTypeArray State is deleted. 
+      let newArray = oldArray.slice(0, currentDefectCount - 1);
+      
       return (
-        // (currentBarType === "" || // reset feature removed
-        // eventValue != currentBarType //if no bartype is selected, or bar type is changing, reset to 1
-        // )  
-        // ? 1
-        // :
-         oldCountParsed > 1 // does not allow state to go below 1
-          ? 
-          oldCountParsed - 1
-          : 1
+        newArray
       )
-    })      
+    }) 
+    setOrientationArray( oldArray => {
+      let newArray = oldArray.slice(0, currentDefectCount - 1);
+      return (
+        newArray
+      )
+    }
+
+    );
     setCurrentBarType(event.currentTarget.value)
   }
-
-  function changeRackState(event) { //Onchange of rack position radio buttons
+  //Onchange of rack position radio buttons, sets rack position state
+  function changeRackState(event) { 
     setCurrentRackPosition(event.target.value);
   }  
 
+  //Panel 2
+  function onDefectChange(event, number) {
+    event.preventDefault();
+    setTypeDefectArray(oldArray => {
+      let newArray = [...oldArray];
+      newArray[number - 1] = event.target.value //Changes State associated with defect item changed
 
-  // function changeDefectCountState(event) {
-  //   console.log(event.target.value);
-  //   setCurrentDefectCount(event.target.value);
-  // }  
+      return (
+        newArray
+      )
+    });
+  }
+  function onOrientationChange(event, number) {
+    // event.preventDefault();
+    setOrientationArray(oldArray => {
+      let newArray = [...oldArray];
+      if (event == true) {
+        newArray[number - 1] = "Top" //Changes State associated with defect item changed
+      } else {
+        newArray[number - 1] = "Bottom"
+      }
+
+      
+
+      return (
+        newArray
+      )
+    });
+  }
 
   //////////////////////////Create HTML elements in variables
   //Maps through each bar type in barTypes array to return one card per bar type
@@ -134,6 +205,7 @@ export default function App() {
   /////////////// FINAL HTML
   return (
     <div className='appContainer'>
+        {/*Panel 1*/}
         <div className="Panel1">
           <HeaderPanel1 
             currentRackPosition={currentRackPosition}
@@ -151,11 +223,13 @@ export default function App() {
           </div>
       </div>
 
-      <div className='Panel2'>
-        <DefectItems 
-          currentDefectCount={currentDefectCount}
-        />
-      </div>
+        {/*Panel 2*/}
+      <DefectItems 
+        onDefectChange={onDefectChange}
+        currentDefectCount={currentDefectCount}
+        onOrientationChange={onOrientationChange}
+      />
+
     </div>
   );
 }

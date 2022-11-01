@@ -5,6 +5,7 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 export default function DefectItems(props) {
     ////////////////Variables
     const defectTypeList = [
+        "SELECT TYPE",
         "Delamination",
         "Contamination",
         "Grind/Sand",
@@ -28,29 +29,28 @@ export default function DefectItems(props) {
         "Tab Edge",
         "Tag"
     ]
-    const locationRadioButtons = locationOptionsArray.map( (option, number) => {
-        console.log(`location${number}`)
-        return ( 
-            <div key={`${option} ${number}`}>
-                <input 
-                    className='locationRadioButton'
-                    type="radio"                
-                    name={`location${number}`} 
-                    id={number}
-                    value={option}>
-                </input>
-                <label>
-                    {/* {option} */}{`${option} ${number}`}
-                    </label>
-            </div>
-            )
-    })
+    // const locationRadioButtons = locationOptionsArray.map( (option, number) => { could not pass defect number correctly. Had to write each item out in ListItems
+    //     return ( 
+    //         <div key={`${option} ${number}`}>
+    //             <input 
+    //                 className='locationRadioButton'
+    //                 type="radio"                
+    //                 name={`location${number}`} 
+    //                 id={number}
+    //                 value={option}>
+    //             </input>
+    //             <label>
+    //                 {/* {option} */}{`${option} ${number}`}
+    //                 </label>
+    //         </div>
+    //         )
+    // })
     //////////////////////Sub-components
     const DefectOptionsHTML =  defectTypeList.map( item => { //Creates each <option> tag for each dropdown. One <option> per item in defectTypeList
         return (
             <option 
-                value={item}
-                key={item}
+                value={item}                
+                key={item}                
             >{item}
             </option>
         )
@@ -64,7 +64,11 @@ export default function DefectItems(props) {
                 >
                     <div className='defectNumTypeContainer'>
                         <h2>{defectNumber}</h2>
-                        <select htmlFor="defectType" id='defectType'>
+                        <select 
+                        htmlFor="defectType" 
+                        id='defectType'                        
+                        onChange={(event) => props.onDefectChange(event, defectNumber)}
+                        >
                             {DefectOptionsHTML}
                         </select>                
                     </div>
@@ -74,22 +78,22 @@ export default function DefectItems(props) {
                                 className='locationRadioButton'
                                 type="radio"                
                                 name={`location${defectNumber}`} 
-                                id={defectNumber}
+                                id={'body${defectNumber}'}
                                 value="body">
                             </input>
-                            <label>
+                            <label htmlFor={'body${defectNumber}'}>
                                 Body
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
                         <div key={`Edge ${defectNumber}`}>
-                            <input 
-                                className='locationRadioButton'
-                                type="radio"                
-                                name={`location${defectNumber}`} 
-                                id={defectNumber}
-                                value="edge">
-                            </input>
-                            <label>
+                                <input 
+                                    className='locationRadioButton'
+                                    type="radio"                
+                                    name={`location${defectNumber}`} 
+                                    id={'edge${defectNumber}'}
+                                    value="edge">
+                                </input>
+                            <label htmlFor={'edge${defectNumber}'}>
                                 Edge
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
@@ -98,10 +102,10 @@ export default function DefectItems(props) {
                                 className='locationRadioButton'
                                 type="radio"                
                                 name={`location${defectNumber}`} 
-                                id={defectNumber}
+                                id={'jog${defectNumber}'}
                                 value="jog">
                             </input>
-                            <label>
+                            <label htmlFor={'jog${defectNumber}'}>
                                 Jog
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
@@ -110,10 +114,10 @@ export default function DefectItems(props) {
                                 className='locationRadioButton'
                                 type="radio"                
                                 name={`location${defectNumber}`} 
-                                id={defectNumber}
+                                id={'tabEdge${defectNumber}'}
                                 value="tabEdge">
                             </input>
-                            <label>
+                            <label htmlFor={'tabEdge${defectNumber}'}>
                                 Tab Edge
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}
@@ -122,27 +126,25 @@ export default function DefectItems(props) {
                                 className='locationRadioButton'
                                 type="radio"                
                                 name={`location${defectNumber}`} 
-                                id={defectNumber}
+                                id={'tag${defectNumber}'}
                                 value="tag">
                             </input>
-                            <label>
+                            <label htmlFor={'tag${defectNumber}'}>
                                 Tag
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}                                                                        
                     </form>
-                    <Switch checkedChildren="Top" unCheckedChildren="Bottom" defaultChecked />
+                    <Switch onChange={(event) => props.onOrientationChange(event, defectNumber)} checkedChildren="Top" unCheckedChildren="Bottom" defaultChecked />
                 </li>
             )
         })
 
     /////ANTD radio button
-    const onChange = (checked) => {
-        console.log(`switch to ${checked}`);
-      };
+
 
     //////////////HTML final Return
     return (
-        <ul>
+        <ul className='Panel2'>
             {ListItems}
         </ul>
     )

@@ -14,7 +14,6 @@ export default function HeaderPanel1(props) {
 
     return (
         <header className='panel1Header'>
-        {/* <div className='materialSelectSection'>             */}
         <MaterialToggle 
             currentMaterialType={props.currentMaterialType} 
             setCurrentMaterialType={props.setCurrentMaterialType}
@@ -29,7 +28,9 @@ export default function HeaderPanel1(props) {
                 name="materialInput" 
                 onChange={changeDefectCountState}  
                 className='currentDefectCountInput'
-                min={1} 
+
+                min={1}
+                readOnly
                 value={props.currentDefectCountDisplay}
             />
             <h3>defects</h3>
