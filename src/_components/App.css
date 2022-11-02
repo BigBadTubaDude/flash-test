@@ -1,4 +1,5 @@
 @import '~antd/dist/antd.css';
+
 /*********Variables*/
 :root {
   --panel-1-width: 50vw;
@@ -10,7 +11,6 @@
   --needs-attention-color: rgb(185, 1, 1);
   --card-background: rgb(60,60,60);
   --radio-background-panel2: rgb(170,170,170);
-
 }
 
 html, body {
@@ -25,9 +25,7 @@ html, body {
 }
 .appContainer {
   display: grid;
-  
   grid-template-columns: var(--panel-1-width) 1fr;
-  
 }
 .Panel1 {
   min-height: 100vh;
@@ -68,7 +66,7 @@ html, body {
   font-size: calc(8px + 2vmin);
   color: var(--text-color);
   
-
+  
   /* content:" "; */
 }
 .materialRadio {
@@ -83,7 +81,7 @@ h1.barTypeh1 { /*Bar type label*/
   font-size: calc(10px + 2vmin);
   color: var(--text-color);
   margin-left: 10px;
-
+  
 }
 /******************DEFECT COUNT SECTION*/
 .defectCountSection {
@@ -157,16 +155,16 @@ button.rackResetButton:focus {
   border-color: var(--text-color);
 }
 /* Keeps Unknown label from acting like a clickable button when hovered over*/
-  button.noHighlight:hover { 
-    background-color: var(--card-background);
-    border-color: var(--text-color);
-    /* cursor: default; */
-  }
-  button.noHighlight:focus { 
-    background-color: var(--card-background);
-    border-color: var(--text-color);
-    /* cursor: default; */
-  }
+button.noHighlight:hover { 
+  background-color: var(--card-background);
+  border-color: var(--text-color);
+  /* cursor: default; */
+}
+button.noHighlight:focus { 
+  background-color: var(--card-background);
+  border-color: var(--text-color);
+  /* cursor: default; */
+}
 .rackPositionSection > h3 {
   font-size: calc(3px + 2vmin);
   color: var(--text-color);
@@ -197,7 +195,7 @@ button.rackResetButton:focus {
 .barTypeCard {
   grid-column: span 2;
   cursor: pointer;
-
+  
 }
 
 
@@ -219,7 +217,7 @@ button.submitHidden { /*Submit button when fields are not filled out*/
 }
 button.submitShow {
   visibility: visible;
-
+  
 }
 .submitButton {
   position:absolute;
@@ -251,7 +249,7 @@ button.submitShow {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   grid-column-start: 2;
-
+  
 }
 
 
@@ -261,15 +259,15 @@ li.DefectItem { /*Each list item container (one for every defect)*/
   'head head head head orientation  orientation'
   'loc loc loc loc loc loc';  
   list-style: none;
-    padding-bottom: 35px;
-    margin-top: 35px;
-    border-bottom: 1px solid grey;
-    align-items: center;
-    margin-right: 30px;
-  }
-  /******************* Defect Number and defect type drop down*/
-  div.defectNumTypeContainer { /* Defect number and type drop down container*/
-    display: flex;
+  padding-bottom: 35px;
+  margin-top: 35px;
+  border-bottom: 1px solid grey;
+  align-items: center;
+  margin-right: 30px;
+}
+/******************* Defect Number and defect type drop down*/
+div.defectNumTypeContainer { /* Defect number and type drop down container*/
+  display: flex;
   grid-area: head;
   justify-content: space-evenly;
 }
@@ -299,9 +297,7 @@ form.locationRadioButtons { /*Location radio buttons CONTAINER*/
   border-radius: 70px;
   justify-self: center;
 }
-/* form.locationRadioButtons > div { /*INDIVIDUAL location radio buttons*/
-  
- /*} */ 
+
 form.locationRadioButtons > div label { /*Individual location radio button labels*/
   margin-left: 10px;
   cursor: pointer;
@@ -309,18 +305,16 @@ form.locationRadioButtons > div label { /*Individual location radio button label
 
 /******************************* Orientation toggle*/
 
-li.DefectItem > button.ant-switch { /*Top/Bottom toggle button*/
+li.DefectItem > button.ant-switch { /*Top Bottom toggle button*/
   grid-area: orientation;
   width: 3.5em;
   /* height: 2em; */
   font-size: .8em;
 }
-/* li.DefectItem div.ant-switch {
-  
-} */
+
 li.DefectItem div.ant-switch-handle::before { /*toggle dot when Bottom is selected*/
   background-color: var(--radio-background-panel2)
-
+  
 } 
 li.DefectItem > .ant-switch {
   background-color: var(--card-background);
@@ -350,4 +344,31 @@ li.DefectItem > .ant-switch-checked > .ant-switch-inner{ /*Toggle text when Top 
 }
 ::-webkit-scrollbar-thumb:hover {/* Handle on hover */
   background: #555; 
+}
+@media only screen and (max-width: 1250px) {
+  .appContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  html, body {
+    overflow:visible;
+  }
+  .Panel1 {
+    width: 90vw;
+    padding:15px;
+    align-items: stretch;
+    align-self: center;
+  }
+  .barTypeCard {
+    width: auto;
+  }
+  .barTypeCard:nth-last-child(2):nth-child(3n + 1) {/*Second to last item if there are two widows*/
+    grid-column-end: 4;
+  }
+  .barTypeCard:last-child:nth-child(3n - 1) { /*last item if there are 2 widows*/
+    grid-column-end: -2;
+  }
+  .barTypeCard:last-child:nth-child(3n - 2) { /*last item if one widow*/
+    grid-column-end:  5;
+  }
 }

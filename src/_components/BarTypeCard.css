@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+
 
 .barTypeCard > h1 {
     font-size: calc(2px + 2vmin);
@@ -14,13 +14,3 @@
 .quantityOfDefects {
     grid-column-start: 3;
 }
-/*MMoved to app.css for use of size vaiables
-/* .barTypeCard {
-    height: 2.5em;
-    background-color: rgb(100,100,100);
-    width: 400px;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 65% 35%;
-    margin-top: 20px;
-} */

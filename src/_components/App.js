@@ -1,4 +1,4 @@
-//Minimum browser width 1250 on Chrome
+//Minimum browser width 590px on Chrome
 import './App.css';
 import React from 'react'
 import BarTypeCard from "./BarTypeCard"
@@ -86,14 +86,6 @@ const [showBool, setShowBool] = React.useState(false);
   }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount]
 
   )
-
-// React.useEffect( () => {
-
-// }, []
-
-// );
-  ////////////////////////////////REFS
-
 
   ////////////////////////////////Variables
   //Holds all bar types. add or subtract from this array and the corresponding card will be added/deleted automatically
