@@ -218,7 +218,13 @@ button.submitShow {
 }
 .submitButton {
   position:absolute;
-  bottom: 0;
+  bottom: 7%;
+  background-color: var(--card-text-color);
+  color: var(--background-color);
+  font-weight: 400;
+  border-radius: 5px;
+  width: 6em;
+
 }
 
 
