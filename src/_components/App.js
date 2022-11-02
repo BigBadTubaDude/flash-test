@@ -4,6 +4,7 @@ import React from 'react'
 import BarTypeCard from "./BarTypeCard"
 import HeaderPanel1 from './HeaderPanel1';
 import DefectItems from './DefecttItems';
+import SubmitButton from "./SubmitButton"
 
 export default function App() {
 
@@ -64,6 +65,27 @@ export default function App() {
 
   }, [currentDefectCount]
   );
+
+const [showBool, setShowBool] = React.useState(false);
+  React.useEffect(() => {
+      // let arraysFilled = true;
+      // for (let i = 0; i < props.locationArray; i++) {
+      //     if (props.locationArray[i] == "" || props.typeDefectArray[i] == "") {
+      //         arraysFilled = false;
+      //     }
+      // }
+      if (currentBarType != "" 
+      && currentMaterialType != "" 
+      && !locationArray.includes("")
+      && !typeDefectArray.includes("")) {
+          setShowBool(true);
+      } else {
+          setShowBool(false);
+      }
+      console.log(showBool);
+  }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount]
+
+  )
 
 // React.useEffect( () => {
 
@@ -140,19 +162,19 @@ export default function App() {
     var oldCountParsed = parseInt(currentDefectCount, 10);//converts from string to integer
     setCurrentDefectCount(oldCountParsed > 1 ? oldCountParsed - 1 : 1) // Sets defect count State to one lower but does not allow it to go below 1                            
     setTypeDefectArray( oldArray => { //On reducing number of defects by clicking down arrow button, an item from the end of defectTypeArray State is deleted. 
-      let newArray = oldArray.slice(0, currentDefectCount - 1);
+      let newArray = oldArray.slice(0, currentDefectCount - 1 != 0 ? currentDefectCount - 1 : 1);
       return (
         newArray
       )
     }) 
     setOrientationArray( oldArray => {
-      let newArray = oldArray.slice(0, currentDefectCount - 1);
+      let newArray = oldArray.slice(0, currentDefectCount - 1 != 0 ? currentDefectCount - 1 : 1);
       return (
         newArray
       )
     })
     setLocationArray( oldArray => {
-      let newArray = oldArray.slice(0, currentDefectCount - 1);
+      let newArray = oldArray.slice(0, currentDefectCount - 1 != 0 ? currentDefectCount - 1 : 1);
       return (
         newArray
       )
@@ -238,6 +260,9 @@ export default function App() {
           <div className="barTypeCardContainer">
             {barTypeCards}
           </div>
+          <SubmitButton 
+            showBool={showBool}
+          />
       </div>
 
         {/*Panel 2*/}

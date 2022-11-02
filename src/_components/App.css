@@ -189,17 +189,16 @@ button.rackResetButton:active {
   grid-template-rows: 65% 35%;
   margin-top: 20px;
 }
-
-
 .barTypeCard {
   grid-column: span 2;
   cursor: pointer;
 
 }
+
+
 .barTypeCard > h1 {
   color: var(--card-text-color);
 }
-/***********************Spreads last items ofbar type cards if not a multiple of 3  */
 .barTypeCard:nth-last-child(2):nth-child(3n + 1) {/*Second to last item if there are two widows*/
   grid-column-end: 4;
 }
@@ -209,6 +208,21 @@ button.rackResetButton:active {
 .barTypeCard:last-child:nth-child(3n - 2) { /*last item if one widow*/
   grid-column-end:  5;
 }
+/********SUBMIT BUTTON*/
+button.submitHidden { /*Submit button when fields are not filled out*/
+  visibility: hidden;
+}
+button.submitShow {
+  visibility: visible;
+
+}
+.submitButton {
+  position:absolute;
+  bottom: 0;
+}
+
+
+/***********************Spreads last items ofbar type cards if not a multiple of 3  */
 
 
 /******************Panel 2*/
