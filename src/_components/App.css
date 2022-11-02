@@ -299,9 +299,9 @@ form.locationRadioButtons { /*Location radio buttons CONTAINER*/
   border-radius: 70px;
   justify-self: center;
 }
-form.locationRadioButtons > div { /*INDIVIDUAL location radio buttons*/
+/* form.locationRadioButtons > div { /*INDIVIDUAL location radio buttons*/
   
-}
+ /*} */ 
 form.locationRadioButtons > div label { /*Individual location radio button labels*/
   margin-left: 10px;
   cursor: pointer;
@@ -315,9 +315,9 @@ li.DefectItem > button.ant-switch { /*Top/Bottom toggle button*/
   /* height: 2em; */
   font-size: .8em;
 }
-li.DefectItem div.ant-switch {
+/* li.DefectItem div.ant-switch {
   
-}
+} */
 li.DefectItem div.ant-switch-handle::before { /*toggle dot when Bottom is selected*/
   background-color: var(--radio-background-panel2)
 
