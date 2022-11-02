@@ -1,5 +1,4 @@
 import MaterialToggle from './MaterialToggle';
-import 'antd-button-color/dist/css/style.css';
 import React from 'react';
 import ANTButton from "./ANTRackResetButton.js";
 export default function HeaderPanel1(props) {
