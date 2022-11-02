@@ -131,22 +131,34 @@ button.rackResetButton{
   transform: translate(20%, 0);
   width: 6em;
 }
+
 button.rackResetButton > span {
   font-size: 1em;
   color: var(--text-color);
   text-align: center;
   position: absolute;
   inset: 0;
-  
+}
+/*These effects make clear that Reset is clickable while Unknown is not*/
+button.rackResetButton:hover {
+  background-color: rgb(70,70,70);
+  border-color: rgb(255,255,255);
+  /* filter: opacity(1.6) */
+}
+button.rackResetButton:active {
+  background-color: rgb(55,55,55);
+  border-color: rgb(240,240,240);  
 }
 /* Keeps Unknown label from acting like a clickable button when hovered over*/
   button.noHighlight:hover { 
     background-color: var(--card-background);
     border-color: var(--text-color);
+    /* cursor: default; */
   }
   button.noHighlight:focus { 
     background-color: var(--card-background);
     border-color: var(--text-color);
+    /* cursor: default; */
   }
 .rackPositionSection > h3 {
   font-size: calc(3px + 2vmin);
@@ -200,27 +212,31 @@ button.rackResetButton > span {
 /******************Panel 2*/
 .Panel2 {
   max-height: 90vh;
-  overflow-y: auto;
+  /* overflow-y: auto; */
+  overflow: overlay;
   margin: 40px;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   grid-column-start: 2;
+
 }
+
 
 li.DefectItem { /*Each list item container (one for every defect)*/
   display: grid;
   grid-template-areas:
-    'head head head head orientation  orientation'
-    'loc loc loc loc loc loc';  
-    list-style: none;
+  'head head head head orientation  orientation'
+  'loc loc loc loc loc loc';  
+  list-style: none;
     padding-bottom: 35px;
     margin-top: 35px;
     border-bottom: 1px solid grey;
     align-items: center;
-}
-/******************* Defect Number and defect type drop down*/
-div.defectNumTypeContainer { /* Defect number and type drop down container*/
-  display: flex;
+    margin-right: 30px;
+  }
+  /******************* Defect Number and defect type drop down*/
+  div.defectNumTypeContainer { /* Defect number and type drop down container*/
+    display: flex;
   grid-area: head;
   justify-content: space-evenly;
 }
@@ -229,6 +245,7 @@ div.defectNumTypeContainer > h2{ /*Defect number label for each defect item*/
   color: white;
   justify-self: center;
   margin: 0;
+  cursor: default;
 }
 div.defectNumTypeContainer > select { /*dropdown select box*/
   height: 30px;
@@ -250,7 +267,7 @@ form.locationRadioButtons { /*Location radio buttons CONTAINER*/
   justify-self: center;
 }
 form.locationRadioButtons > div { /*INDIVIDUAL location radio buttons*/
-
+  
 }
 form.locationRadioButtons > div label { /*Individual location radio button labels*/
   margin-left: 10px;
@@ -265,5 +282,27 @@ li.DefectItem > button.ant-switch { /*Top/Bottom toggle button*/
   width: 3.5em;
   /* height: 2em; */
   font-size: .8em;
+}
+li.DefectItem > .ant-switch-checked {
+  background-color: rgb(150,150,150);
+}
+li.DefectItem > .ant-switch-checked > .ant-switch-inner{
+  color: black;
+}
 
+/****************************************scroll bar styling*/
+::-webkit-scrollbar-track {/* Track */
+  background: var(--background-color);  
+  
+}
+::-webkit-scrollbar {/* width */
+  width: 8px;
+  
+}
+::-webkit-scrollbar-thumb {/* Handle */
+  background: var(--card-background);
+  border-radius: 7px;
+}
+::-webkit-scrollbar-thumb:hover {/* Handle on hover */
+  background: #555; 
 }
