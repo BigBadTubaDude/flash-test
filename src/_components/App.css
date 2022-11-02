@@ -101,6 +101,7 @@ h1.barTypeh1 { /*Bar type label*/
   height: 40px;
   color:black;
   text-align: center;
+  margin-right: 9px;
 }
 
 input::-webkit-outer-spin-button,
@@ -116,6 +117,7 @@ input::-webkit-inner-spin-button {/*Hides the arrow buttons on number of defects
 
 .rackPositionRadioButtons > label {
   padding-left: 2.5px;
+  cursor: pointer;
 }
 
 .rackPositionSection {
@@ -272,7 +274,6 @@ form.locationRadioButtons > div { /*INDIVIDUAL location radio buttons*/
 form.locationRadioButtons > div label { /*Individual location radio button labels*/
   margin-left: 10px;
   cursor: pointer;
-  
 }
 
 /******************************* Orientation toggle*/
