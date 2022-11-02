@@ -9,6 +9,7 @@
   --background-color:#282c34;
   --needs-attention-color: rgb(185, 1, 1);
   --card-background: rgb(60,60,60);
+  --radio-background-panel2: rgb(170,170,170);
 
 }
 
@@ -294,7 +295,7 @@ form.locationRadioButtons { /*Location radio buttons CONTAINER*/
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  background-color: rgb(170,170,170);
+  background-color: var(--radio-background-panel2);
   border-radius: 70px;
   justify-self: center;
 }
@@ -314,17 +315,23 @@ li.DefectItem > button.ant-switch { /*Top/Bottom toggle button*/
   /* height: 2em; */
   font-size: .8em;
 }
+li.DefectItem div.ant-switch {
+  
+}
 li.DefectItem div.ant-switch-handle::before { /*toggle dot when Bottom is selected*/
-  background-color: rgb(170,170,170)
+  background-color: var(--radio-background-panel2)
 
 } 
+li.DefectItem > .ant-switch {
+  background-color: var(--card-background);
+}
 li.DefectItem > .ant-switch-checked > div.ant-switch-handle::before { /*toggle dot when Top is selected*/
   background-color: var(--background-color)
 }
 li.DefectItem > .ant-switch-checked {
-  background-color: rgb(175,175,175);
+  background-color: var(--radio-background-panel2)
 }
-li.DefectItem > .ant-switch-checked > .ant-switch-inner{
+li.DefectItem > .ant-switch-checked > .ant-switch-inner{ /*Toggle text when Top is selected*/
   color: black;
 }
 
