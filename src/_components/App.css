@@ -151,6 +151,10 @@ button.rackResetButton:active {
   background-color: rgb(55,55,55);
   border-color: rgb(240,240,240);  
 }
+button.rackResetButton:focus {
+  background-color: var(--card-background);
+  border-color: var(--text-color);
+}
 /* Keeps Unknown label from acting like a clickable button when hovered over*/
   button.noHighlight:hover { 
     background-color: var(--card-background);
@@ -208,7 +212,7 @@ button.rackResetButton:active {
 .barTypeCard:last-child:nth-child(3n - 2) { /*last item if one widow*/
   grid-column-end:  5;
 }
-/********SUBMIT BUTTON*/
+/**********************SUBMIT BUTTON*/
 button.submitHidden { /*Submit button when fields are not filled out*/
   visibility: hidden;
 }
@@ -224,7 +228,13 @@ button.submitShow {
   font-weight: 400;
   border-radius: 5px;
   width: 6em;
-
+  cursor: pointer;
+}
+.submitButton:hover {
+  filter:brightness(1.1)
+}
+.submitButton:active {
+  background-color: rgb(200,200,210); 
 }
 
 
@@ -304,8 +314,15 @@ li.DefectItem > button.ant-switch { /*Top/Bottom toggle button*/
   /* height: 2em; */
   font-size: .8em;
 }
+li.DefectItem div.ant-switch-handle::before { /*toggle dot when Bottom is selected*/
+  background-color: rgb(170,170,170)
+
+} 
+li.DefectItem > .ant-switch-checked > div.ant-switch-handle::before { /*toggle dot when Top is selected*/
+  background-color: var(--background-color)
+}
 li.DefectItem > .ant-switch-checked {
-  background-color: rgb(150,150,150);
+  background-color: rgb(175,175,175);
 }
 li.DefectItem > .ant-switch-checked > .ant-switch-inner{
   color: black;
