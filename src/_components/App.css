@@ -87,7 +87,7 @@ html, body {
 .P1HeaderQuarter2 {
   align-self: center;
   display: grid;
-  transform: translate(0, -40px);
+  transform: translate(0, -60px);
   grid-template-columns: 100px 100px;
   grid-template-rows: 100px 30px;
   justify-items: center;
@@ -136,6 +136,7 @@ h1.barTypeh1 { /*Bar type label*/
   font-size: calc(10px + 2vmin);
   color: var(--text-color);
   margin-left: 10px;
+  margin-top: 10px;
   grid-column: 1 / 3;
 
   
