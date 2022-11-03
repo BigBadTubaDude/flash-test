@@ -49,7 +49,15 @@ html, body {
   font-size: calc(15px + 2vmin);
   color: var(--text-color);
 }
-
+/*First section of header*/
+.P1HeaderQuarter1 {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+.P1HeaderQuarter1 > :first-child { /* top part of first quarter of header for Panel 1*/
+  margin-bottom: 5px;
+}
 /*Material toggle button and h1 display*/
 .materialSelectSection {
   display:flex;
@@ -62,26 +70,97 @@ html, body {
 .materialSelectSection > h1 {/*Material label*/
   /* height: 26px; */
   width: 4em;
-  margin-bottom: 2px;
   font-size: calc(8px + 2vmin);
   color: var(--text-color);
   
   
   /* content:" "; */
 }
-.materialRadio {
+.materialRadio { /*Al/CU selector*/
   position: absolute;
   bottom:0;
   left:0;
   right:0;
 }
+
+/*******************Second Section of Header*/
+.P1HeaderQuarter2 {
+  align-self: center;
+  display: grid;
+  transform: translate(0, -40px);
+  grid-template-columns: 100px 100px;
+  grid-template-rows: 100px 30px;
+  justify-items: center;
+}
+.P1HeaderQuarter2 > * { /* 2 divs each holding temp/humidity h2s and thier input boxes*/
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.P1HeaderQuarter2 input { /*Text inputs for temp and humidity*/
+  width: 2.0em;
+  height: 1.5em;
+  color: black;
+  font-size: .75em;
+  
+}
+.P1HeaderQuarter2 > div p { /* % and F after humidity and temp inputs*/
+  /* position: absolute; */
+  /* right: 0;
+  bottom: 20px; */
+  margin: 0;
+  font-size: .9em;
+}
+.temp > h2, .humidity > h2{ /*h2s "temp" and "humidity"*/
+  color: white;
+  font-size: .75em;
+}
+.temp {
+  grid-column: 1 / 2;
+}
+.humidity {
+  grid-column: 2 / 3;
+}
+.temp div , .humidity div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+
 /*************BAR TYPE*/
 h1.barTypeh1 { /*Bar type label*/
   width: 8.5em;
   font-size: calc(10px + 2vmin);
   color: var(--text-color);
   margin-left: 10px;
+  grid-column: 1 / 3;
+
   
+}
+/*******************Third Section of Header*/
+.P1HeaderQuarter3 { /*Third section of P1 header*/
+  align-self: flex-end;
+}
+.P1HeaderQuarter3 h3 { /*Width select label "Width"*/
+  color: var(--card-text-color);
+  margin: 0;
+  font-size: 1em;
+}
+.P1HeaderQuarter3  select { /*Width select box*/
+  width: 2.8em;
+  height: 1.5em;
+  color: black;
+  font-size: .75em;
+}
+.P1HeaderQuarter3 > div.widthSelectContainer { /*Contains "Width" label and width dropdown selector*/
+  transform: translate(0, -19px);
+  /* display: flex;
+  justify-content: space-evenly;
+  align-items: center; */
+
 }
 /******************DEFECT COUNT SECTION*/
 .defectCountSection {
@@ -107,37 +186,50 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {/*Hides the arrow buttons on number of defects number text input box*/
   display: none;
 }
-.rackPositionRadioButtons {
+.rackPositionSection { /*Contains Rack radios, "on rack", and reset button......ALSO NOW CONATAINS Phase radios*/ 
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-self: flex-end;
+  align-items: center;
+}
+.rackPositionSection > * {
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+.rackPositionRadioButtons, .phaseRadioButtons {
   font-size: .5em;
   line-height: 1.4;
-  align-self: end;
-  width:25px;
+  align-self: center;
+  width:auto;
+  display: flex;
+  gap: 2px;
+  
 }
 
 .rackPositionRadioButtons > label {
   padding-left: 2.5px;
   cursor: pointer;
 }
-
-.rackPositionSection {
-  display:flex;
-  position: relative;
+.barTypeRadios {
+  
 }
-button.rackResetButton{
-  position: absolute;
+
+button.rackResetButton{ /*rack position reset button*/
+
   bottom: 0;
   right: 0;
+  margin-top: 13px ;
   background-color: var(--card-background);
   border-color: var(--text-color);
-  transform: translate(20%, 0);
+
   width: 6em;
 }
 
-button.rackResetButton > span {
+button.rackResetButton > span { /*text span inside reset button*/
   font-size: 1em;
   color: var(--text-color);
   text-align: center;
-  position: absolute;
   inset: 0;
 }
 /*These effects make clear that Reset is clickable while Unknown is not*/
@@ -165,12 +257,11 @@ button.noHighlight:focus {
   border-color: var(--text-color);
   /* cursor: default; */
 }
-.rackPositionSection > h3 {
+.rackPositionSection > h3 { /* "on rack*/
   font-size: calc(3px + 2vmin);
   color: var(--text-color);
-  width: 5em;
-  text-align: left;
-  padding-left: 10px;
+  text-align: center;
+  font-size: .6em;
 }
 
 
@@ -221,7 +312,7 @@ button.submitShow {
 }
 .submitButton {
   position:absolute;
-  bottom: 7%;
+  bottom: 3%;
   background-color: var(--card-text-color);
   color: var(--background-color);
   font-weight: 400;
@@ -242,7 +333,7 @@ button.submitShow {
 
 /******************Panel 2*/
 .Panel2 {
-  max-height: 90vh;
+  max-height: 88vh;
   /* overflow-y: auto; */
   overflow: overlay;
   margin: 40px;
@@ -345,7 +436,7 @@ li.DefectItem > .ant-switch-checked > .ant-switch-inner{ /*Toggle text when Top 
 ::-webkit-scrollbar-thumb:hover {/* Handle on hover */
   background: #555; 
 }
-@media only screen and (max-width: 1250px) {
+@media only screen and (max-width: 1350px) {
   .appContainer {
     display: flex;
     flex-direction: column;

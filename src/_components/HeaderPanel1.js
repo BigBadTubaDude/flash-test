@@ -1,59 +1,119 @@
 import MaterialToggle from './MaterialToggle';
+import SideToggle from './SideToggle'
 import React from 'react';
 import ANTButton from "./ANTRackResetButton.js";
 export default function HeaderPanel1(props) {
-    // var defectCountRef = React.createRef();
-    // React.useEffect( () => {
 
-    // }, [props.currentDefectCount]
-    // );
+    const widthList = [
+        "",
+        "200",
+        "145",
+        "140",
+        "125",
+        "115",
+        "100",
+        "90",
+        "80"
+    ]
  
     function changeDefectCountState(event) {
         props.setCurrentDefectCount(event.target.value);
     }  
 
+    const WidthOptionsHTML =  widthList.map( item => { //Creates each <option> tag for Width selection dropdown.
+        return (
+            <option 
+                value={item}                
+                key={item}                
+            >{item}
+            </option>
+        )
+    })
     return (
         <header className='panel1Header'>
-        <MaterialToggle 
-            currentMaterialType={props.currentMaterialType} 
-            setCurrentMaterialType={props.setCurrentMaterialType}
-            currentBarType={props.currentBarType}
-        />
-        {/* </div> */}
-        <h1 className='barTypeh1'>{props.currentBarType}</h1>
-        <div className='defectCountSection'>   
-            <h3>with</h3>
-            <input 
-                type="number" 
-                name="materialInput" 
-                onChange={changeDefectCountState}  
-                className='currentDefectCountInput'
-
-                min={1}
-                readOnly
-                value={props.currentDefectCountDisplay}
+        <div className='P1HeaderQuarter1'>
+            <SideToggle 
+                currentSideSelected={props.currentSideSelected} 
+                setCurrentSideSelected={props.setCurrentSideSelected}
             />
-            <h3>defects</h3>
+            <MaterialToggle 
+                currentMaterialType={props.currentMaterialType} 
+                setCurrentMaterialType={props.setCurrentMaterialType}
+                currentBarType={props.currentBarType}
+            />
+        </div>
+        <div className='P1HeaderQuarter2'>
+            <div className='temp'>  
+                <h2>Temp</h2>
+                <div>
+                    <input  onChange={props.changeTempState} pattern="\d*" maxlength="3" type="text" />
+                    <p>F</p>
+                </div>
+               
+            </div>
+            <div className='humidity'>
+                <h2>Humidity</h2>
+                <div>
+                    <input onChange={props.changeHumidityState} pattern="\d*" maxlength="3" type="text" />
+                    <p>%</p>
+                </div>
+            </div>
+            <h1 className='barTypeh1'>{props.currentBarType}</h1>
+        </div>
+        <div className='P1HeaderQuarter3'>
+            <div className='widthSelectContainer'>
+                <h3>Width</h3>
+                <select onChange={props.changeWidthState}>
+                    {WidthOptionsHTML}
+                </select>
+            </div>
+            <div className='defectCountSection'>   
+                <h3>with</h3>
+                <input 
+                    type="number" 
+                    name="materialInput" 
+                    onChange={changeDefectCountState}  
+                    className='currentDefectCountInput'
+                    min={1}
+                    readOnly
+                    value={props.currentDefectCountDisplay}
+                />
+                <h3>defects</h3>
+            </div>
         </div>
 
 
         <div className='rackPositionSection'>
-            <div className="rackPositionRadioButtons" onChange={props.changeRackState}>  
-                <input type="radio" id="1" value="1" name="rackPosition" className="rackPositionRadioButton"></input>
-                <label htmlFor="1">1</label><br />          
-                <input type="radio" id="2" value="2" name="rackPosition" className="rackPositionRadioButton"></input>
-                <label htmlFor="2">2</label><br />
-                <input type="radio" id="3" value="3" name="rackPosition" className="rackPositionRadioButton"></input>
-                <label htmlFor="3">3</label><br />
-                <input type="radio" id="4" value="4" name="rackPosition" className="rackPositionRadioButton"></input>
-                <label htmlFor="4">4</label><br />
+        <h3>{`Phase ${props.currentPhaseSelected}`}</h3>
+        <div className="phaseRadioButtons" onChange={props.changePhaseState}>  
+                <input type="radio" id="L1" value="L1" name="phase" className="phaseRadioButton barTypeRadios"></input>
+                <label htmlFor="L1">L1</label><br />          
+                <input type="radio" id="L2" value="L2" name="phase" className="phaseRadioButton barTypeRadios"></input>
+                <label htmlFor="L2">L2</label><br />
+                <input type="radio" id="L3" value="L3" name="phase" className="phaseRadioButton barTypeRadios"></input>
+                <label htmlFor="L3">L3</label><br />
+                <input type="radio" id="N" value="N" name="phase" className="phaseRadioButton barTypeRadios"></input>
+                <label htmlFor="N">N</label><br />
+                <input type="radio" id="E" value="E" name="phase" className="phaseRadioButton barTypeRadios"></input>
+                <label htmlFor="E">E</label><br />
             </div>
-            <h3>{`on rack ${props.currentRackPosition}`}</h3>
             <ANTButton 
-                resetRadioButtons={props.resetRadioButtons}
+                currentPhaseState={props.currentPhaseState}
+                setCurrentPhaseSelected={props.setCurrentPhaseSelected}
                 setCurrentRackPosition={props.setCurrentRackPosition}
                 currentRackPosition={props.currentRackPosition}
-            />
+                />
+                <h3>{`Rack ${props.currentRackPosition}`}</h3>
+            <div className="rackPositionRadioButtons" onChange={props.changeRackState}>  
+                <input type="radio" id="1" value="1" name="rackPosition" className="rackPositionRadioButton barTypeRadios"></input>
+                <label htmlFor="1">1</label><br />          
+                <input type="radio" id="2" value="2" name="rackPosition" className="rackPositionRadioButton barTypeRadios"></input>
+                <label htmlFor="2">2</label><br />
+                <input type="radio" id="3" value="3" name="rackPosition" className="rackPositionRadioButton barTypeRadios"></input>
+                <label htmlFor="3">3</label><br />
+                <input type="radio" id="4" value="4" name="rackPosition" className="rackPositionRadioButton barTypeRadios"></input>
+                <label htmlFor="4">4</label><br />
+            </div>
         </div>
 
         </header>

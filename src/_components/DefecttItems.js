@@ -46,7 +46,7 @@ export default function DefectItems(props) {
     //         )
     // })
     //////////////////////Sub-components
-    const DefectOptionsHTML =  defectTypeList.map( item => { //Creates each <option> tag for each dropdown. One <option> per item in defectTypeList
+    const DefectOptionsHTML =  defectTypeList.map( item => { //Creates each <option> tag for each defect type. One <option> per item in defectTypeList
         return (
             <option 
                 value={item}                

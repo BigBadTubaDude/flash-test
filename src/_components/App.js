@@ -15,7 +15,12 @@ export default function App() {
   const [currentBarType, setCurrentBarType] = React.useState("");
   const [currentMaterialType, setCurrentMaterialType] = React.useState("");
   const [currentDefectCount, setCurrentDefectCount] = React.useState(1);
-  const [currentRackPosition, setCurrentRackPosition] = React.useState("")
+  const [currentRackPosition, setCurrentRackPosition] = React.useState("");
+  const [currentPhaseSelected, setCurrentPhaseSelected] = React.useState("");
+  const [currentSideSelected, setCurrentSideSelected] = React.useState("");
+  const [currentTemp, setCurrentTemp] = React.useState("");
+  const [currentHumidity, setCurrentHumidity] = React.useState("");
+  const [currentWidth, setCurrentWidth] = React.useState("");
   //Panel 2 States
   const [locationArray, setLocationArray] = React.useState([""]);
   const [orientationArray, setOrientationArray] = React.useState(["Top"]);
@@ -103,9 +108,10 @@ const [showBool, setShowBool] = React.useState(false);
     "FLAT TEE"
   ]
   var currentDefectCountDisplay = currentDefectCount; //using this variable allows changing of state in one componet(BarTypeCard where up and down buttons are pressed) to be passed up and then passed down as a variable to panel 1 header to be displayed
-  /////////////////////////FUNCTIONS
   //Panel1
   //These two functions increase and decrease currentNumberDefects State in App
+  /////////////////////////FUNCTIONS
+  /////////ON CHANGE FUNCTIONS
   function increaseDefectCount(event) {
     event.preventDefault();
     //Icon was blocking onClick event (it was grabbing the value of the icon not the button). Used currentTarget to fix this
@@ -178,7 +184,19 @@ const [showBool, setShowBool] = React.useState(false);
   function changeRackState(event) { 
     setCurrentRackPosition(event.target.value);
   }  
-
+  //Onchange of Phase selection, changes CurrentPhaseSelected State
+  function changePhaseState(event) {
+    setCurrentPhaseSelected(event.target.value);
+  }
+  function changeTempState(event) {
+    setCurrentTemp(event.target.value);
+  }
+  function changeHumidityState(event) {
+    setCurrentHumidity(event.target.value);
+  }
+  function changeWidthState(event) {
+    setCurrentWidth(event.target.value);
+  }
   /////////////////////////////////////Panel 2
   function onDefectChange(event, number) {
     event.preventDefault();
@@ -239,15 +257,27 @@ const [showBool, setShowBool] = React.useState(false);
         {/*Panel 1*/}
         <div className="Panel1">
           <HeaderPanel1 
+            setCurrentPhaseSelected={setCurrentPhaseSelected}
+            changeWidthState={changeWidthState}
+            currentWidth={currentWidth}
+            changeTempState={changeTempState}
+            changeHumidityState={changeHumidityState}
+            currentTemp={currentTemp}
+            currentHumidity={currentHumidity}
+            changePhaseState={changePhaseState}
+            currentPhaseSelected={currentPhaseSelected}
             currentRackPosition={currentRackPosition}
             currentMaterialType={currentMaterialType}
             currentBarType={currentBarType}
             changeRackState={changeRackState}
             currentDefectCountDisplay={currentDefectCountDisplay}
             currentDefectCount={currentDefectCount}
+            currentSideSelected={currentSideSelected}
+            setCurrentSideSelected={setCurrentSideSelected}
             setCurrentMaterialType={setCurrentMaterialType}
             setCurrentRackPosition={setCurrentRackPosition}
             setCurrentDefectCount={setCurrentDefectCount}
+            currentPhase={`L2`/*create state */}
           />
           <div className="barTypeCardContainer">
             {barTypeCards}

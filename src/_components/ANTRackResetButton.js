@@ -3,8 +3,9 @@ import React from 'react'
 
 export default function ANTButton(props) {
     function resetRadioButtons() {
-        let radios = document.getElementsByClassName("rackPositionRadioButton");  
+        let radios = document.getElementsByClassName("barTypeRadios");  
         props.setCurrentRackPosition("");
+        props.setCurrentPhaseSelected("");
         for(var i = 0; i < radios.length; i++) {
           radios[i].checked = false;
         }
@@ -19,10 +20,7 @@ export default function ANTButton(props) {
                 : "rackResetButton noHighlight"
             }
             size={"small"}
-        >
-            {props.currentRackPosition != "" 
-                ? "Reset"
-                : "Unknown"}
+        >Reset
       </Button>
     )
 }
