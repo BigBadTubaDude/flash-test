@@ -136,7 +136,18 @@ export default function DefectItems(props) {
                             </label>
                         </div> {/*Value is saved under name "location" + defectNumber ex. location2 is the name for the location data from the second list item in panel 2 */}                                                                        
                     </form>
-                    <Switch onChange={(event) => props.onOrientationChange(event, defectNumber)} checkedChildren="Top" unCheckedChildren="Bottom" defaultChecked />
+                    <Switch 
+                        onChange={(event) => props.onOrientationChange(event, defectNumber)}
+                        checkedChildren="Top" 
+                        unCheckedChildren="Bottom" 
+                        defaultChecked 
+                        className='orientation'/>
+                    <Switch 
+                        onChange={(event) => props.onSideChange(event, defectNumber)} 
+                        checkedChildren="A" 
+                        unCheckedChildren="B" 
+                        defaultChecked 
+                        className='side'/>
                 </li>
             )
         })

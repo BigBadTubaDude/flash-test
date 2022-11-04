@@ -15,12 +15,7 @@ const options = [
 const SideToggle = (props) => {
   const [checked, setChecked] = useState('');
   const setType = ({ target: { value } }) => {
-    props.setCurrentSideSelected(() => {
-      return (
-        value
-
-      )
-    })
+    props.setCurrentSideSelected(value)
 
   };
 

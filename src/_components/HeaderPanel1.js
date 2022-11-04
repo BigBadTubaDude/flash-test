@@ -32,10 +32,10 @@ export default function HeaderPanel1(props) {
     return (
         <header className='panel1Header'>
         <div className='P1HeaderQuarter1'>
-            <SideToggle 
+            {/* <SideToggle 
                 currentSideSelected={props.currentSideSelected} 
                 setCurrentSideSelected={props.setCurrentSideSelected}
-            />
+            /> */}
             <MaterialToggle 
                 currentMaterialType={props.currentMaterialType} 
                 setCurrentMaterialType={props.setCurrentMaterialType}
@@ -46,7 +46,7 @@ export default function HeaderPanel1(props) {
             <div className='temp'>  
                 <h2>Temp</h2>
                 <div>
-                    <input  onChange={props.changeTempState} pattern="\d*" maxlength="3" type="text" />
+                    <input  onChange={props.changeTempState} pattern="\d*" maxLength="3" type="text" />
                     <p>F</p>
                 </div>
                
@@ -54,7 +54,7 @@ export default function HeaderPanel1(props) {
             <div className='humidity'>
                 <h2>Humidity</h2>
                 <div>
-                    <input onChange={props.changeHumidityState} pattern="\d*" maxlength="3" type="text" />
+                    <input onChange={props.changeHumidityState} pattern="\d*" maxLength="3" type="text" />
                     <p>%</p>
                 </div>
             </div>

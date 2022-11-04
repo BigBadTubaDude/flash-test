@@ -17,7 +17,7 @@ export default function App() {
   const [currentDefectCount, setCurrentDefectCount] = React.useState(1);
   const [currentRackPosition, setCurrentRackPosition] = React.useState("");
   const [currentPhaseSelected, setCurrentPhaseSelected] = React.useState("");
-  const [currentSideSelected, setCurrentSideSelected] = React.useState("");
+  const [currentSideArray, setCurrentSideArray] = React.useState(["A"]);
   const [currentTemp, setCurrentTemp] = React.useState("");
   const [currentHumidity, setCurrentHumidity] = React.useState("");
   const [currentWidth, setCurrentWidth] = React.useState("");
@@ -140,6 +140,13 @@ const [showBool, setShowBool] = React.useState(false);
         ""
       ])
     });
+    //On adding a defect, adds an empty item to defectTypeArray State. 
+    setCurrentSideArray( oldArray => { 
+      return ([
+        ...oldArray,
+        "A"
+      ])
+    });
     //On adding a defect, adds "Top" item to orientationArray State. 
     setOrientationArray( oldArray => { 
       return ([
@@ -166,6 +173,12 @@ const [showBool, setShowBool] = React.useState(false);
       )
     }) 
     setOrientationArray( oldArray => {
+      let newArray = oldArray.slice(0, currentDefectCount - 1 != 0 ? currentDefectCount - 1 : 1);
+      return (
+        newArray
+      )
+    })
+    setCurrentSideArray( oldArray => {
       let newArray = oldArray.slice(0, currentDefectCount - 1 != 0 ? currentDefectCount - 1 : 1);
       return (
         newArray
@@ -209,21 +222,26 @@ const [showBool, setShowBool] = React.useState(false);
     });
   }
   function onOrientationChange(event, number) {
-    // event.preventDefault();
     setOrientationArray(oldArray => {
       let newArray = [...oldArray];
       if (event == true) {
-        newArray[number - 1] = "Top" //Changes State associated with defect item changed
+        newArray[number - 1] = "Top"; //Changes State associated with defect item changed
       } else {
-        newArray[number - 1] = "Bottom"
+        newArray[number - 1] = "Bottom";
       }
-
-      
-
-      return (
-        newArray
-      )
+      return newArray;
     });
+  }
+  function onSideChange(event, number) {
+    setCurrentSideArray(oldArray => {
+      let newArray = [...oldArray];
+      if (event == true) {
+        newArray[number - 1] = "A";
+      } else {
+        newArray[number - 1] = "B";
+      }
+      return newArray;
+    })
   }
   function onLocationChange(event, number) {
     setLocationArray(oldArray => {
@@ -272,12 +290,11 @@ const [showBool, setShowBool] = React.useState(false);
             changeRackState={changeRackState}
             currentDefectCountDisplay={currentDefectCountDisplay}
             currentDefectCount={currentDefectCount}
-            currentSideSelected={currentSideSelected}
-            setCurrentSideSelected={setCurrentSideSelected}
+            currentSideArray={currentSideArray}
+            setCurrentSideArray={setCurrentSideArray}
             setCurrentMaterialType={setCurrentMaterialType}
             setCurrentRackPosition={setCurrentRackPosition}
             setCurrentDefectCount={setCurrentDefectCount}
-            currentPhase={`L2`/*create state */}
           />
           <div className="barTypeCardContainer">
             {barTypeCards}
@@ -293,6 +310,7 @@ const [showBool, setShowBool] = React.useState(false);
         currentDefectCount={currentDefectCount}
         onOrientationChange={onOrientationChange}
         onLocationChange={onLocationChange}
+        onSideChange={onSideChange}
       />
 
     </div>

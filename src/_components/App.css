@@ -56,7 +56,8 @@ html, body {
   flex-direction: column;
 }
 .P1HeaderQuarter1 > :first-child { /* top part of first quarter of header for Panel 1*/
-  margin-bottom: 5px;
+  transform: translate(10px, -50%);
+
 }
 /*Material toggle button and h1 display*/
 .materialSelectSection {
@@ -72,6 +73,7 @@ html, body {
   width: 4em;
   font-size: calc(8px + 2vmin);
   color: var(--text-color);
+
   
   
   /* content:" "; */
@@ -348,7 +350,7 @@ button.submitShow {
 li.DefectItem { /*Each list item container (one for every defect)*/
   display: grid;
   grid-template-areas:
-  'head head head head orientation  orientation'
+  'head head head head orientation  side'
   'loc loc loc loc loc loc';  
   list-style: none;
   padding-bottom: 35px;
@@ -398,9 +400,7 @@ form.locationRadioButtons > div label { /*Individual location radio button label
 /******************************* Orientation toggle*/
 
 li.DefectItem > button.ant-switch { /*Top Bottom toggle button*/
-  grid-area: orientation;
   width: 3.5em;
-  /* height: 2em; */
   font-size: .8em;
 }
 
@@ -419,6 +419,12 @@ li.DefectItem > .ant-switch-checked {
 }
 li.DefectItem > .ant-switch-checked > .ant-switch-inner{ /*Toggle text when Top is selected*/
   color: black;
+}
+.orientation {
+  grid-area: orientation;
+}
+.side {
+  grid-area: side;
 }
 
 /****************************************scroll bar styling*/
