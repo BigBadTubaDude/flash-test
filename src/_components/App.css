@@ -41,7 +41,7 @@ html, body {
 .panel1Header {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 105%;
   justify-content: space-evenly;
   justify-items: stretch;
   align-items: stretch;
@@ -57,7 +57,6 @@ html, body {
 }
 .P1HeaderQuarter1 > :first-child { /* top part of first quarter of header for Panel 1*/
   transform: translate(10px, -50%);
-
 }
 /*Material toggle button and h1 display*/
 .materialSelectSection {
@@ -176,6 +175,9 @@ h1.barTypeh1 { /*Bar type label*/
   font-size: calc(5px + 2vmin);
   color: var(--text-color);
   width: 4em;
+}
+.withLabel {
+  visibility: hidden;
 }
 .currentDefectCountInput { 
   width: 45px;
