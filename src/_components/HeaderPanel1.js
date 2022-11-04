@@ -68,7 +68,7 @@ export default function HeaderPanel1(props) {
                 </select>
             </div>
             <div className='defectCountSection'>   
-                <h3>with</h3>
+                <h3 className='withLabel'>with</h3>
                 <input 
                     type="number" 
                     name="materialInput" 

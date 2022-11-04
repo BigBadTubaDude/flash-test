@@ -105,7 +105,7 @@ const [showBool, setShowBool] = React.useState(false);
     "ELBOW: FED/FEU", 
     "ELBOW ER/EL", 
     "COMBO ELBOW",
-    "FLAT TEE"
+    "FLAT TEE",
   ]
   var currentDefectCountDisplay = currentDefectCount; //using this variable allows changing of state in one componet(BarTypeCard where up and down buttons are pressed) to be passed up and then passed down as a variable to panel 1 header to be displayed
   //Panel1
