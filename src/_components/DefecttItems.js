@@ -139,7 +139,7 @@ export default function DefectItems(props) {
                     <Switch 
                         onChange={(event) => props.onOrientationChange(event, defectNumber)}
                         checkedChildren="Top" 
-                        unCheckedChildren="Bottom" 
+                        unCheckedChildren="Bot" 
                         defaultChecked 
                         className='orientation'/>
                     <Switch 

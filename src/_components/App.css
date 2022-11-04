@@ -400,7 +400,7 @@ form.locationRadioButtons > div label { /*Individual location radio button label
 /******************************* Orientation toggle*/
 
 li.DefectItem > button.ant-switch { /*Top Bottom toggle button*/
-  width: 3.5em;
+  width: 4.8em;
   font-size: .8em;
 }
 
@@ -420,11 +420,16 @@ li.DefectItem > .ant-switch-checked {
 li.DefectItem > .ant-switch-checked > .ant-switch-inner{ /*Toggle text when Top is selected*/
   color: black;
 }
-.orientation {
+li.DefectItem > button:nth-of-type(1).orientation { /*top/bottom toggle when unchecked (bottom)*/
   grid-area: orientation;
+  width: 3em;
 }
-.side {
+li.DefectItem > button:nth-of-type(1).ant-switch-checked { /*top/bottom toggle when checked (top)*/
+  width: 3em;
+}
+li.DefectItem button:nth-of-type(2).side{ /*A/B toggle */
   grid-area: side;
+  width: 2.7em;
 }
 
 /****************************************scroll bar styling*/

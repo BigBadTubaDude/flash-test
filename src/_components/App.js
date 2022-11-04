@@ -227,7 +227,7 @@ const [showBool, setShowBool] = React.useState(false);
       if (event == true) {
         newArray[number - 1] = "Top"; //Changes State associated with defect item changed
       } else {
-        newArray[number - 1] = "Bottom";
+        newArray[number - 1] = "Bot";
       }
       return newArray;
     });
