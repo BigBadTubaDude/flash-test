@@ -187,6 +187,7 @@ h1.barTypeh1 { /*Bar type label*/
   margin-right: 9px;
 }
 
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {/*Hides the arrow buttons on number of defects number text input box*/
   display: none;
@@ -315,21 +316,77 @@ button.submitShow {
   visibility: visible;
   
 }
-.submitButton {
+.buttonsContainer {
   position:absolute;
-  bottom: 3%;
+  bottom: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 40%;
+}
+.reviewButton {
   background-color: var(--card-text-color);
   color: var(--background-color);
   font-weight: 400;
+  border: 1px solid black;
   border-radius: 5px;
   width: 6em;
   cursor: pointer;
+  margin-inline: 30px;
+  align-items: center;
+  font-size: 1em;
 }
-.submitButton:hover {
-  filter:brightness(1.1)
+.totalDayBarsDiv { /*Container of total day bar count display, buttons, and label*/
+  position: relative;
+  display: flex;
+  margin-inline: 30px;
+
 }
-.submitButton:active {
+.totalDayBarsLabel { /*Label for total day bars count input/display on user main page*/
+  position: absolute;
+  font-size: .9em;
+  color: var(--card-text-color);
+  width: 8em;
+  top:-50px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+.reviewButton:hover, .totalInputButton:hover { /*Hover for buttons at bottom of Panel 1*/
+  filter:brightness(1.1);
+}
+.reviewButton:active,  .totalInputButton:active{ /*active for buttons at bottom of Panel 1*/
   background-color: rgb(200,200,210); 
+}
+.totalBarsInput { /* readonly input for total number of daily bars. After .buttonsContainer so width specificity will take precidence */
+  width: 45px;
+  height: 40px;
+  text-align: center;
+  margin:0;
+  border: 1px solid black;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+.totalInputButton { /*Increase and decrese buttons for total bars display input*/
+  width: 45px;
+  height: 40px;
+  border: 1px solid black;
+  text-align: center;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.increaseTotalButton {
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+  margin-left:0;
+}
+.decreseTotalButton {
+  margin-right:0;
+  border-right: none;
+  border-radius: 5px 0 0 5px;
 }
 
 

@@ -4,13 +4,18 @@ import React from 'react'
 import BarTypeCard from "./BarTypeCard"
 import HeaderPanel1 from './HeaderPanel1';
 import DefectItems from './DefecttItems';
-import SubmitButton from "./SubmitButton"
+import ReviewButton from "./ReviewButton"
+import AddButton from './AddButton';
 
 export default function App() {
 
 
 
   //////////////////////////////////States
+  //Submitted States
+  const [defectBarList, setDefectBarList] = React.useState([]);
+  const [totalDayBars, setTotalDayBars] = React.useState(0);
+
   //Panel 1 States
   const [currentBarType, setCurrentBarType] = React.useState("");
   const [currentMaterialType, setCurrentMaterialType] = React.useState("");
@@ -25,9 +30,10 @@ export default function App() {
   const [locationArray, setLocationArray] = React.useState([""]);
   const [orientationArray, setOrientationArray] = React.useState(["Top"]);
   const [typeDefectArray, setTypeDefectArray] = React.useState([""]);
+  const [showBool, setShowBool] = React.useState(false);
 
   ///////////////////////////////EFFECTS
-  //Panel 1
+  //Panel 1 EFFECTS
   React.useEffect( () => {//On change of current bar type
     if(currentBarType == "CU Straight") {
       setCurrentMaterialType("Copper")
@@ -54,7 +60,7 @@ export default function App() {
   }, [currentRackPosition]
   );
 
-  //Panel 2
+  //Panel 2 EFFECTS
   React.useEffect( () => { //When number of defects is reduced, State arrays are truncated so as not to include extra data
     if (currentDefectCount != "") {
       setLocationArray(oldArray => {
@@ -70,15 +76,7 @@ export default function App() {
 
   }, [currentDefectCount]
   );
-
-const [showBool, setShowBool] = React.useState(false);
   React.useEffect(() => {
-      // let arraysFilled = true;
-      // for (let i = 0; i < props.locationArray; i++) {
-      //     if (props.locationArray[i] == "" || props.typeDefectArray[i] == "") {
-      //         arraysFilled = false;
-      //     }
-      // }
       if (currentBarType != "" 
       && currentMaterialType != "" 
       && !locationArray.includes("")
@@ -87,12 +85,11 @@ const [showBool, setShowBool] = React.useState(false);
       } else {
           setShowBool(false);
       }
-      console.log(showBool);
   }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount]
-
   )
 
   ////////////////////////////////Variables
+  //Panel1 Variables
   //Holds all bar types. add or subtract from this array and the corresponding card will be added/deleted automatically
   const barTypes = [
     "DL Straight", 
@@ -108,28 +105,21 @@ const [showBool, setShowBool] = React.useState(false);
     "FLAT TEE",
   ]
   var currentDefectCountDisplay = currentDefectCount; //using this variable allows changing of state in one componet(BarTypeCard where up and down buttons are pressed) to be passed up and then passed down as a variable to panel 1 header to be displayed
-  //Panel1
-  //These two functions increase and decrease currentNumberDefects State in App
   /////////////////////////FUNCTIONS
+  //Panel 1 Functions
   /////////ON CHANGE FUNCTIONS
+  //These two functions increase and decrease currentNumberDefects State in App
   function increaseDefectCount(event) {
     event.preventDefault();
     //Icon was blocking onClick event (it was grabbing the value of the icon not the button). Used currentTarget to fix this
     const eventValue = event.currentTarget.value
-    
-
     setCurrentDefectCount((oldCount) => { 
       if (oldCount == "") {
         return 1;
       } else {
       let oldCountParsed = parseInt(oldCount, 10);//converts from string to integer
       return (
-      //   (currentBarType === "" ||
-      //   eventValue != currentBarType//if no bartype is selected, or bar type is changing, reset to 1 and increment to 2
-      //   )  
-      //   ? 1 + 1 
-      //   : 
-      oldCountParsed + 1 // No reset
+      oldCountParsed + 1
       )}
     })
     setCurrentBarType(event.currentTarget.value)  //Adjusts bar type State
@@ -251,7 +241,22 @@ const [showBool, setShowBool] = React.useState(false);
     })
 
   }
-
+  function increaseTotalDayBars() {
+    setTotalDayBars(oldCount => {
+      return (
+        oldCount + 1)});
+        
+  }
+  function decreaseTotalDayBars() {
+    setTotalDayBars(oldCount => {
+      if (oldCount > 0) {
+      return oldCount - 1
+      }
+      else {
+        return oldCount;
+      }          
+    })  
+  }
   //////////////////////////Create HTML elements in variables
   //Maps through each bar type in barTypes array to return one card per bar type
   const barTypeCards = barTypes.map(barType => {
@@ -299,9 +304,41 @@ const [showBool, setShowBool] = React.useState(false);
           <div className="barTypeCardContainer">
             {barTypeCards}
           </div>
-          <SubmitButton 
-            showBool={showBool}
-          />
+          <div className='buttonsContainer'>
+            <ReviewButton 
+              showBool={totalDayBars > 0}
+              />
+            <AddButton 
+              showBool={showBool}
+            />
+            <div className='totalDayBarsDiv'>
+              <label 
+                htmlFor='totalDailyBars'
+                className='totalDayBarsLabel'
+              >Total Daily Bars
+              </label>
+              <button 
+                className='decreseTotalButton totalInputButton'
+                onClick={decreaseTotalDayBars}
+                >-
+              </button>
+                <input 
+                    type="number" 
+                    name="materialInput" 
+                    // onChange={changeDefectCountState}  
+                    className='totalBarsInput'
+                    min={1}
+                    id="totalDailyBars"
+                    readOnly
+                    value={totalDayBars}
+                />
+              <button 
+                className='increaseTotalButton totalInputButton'
+                onClick={increaseTotalDayBars}
+                >+
+              </button>
+            </div>
+          </div>
       </div>
 
         {/*Panel 2*/}
