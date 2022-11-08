@@ -1,11 +1,13 @@
+import { Input } from 'antd';
 import React from 'react'
 
 export default function ReviewButton(props) {
-
     return (
         <button
-            className={`${props.showBool ? "submitShow reviewButton" : "submitHidden reviewButton"}`}
-            >Review
+            onClick={props.clickReview}
+            className={`${props.showReviewButton ? "submitShow reviewButton" : "submitHidden reviewButton"}`}
+            >{props.showReview ? "Cancel" : "Review" }
         </button>
+
     )
 }

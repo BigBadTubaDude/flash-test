@@ -6,6 +6,7 @@ import HeaderPanel1 from './HeaderPanel1';
 import DefectItems from './DefecttItems';
 import ReviewButton from "./ReviewButton"
 import AddButton from './AddButton';
+import ReviewForm from './ReviewForm';
 
 export default function App() {
 
@@ -15,6 +16,8 @@ export default function App() {
   //Submitted States
   const [defectBarList, setDefectBarList] = React.useState([]);
   const [totalDayBars, setTotalDayBars] = React.useState(0);
+  const [userName, setUserName] = React.useState("Not set");
+  const [showReview, setShowReview] = React.useState(false);
 
   //Panel 1 States
   const [currentBarType, setCurrentBarType] = React.useState("");
@@ -26,11 +29,12 @@ export default function App() {
   const [currentTemp, setCurrentTemp] = React.useState("");
   const [currentHumidity, setCurrentHumidity] = React.useState("");
   const [currentWidth, setCurrentWidth] = React.useState("");
+  const [showReviewButton, setShowReviewButton] = React.useState(false);
   //Panel 2 States
   const [locationArray, setLocationArray] = React.useState([""]);
   const [orientationArray, setOrientationArray] = React.useState(["Top"]);
   const [typeDefectArray, setTypeDefectArray] = React.useState([""]);
-  const [showBool, setShowBool] = React.useState(false);
+  const [showAddButton, setShowAddButton] = React.useState(false);
 
   ///////////////////////////////EFFECTS
   //Panel 1 EFFECTS
@@ -81,9 +85,9 @@ export default function App() {
       && currentMaterialType != "" 
       && !locationArray.includes("")
       && !typeDefectArray.includes("")) {
-          setShowBool(true);
+          setShowAddButton(true);
       } else {
-          setShowBool(false);
+          setShowAddButton(false);
       }
   }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount]
   )
@@ -200,6 +204,9 @@ export default function App() {
   function changeWidthState(event) {
     setCurrentWidth(event.target.value);
   }
+  function clickReview() {
+    setShowReview(oldVal => !oldVal);
+}
   /////////////////////////////////////Panel 2
   function onDefectChange(event, number) {
     event.preventDefault();
@@ -306,10 +313,17 @@ export default function App() {
           </div>
           <div className='buttonsContainer'>
             <ReviewButton 
-              showBool={totalDayBars > 0}
+              showReviewButton={totalDayBars > 0}
+              setShowReviewButton={setShowReviewButton}
+              showReview={showReview}
+              clickReview={clickReview}
               />
+            <ReviewForm 
+              showReview={showReview}
+            />
             <AddButton 
-              showBool={showBool}
+              showReview={showReview}
+              showAddButton={showAddButton}
             />
             <div className='totalDayBarsDiv'>
               <label 
