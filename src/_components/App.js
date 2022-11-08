@@ -11,8 +11,6 @@ import DateObject from 'react-date-object';
 
 export default function App() {
 
-
-
   //////////////////////////////////States
   //Submitted States
   const [defectBarList, setDefectBarList] = React.useState([]);

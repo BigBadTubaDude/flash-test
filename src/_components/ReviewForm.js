@@ -1,7 +1,15 @@
-import DateObject from "react-date-object";
+import React from 'react';
+
 export default function ReviewForm(props) {
-    //////ON CHANGE FUNCTIONS
+    
+    ///////////////////////STATES
+    const [disableChangeTotalButton, setDisableChangeTotalButton] = React.useState(true); //If true, Change Total button is disabled
+    
+    ////////////////////VARIABLES
+    let totalBarsInput = document.getElementsByClassName("totalDayBarsInput")
     let todayDate = props.submitDate;
+
+    //////ON CHANGE FUNCTIONS
     function onChangeSubmitDateState(event) {
         let value = event.target.value
         let newDateString = value.slice(5, 7) + "-" + value.slice(8) + "-" + value.slice(0, 4); //had to rearange the date string so date wouldnt be one day off (was happening when doing it this way: newDate Date(value))
@@ -13,10 +21,23 @@ export default function ReviewForm(props) {
         props.setUserName(event.target.value)
       }
 
-      function ChangeTotalBarsState(event) {
+      function changeTotalBarsState(event) {
         event.preventDefault();
-        console.log(document.getElementsByClassName("totalDayBarsInput").totalBars.placeholder)
-        props.setTotalDayBars(document.getElementsByClassName("totalDayBarsInput").totalBars.value);
+        // console.log(document.getElementsByClassName("totalDayBarsInput").totalBars.placeholder)
+        props.setTotalDayBars(totalBarsInput.totalBars.value);
+        if (totalBarsInput.totalBars.value == props.totalDayBars || event.target.value == "") {
+            setDisableChangeTotalButton(true);
+        } else {
+            setDisableChangeTotalButton(false);
+        }
+      }
+      function onChangeTotalDayBarsInput(event) {
+        event.preventDefault();
+        if (event.target.value == props.totalDayBars || event.target.value == "") {
+            setDisableChangeTotalButton(true);
+        } else {
+            setDisableChangeTotalButton(false);
+        }
       }
     return (
         <form className={props.showReview 
@@ -53,13 +74,13 @@ export default function ReviewForm(props) {
                     name="totalBars"
                     className="totalDayBarsInput"
                     placeholder={props.totalDayBars}
-                    // onChange={onChangeTotalDayBars}
+                    onChange={onChangeTotalDayBarsInput}
                 />
                 <button 
-                    onClick={ChangeTotalBarsState}
-                    disabled = {document.getElementsByClassName("totalDayBarsInput").totalBars.placeholder != document.getElementsByClassName("totalDayBarsInput").totalBars.value
-                        ? false 
-                        : true}
+                    onClick={changeTotalBarsState}
+                    disabled = {disableChangeTotalButton
+                        ? "disabled" 
+                        : ""}
                 >
                 Change Total
                 </button>
