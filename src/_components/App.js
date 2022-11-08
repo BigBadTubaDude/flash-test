@@ -382,6 +382,10 @@ export default function App() {
               showReview={showReview}
               submitDate={submitDate}
               setSubmitDate={setSubmitDate}
+              userName={userName}
+              setUserName={setUserName}
+              totalDayBars={totalDayBars}
+              setTotalDayBars={setTotalDayBars}
             />
             <AddButton 
               clickAddBar={clickAddBar}
