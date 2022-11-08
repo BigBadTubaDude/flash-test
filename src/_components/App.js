@@ -7,6 +7,7 @@ import DefectItems from './DefecttItems';
 import ReviewButton from "./ReviewButton"
 import AddButton from './AddButton';
 import ReviewForm from './ReviewForm';
+import DateObject from 'react-date-object';
 
 export default function App() {
 
@@ -18,6 +19,8 @@ export default function App() {
   const [totalDayBars, setTotalDayBars] = React.useState(0);
   const [userName, setUserName] = React.useState("Not set");
   const [showReview, setShowReview] = React.useState(false);
+  const todayDate = new Date();
+  const [submitDate, setSubmitDate] = React.useState(todayDate)
 
   //Panel 1 States
   const [currentBarType, setCurrentBarType] = React.useState("");
@@ -229,6 +232,7 @@ export default function App() {
       }
       ])
     });
+
     /////RESET ALL FIELDS AFTER ADDING TO DEFECT BAR LIST
     // resetRadioButtons();
     let radios = document.querySelectorAll('input[type="radio"]');
@@ -261,9 +265,10 @@ export default function App() {
     setCurrentRackPosition("");
     setCurrentPhaseSelected("");
 
-
-
+    //Add 1 count to total day bars
+    setTotalDayBars(oldcount => oldcount + 1);
   }
+
   /////////////////////////////////////Panel 2
   function onDefectChange(event, number) {
     event.preventDefault();
@@ -375,6 +380,8 @@ export default function App() {
               />
             <ReviewForm 
               showReview={showReview}
+              submitDate={submitDate}
+              setSubmitDate={setSubmitDate}
             />
             <AddButton 
               clickAddBar={clickAddBar}
