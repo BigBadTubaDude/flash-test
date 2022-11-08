@@ -32,10 +32,6 @@ export default function HeaderPanel1(props) {
     return (
         <header className='panel1Header'>
         <div className='P1HeaderQuarter1'>
-            {/* <SideToggle 
-                currentSideSelected={props.currentSideSelected} 
-                setCurrentSideSelected={props.setCurrentSideSelected}
-            /> */}
             <MaterialToggle 
                 currentMaterialType={props.currentMaterialType} 
                 setCurrentMaterialType={props.setCurrentMaterialType}
@@ -98,6 +94,7 @@ export default function HeaderPanel1(props) {
                 <label htmlFor="E">E</label><br />
             </div>
             <ANTButton 
+                resetRadioButtons={props.resetRadioButtons}
                 currentPhaseState={props.currentPhaseState}
                 setCurrentPhaseSelected={props.setCurrentPhaseSelected}
                 setCurrentRackPosition={props.setCurrentRackPosition}

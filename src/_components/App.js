@@ -25,12 +25,12 @@ export default function App() {
   const [currentDefectCount, setCurrentDefectCount] = React.useState(1);
   const [currentRackPosition, setCurrentRackPosition] = React.useState("");
   const [currentPhaseSelected, setCurrentPhaseSelected] = React.useState("");
-  const [currentSideArray, setCurrentSideArray] = React.useState(["A"]);
   const [currentTemp, setCurrentTemp] = React.useState("");
   const [currentHumidity, setCurrentHumidity] = React.useState("");
   const [currentWidth, setCurrentWidth] = React.useState("");
   const [showReviewButton, setShowReviewButton] = React.useState(false);
   //Panel 2 States
+  const [SideArray, setSideArray] = React.useState(["A"]);
   const [locationArray, setLocationArray] = React.useState([""]);
   const [orientationArray, setOrientationArray] = React.useState(["Top"]);
   const [typeDefectArray, setTypeDefectArray] = React.useState([""]);
@@ -135,7 +135,7 @@ export default function App() {
       ])
     });
     //On adding a defect, adds an empty item to defectTypeArray State. 
-    setCurrentSideArray( oldArray => { 
+    setSideArray( oldArray => { 
       return ([
         ...oldArray,
         "A"
@@ -172,7 +172,7 @@ export default function App() {
         newArray
       )
     })
-    setCurrentSideArray( oldArray => {
+    setSideArray( oldArray => {
       let newArray = oldArray.slice(0, currentDefectCount - 1 != 0 ? currentDefectCount - 1 : 1);
       return (
         newArray
@@ -207,6 +207,63 @@ export default function App() {
   function clickReview() {
     setShowReview(oldVal => !oldVal);
 }
+
+  function clickAddBar() {
+    setDefectBarList(oldList => { //Sets all defects and bar info to an object and puts object in defectBarList. #ADD# -> Also resets all fields
+      return ([
+        ...oldList,
+        {
+          barType: currentBarType,
+          materialType: currentMaterialType,
+          phase: currentPhaseSelected,
+          temp: currentTemp,
+          humidity: currentHumidity,
+          width: currentWidth,
+          rackPosition: currentRackPosition,
+          defects: {
+            orientation: orientationArray,
+            side: SideArray,
+            location: locationArray,
+            type: typeDefectArray
+          },
+      }
+      ])
+    });
+    /////RESET ALL FIELDS AFTER ADDING TO DEFECT BAR LIST
+    // resetRadioButtons();
+    let radios = document.querySelectorAll('input[type="radio"]');
+    for (let i = 0; i < radios.length; i++) {
+      radios[i].checked = false;
+    }
+    let inputFields = document.getElementsByTagName("input");
+    for(let i = 0; i < inputFields.length; i++) {
+      inputFields[i].value = "";
+    }
+    let selectFields = document.getElementsByTagName("select");
+    for (let i = 0; i < selectFields.length; i++) {
+      selectFields[i].options[0].selected = true; //Sets all select fields to first options
+    } 
+
+    //Reset states
+    setCurrentBarType("");
+    setCurrentMaterialType("");
+    setCurrentDefectCount(1);
+    setCurrentTemp("");
+    setCurrentHumidity("");
+    setCurrentWidth("");
+    setShowReviewButton(false);
+    setSideArray(["A"]);
+    setLocationArray([""]);
+    setOrientationArray(["Top"]);
+    setTypeDefectArray([""]);
+    setShowAddButton(false);
+    setShowReview(false);
+    setCurrentRackPosition("");
+    setCurrentPhaseSelected("");
+
+
+
+  }
   /////////////////////////////////////Panel 2
   function onDefectChange(event, number) {
     event.preventDefault();
@@ -230,7 +287,7 @@ export default function App() {
     });
   }
   function onSideChange(event, number) {
-    setCurrentSideArray(oldArray => {
+    setSideArray(oldArray => {
       let newArray = [...oldArray];
       if (event == true) {
         newArray[number - 1] = "A";
@@ -289,6 +346,7 @@ export default function App() {
           <HeaderPanel1 
             setCurrentPhaseSelected={setCurrentPhaseSelected}
             changeWidthState={changeWidthState}
+            changeRackState={changeRackState}
             currentWidth={currentWidth}
             changeTempState={changeTempState}
             changeHumidityState={changeHumidityState}
@@ -299,14 +357,11 @@ export default function App() {
             currentRackPosition={currentRackPosition}
             currentMaterialType={currentMaterialType}
             currentBarType={currentBarType}
-            changeRackState={changeRackState}
             currentDefectCountDisplay={currentDefectCountDisplay}
             currentDefectCount={currentDefectCount}
-            currentSideArray={currentSideArray}
-            setCurrentSideArray={setCurrentSideArray}
             setCurrentMaterialType={setCurrentMaterialType}
-            setCurrentRackPosition={setCurrentRackPosition}
             setCurrentDefectCount={setCurrentDefectCount}
+            setCurrentRackPosition={setCurrentRackPosition}
           />
           <div className="barTypeCardContainer">
             {barTypeCards}
@@ -322,6 +377,7 @@ export default function App() {
               showReview={showReview}
             />
             <AddButton 
+              clickAddBar={clickAddBar}
               showReview={showReview}
               showAddButton={showAddButton}
             />

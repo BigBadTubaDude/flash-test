@@ -29,22 +29,6 @@ export default function DefectItems(props) {
         "Tab Edge",
         "Tag"
     ]
-    // const locationRadioButtons = locationOptionsArray.map( (option, number) => { could not pass defect number correctly. Had to write each item out in ListItems
-    //     return ( 
-    //         <div key={`${option} ${number}`}>
-    //             <input 
-    //                 className='locationRadioButton'
-    //                 type="radio"                
-    //                 name={`location${number}`} 
-    //                 id={number}
-    //                 value={option}>
-    //             </input>
-    //             <label>
-    //                 {/* {option} */}{`${option} ${number}`}
-    //                 </label>
-    //         </div>
-    //         )
-    // })
     //////////////////////Sub-components
     const DefectOptionsHTML =  defectTypeList.map( item => { //Creates each <option> tag for each defect type. One <option> per item in defectTypeList
         return (
