@@ -377,6 +377,7 @@ export default function App() {
               clickReview={clickReview}
               />
             <ReviewForm 
+              defectBarList={defectBarList}
               showReview={showReview}
               submitDate={submitDate}
               setSubmitDate={setSubmitDate}

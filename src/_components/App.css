@@ -355,9 +355,17 @@ button.submitShow {
   border-radius: 10px;
   width: 85vw;
   height: 90vh;
-
+  display:grid;
+  grid-template-columns: 70% 30%;
+}
+/*Popup form parts*/ 
+/*Popup form list of bars and defects side*/
+.defectReviewContainer { /*Holds Defects for date h1 and ul of each bar and defect*/
+  display: flex;
+  flex-direction: column;
 }
 
+/*Popup form User, Date, and total bars side*/
 .totalDayBarsDiv { /*Container of total day bar count display, buttons, and label*/
   position: relative;
   display: flex;

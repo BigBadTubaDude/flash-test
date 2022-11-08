@@ -39,13 +39,32 @@ export default function ReviewForm(props) {
             setDisableChangeTotalButton(false);
         }
       }
+      ////////////CREATE HTML Functions
+    const DefectedBars = props.defectBarList.map(bar => {
+        // const BarDefects = bar.defects.map(defect => {
+        //     return (
+        //         <li className='reviewFormDefectItem'></li>
+        //     )
+        // })
+        return (
+            <div className='reviewFormListItem'>
+                <li className='defectedBar '>{bar.barType}</li>
+                {BarDefects}
+            </div>
+        )
+    })
+
+    
+
     return (
         <form className={props.showReview 
         ? 'showReviewForm' : 'popupForm'
         }>
         <div className='defectReviewContainer'>
             <h1>Defects for {`${props.submitDate.getMonth() + 1}/${props.submitDate.getDate()}/${props.submitDate.getFullYear()}`}</h1>
-            <ul className='defectReviewList'></ul>
+            <ul className='defectReviewList'>
+                {DefectedBars}
+            </ul>
         </div>
         <div className='textInputContainer'>
             <div className="userNameInputFieldContainer">
