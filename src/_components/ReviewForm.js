@@ -24,7 +24,8 @@ export default function ReviewForm(props) {
       function changeTotalBarsState(event) {
         event.preventDefault();
         // console.log(document.getElementsByClassName("totalDayBarsInput").totalBars.placeholder)
-        props.setTotalDayBars(totalBarsInput.totalBars.value);
+        props.setTotalDayBars(parseInt(totalBarsInput.totalBars.value));
+        // console.log(typeof totalBarsInput.totalBars.value)
         if (totalBarsInput.totalBars.value == props.totalDayBars || event.target.value == "") {
             setDisableChangeTotalButton(true);
         } else {

@@ -211,7 +211,7 @@ export default function App() {
 
   function clickAddBar() {
     setDefectBarList(oldList => { //Sets all defects and bar info to an object and puts object in defectBarList. #ADD# -> Also resets all fields
-      
+
       let defectObjects = []//Puts each defect for the bar being added into an object 
       for (let i = 0; i < orientationArray.length; i++) { 
         defectObjects.push({
@@ -376,7 +376,7 @@ export default function App() {
           </div>
           <div className='buttonsContainer'>
             <ReviewButton 
-              showReviewButton={totalDayBars > 0}
+              showReviewButton={totalDayBars > 0 || showReview}
               setShowReviewButton={setShowReviewButton}
               showReview={showReview}
               clickReview={clickReview}
