@@ -308,13 +308,28 @@ button.noHighlight:focus {
 .barTypeCard:last-child:nth-child(3n - 2) { /*last item if one widow*/
   grid-column-end:  5;
 }
-/**********************SUBMIT BUTTON*/
-button.submitHidden { /*Submit button when fields are not filled out*/
+/**********************ADD BAD BAR BUTTON*/
+button.addBarHidden { /*Submit button when fields are not filled out*/
   visibility: hidden;
 }
-button.submitShow {
+button.addBarShow {
   visibility: visible;
-  
+}
+button.showSubmit { /*Shows submit button if review form is up*/
+  display: block;
+  margin: 0;
+}
+button.displayNone {
+  display: none;
+}
+button.reviewShow {
+  visibility: visible;
+}
+button.reviewHidden {
+  visibility: hidden;
+}
+button.backButton {
+  grid-template-rows: 1fr;
 }
 .buttonsContainer {
   position:absolute;
@@ -336,6 +351,9 @@ button.submitShow {
   align-items: center;
   font-size: 1em;
   z-index: 3;
+}
+.hideAddButton { /*Hides "Add Bar" button when review page is up*/
+  display: none;
 }
 /*****************POPUP REVIEW FORM*/
 .popupForm {
@@ -427,7 +445,7 @@ li.reviewFormDefectItem:nth-of-type(2) { /*First defect item of each bar*/
 .textInputContainer { /*main container*/
   display: flex;
   flex-direction: column;
-  height: 90%;
+  height: 100%;
   justify-content: space-evenly;
   align-items: center;
 }
@@ -437,6 +455,7 @@ li.reviewFormDefectItem:nth-of-type(2) { /*First defect item of each bar*/
   width: 80%;
   margin-top: 30px;
 }
+
 .textInputContainer > div > label{ /*Input labels on review*/
   color: var(--card-text-color);
 }
@@ -480,6 +499,9 @@ li.reviewFormDefectItem:nth-of-type(2) { /*First defect item of each bar*/
   left: 50%;
   transform: translate(-50%, 0);
 }
+.finalSubmitButton {
+  display: none;
+}
 
 
 .reviewButton:hover, .totalInputButton:hover { /*Hover for buttons at bottom of Panel 1*/
@@ -521,7 +543,7 @@ li.reviewFormDefectItem:nth-of-type(2) { /*First defect item of each bar*/
 }
 
 
-/***********************Spreads last items ofbar type cards if not a multiple of 3  */
+/***********************Spreads last items of bar type cards if not a multiple of 3  */
 
 
 /******************Panel 2*/

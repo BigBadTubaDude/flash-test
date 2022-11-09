@@ -1,4 +1,6 @@
 import React from 'react';
+import SubmitButton from "./SubmitButton"
+import CancelButton from "./CancelButton"
 
 export default function ReviewForm(props) {
     
@@ -69,7 +71,7 @@ export default function ReviewForm(props) {
                     <h2>Phase {bar.phase}</h2>
                     <h2>{bar.temp}°F</h2>
                     <h2>{bar.humidity}%</h2>
-                    <h2>{bar.width}cm</h2>
+                    <h2>{bar.width}mm</h2>
                     <h2>Rack {bar.rackPosition}</h2>
                 </li>
                 {BarDefects}
@@ -84,6 +86,10 @@ export default function ReviewForm(props) {
         ? 'showReviewForm' : 'popupForm'
         }>
         <div className='textInputContainer'>
+            <SubmitButton 
+              submitDayToDatabase={props.submitDayToDatabase}
+              showReview={props.showReview}
+            />
             <div className="userNameInputFieldContainer">
                 <label htmlFor='userName'>User</label>
                 <input 
@@ -121,6 +127,7 @@ export default function ReviewForm(props) {
                 Change Total
                 </button>
             </div>
+                <CancelButton />
         </div>
         <div className='defectReviewContainer'>
             <h1>Defects for {`${props.submitDate.getMonth() + 1}/${props.submitDate.getDate()}/${props.submitDate.getFullYear()}`}</h1>

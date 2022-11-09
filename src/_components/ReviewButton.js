@@ -5,8 +5,8 @@ export default function ReviewButton(props) {
     return (
         <button
             onClick={props.clickReview}
-            className={`${props.showReviewButton ? "submitShow reviewButton" : "submitHidden reviewButton"}`}
-            >{props.showReview ? "Cancel" : "Review" }
+            className={`${props.showReviewButton ? "reviewShow reviewButton" : "reviewHidden reviewButton"} ${props.showReview ? "displayNone" : ""}`}
+            >Review
         </button>
 
     )

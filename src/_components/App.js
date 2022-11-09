@@ -8,6 +8,7 @@ import ReviewButton from "./ReviewButton"
 import AddButton from './AddButton';
 import ReviewForm from './ReviewForm';
 import DateObject from 'react-date-object';
+import SubmitButton from './SubmitButton'
 
 export default function App() {
 
@@ -235,7 +236,6 @@ export default function App() {
       }
       ])
     });
-
     /////RESET ALL FIELDS AFTER ADDING TO DEFECT BAR LIST
     // resetRadioButtons();
     let radios = document.querySelectorAll('input[type="radio"]');
@@ -250,7 +250,7 @@ export default function App() {
     for (let i = 0; i < selectFields.length; i++) {
       selectFields[i].options[0].selected = true; //Sets all select fields to first options
     } 
-
+    
     //Reset states
     setCurrentBarType("");
     setCurrentMaterialType("");
@@ -267,11 +267,17 @@ export default function App() {
     setShowReview(false);
     setCurrentRackPosition("");
     setCurrentPhaseSelected("");
-
+    
     //Add 1 count to total day bars
     setTotalDayBars(oldcount => oldcount + 1);
   }
-
+  function submitDayToDatabase() {
+    ///////////////////////Write code to send to data base
+    console.log("Submited (not really)")
+  }
+  function returnToBarInputScreen() {
+    setShowReview(false);
+  }
   /////////////////////////////////////Panel 2
   function onDefectChange(event, number) {
     event.preventDefault();
@@ -376,7 +382,7 @@ export default function App() {
           </div>
           <div className='buttonsContainer'>
             <ReviewButton 
-              showReviewButton={totalDayBars > 0 || showReview}
+              showReviewButton={totalDayBars > 0}
               setShowReviewButton={setShowReviewButton}
               showReview={showReview}
               clickReview={clickReview}
@@ -390,11 +396,14 @@ export default function App() {
               setUserName={setUserName}
               totalDayBars={totalDayBars}
               setTotalDayBars={setTotalDayBars}
+              submitDayToDatabase={submitDayToDatabase}
+              returnToBarInputScreen={returnToBarInputScreen}
             />
+
             <AddButton 
               clickAddBar={clickAddBar}
               showReview={showReview}
-              showAddButton={showAddButton}
+              showAddButton={showAddButton}              
             />
             <div className='totalDayBarsDiv'>
               <label 
