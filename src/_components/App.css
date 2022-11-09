@@ -7,7 +7,7 @@
   --bar-type-card-width: calc(var(--panel-1-width) / 3.8);
   --text-color: rgb(255,255,255);
   --card-text-color: rgb(245,245,245);
-  --background-color:#282c34;
+  --background-color:rgb(40, 44, 52);
   --needs-attention-color: rgb(185, 1, 1);
   --card-background: rgb(60,60,60);
   --radio-background-panel2: rgb(170,170,170);
@@ -218,9 +218,6 @@ input::-webkit-inner-spin-button {/*Hides the arrow buttons on number of defects
   padding-left: 2.5px;
   cursor: pointer;
 }
-.barTypeRadios {
-  
-}
 
 button.rackResetButton{ /*rack position reset button*/
 
@@ -353,7 +350,7 @@ button.submitShow {
   background-color: var(--card-background);
   border: 3px solid var(--radio-background-panel2);
   border-radius: 10px;
-  width: 85vw;
+  width: 88vw;
   height: 90vh;
   display:grid;
   grid-template-columns: 25% 75%;
@@ -364,13 +361,48 @@ button.submitShow {
   display: flex;
   flex-direction: column;
 }
-.reviewFormListItem { /*Individual bar item on review page*/
+.defectReviewContainer > h1{ /*"Defects for {date}" header*/
+  color: var(--card-text-color);
+}
+.defectReviewList {
+  overflow-y: auto;
+  height: 50%;
+  margin-right: 12px;
+  margin-bottom: 5px;
+}
+.reviewFormListItem { /*Individual bar/defect group item on review page*/
   list-style: none;
+  display: grid;
+}
+.defectiveBar {/*Each individual defective bar item on the review page*/
+  display:flex;
+  gap: 20px;
 }
 .reviewFormDefectItem { /*individual defect items on review page*/
   display:grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: var(--radio-background-panel2);
+  margin-inline: 50px; 
+  padding-inline: 25px;
+  padding-top: 6px;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
 }
+.reviewFormDefectItem:nth-child(2) { /*First defect item of each bar*/ 
+  border-radius: 8px 8px 0 0;
+}
+.reviewFormDefectItem:last-child { /*last defect item of each bar*/
+  border-radius: 0 0 8px 8px;
+}
+
+.reviewFormDefectItem > h3:last-child{ /*Last h3 of each defect (defectType)*/
+  grid-column: span 2;
+} 
+.reviewFormDefectItem > * {
+
+}
+
 /*Popup form User, Date, and total bars side*/
 .totalDayBarsDiv { /*Container of total day bar count display, buttons, and label*/
   position: relative;
@@ -529,11 +561,9 @@ li.DefectItem button:nth-of-type(2).side{ /*A/B toggle */
 /****************************************scroll bar styling*/
 ::-webkit-scrollbar-track {/* Track */
   background: var(--background-color);  
-  
 }
 ::-webkit-scrollbar {/* width */
   width: 8px;
-  
 }
 ::-webkit-scrollbar-thumb {/* Handle */
   background: var(--card-background);
@@ -541,6 +571,16 @@ li.DefectItem button:nth-of-type(2).side{ /*A/B toggle */
 }
 ::-webkit-scrollbar-thumb:hover {/* Handle on hover */
   background: #555; 
+}
+.defectReviewList::-webkit-scrollbar-track {/* Review page Track */
+  background: var(--card-background);  
+}
+.defectReviewList::-webkit-scrollbar-thumb {/* Review page Handle */
+  background: var(--background-color);
+  border-radius: 7px;
+}
+.defectReviewList::-webkit-scrollbar-thumb:hover {/* Handle on hover */
+  background: #555;  
 }
 @media only screen and (max-width: 1350px) {
   .appContainer {

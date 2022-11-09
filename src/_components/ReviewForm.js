@@ -61,8 +61,16 @@ export default function ReviewForm(props) {
                 className='reviewFormListItem'
                 key={`ReviewBar${countArray.length}`}
             >
-                <h1>{countArray.length}</h1>
-                <li className='defectedBar '>{bar.barType}</li>
+                <li className='defectiveBar '>
+                    <h2>{countArray.length}</h2>
+                    <h2>{bar.barType}</h2>
+                    <h2>{bar.materialType}</h2>
+                    <h2>Phase {bar.phase}</h2>
+                    <h2>{bar.temp}°F</h2>
+                    <h2>{bar.humidity}%</h2>
+                    <h2>{bar.width}cm</h2>
+                    <h2>Rack {bar.rackPosition}</h2>
+                </li>
                 {BarDefects}
             </div>
         )

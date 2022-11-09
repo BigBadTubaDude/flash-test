@@ -65,7 +65,7 @@ export default function DefectItems(props) {
                                 type="radio"                
                                 name={`location${defectNumber}`} 
                                 id={`body${defectNumber}`}
-                                value="body">
+                                value={locationOptionsArray[0]}>
                             </input>
                             <label htmlFor={`body${defectNumber}`}>
                                 Body
@@ -77,7 +77,7 @@ export default function DefectItems(props) {
                                     type="radio"                
                                     name={`location${defectNumber}`} 
                                     id={`edge${defectNumber}`}
-                                    value="edge">
+                                    value={locationOptionsArray[1]}>
                                 </input>
                             <label htmlFor={`edge${defectNumber}`}>
                                 Edge
@@ -89,7 +89,7 @@ export default function DefectItems(props) {
                                 type="radio"                
                                 name={`location${defectNumber}`} 
                                 id={`jog${defectNumber}`}
-                                value="jog">
+                                value={locationOptionsArray[2]}>
                             </input>
                             <label htmlFor={`jog${defectNumber}`}>
                                 Jog
@@ -101,7 +101,7 @@ export default function DefectItems(props) {
                                 type="radio"                
                                 name={`location${defectNumber}`} 
                                 id={`tabEdge${defectNumber}`}
-                                value="tabEdge">
+                                value={locationOptionsArray[3]}>
                             </input>
                             <label htmlFor={`tabEdge${defectNumber}`}>
                                 Tab Edge
@@ -113,7 +113,7 @@ export default function DefectItems(props) {
                                 type="radio"                
                                 name={`location${defectNumber}`} 
                                 id={`tag${defectNumber}`}
-                                value="tag">
+                                value={locationOptionsArray[4]}>
                             </input>
                             <label htmlFor={`tag${defectNumber}`}>
                                 Tag
