@@ -356,7 +356,7 @@ button.submitShow {
   width: 85vw;
   height: 90vh;
   display:grid;
-  grid-template-columns: 70% 30%;
+  grid-template-columns: 25% 75%;
 }
 /*Popup form parts*/ 
 /*Popup form list of bars and defects side*/
@@ -364,7 +364,13 @@ button.submitShow {
   display: flex;
   flex-direction: column;
 }
-
+.reviewFormListItem { /*Individual bar item on review page*/
+  list-style: none;
+}
+.reviewFormDefectItem { /*individual defect items on review page*/
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
 /*Popup form User, Date, and total bars side*/
 .totalDayBarsDiv { /*Container of total day bar count display, buttons, and label*/
   position: relative;

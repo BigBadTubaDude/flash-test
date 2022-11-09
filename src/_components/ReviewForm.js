@@ -40,14 +40,28 @@ export default function ReviewForm(props) {
         }
       }
       ////////////CREATE HTML Functions
+      var countArray = [];
     const DefectedBars = props.defectBarList.map(bar => {
-        // const BarDefects = bar.defects.map(defect => {
-        //     return (
-        //         <li className='reviewFormDefectItem'></li>
-        //     )
-        // })
-        return (
-            <div className='reviewFormListItem'>
+        countArray.push("count") // This keeps a running number for displaying next to each bar. Use .length each iteration of .map 
+        const BarDefects = bar.defects.map(defect => { //Creates each bar's individual defect list items
+            return (
+                <li 
+                    className='reviewFormDefectItem'
+                    key={`${countArray.length}-${defect.location}-${defect.side}-${defect.orientation}-${defect.typeDefect}`}
+                >
+                    <h3>{defect.location}</h3>
+                    <h3>{defect.orientation}</h3>
+                    <h3>{defect.side}</h3>
+                    <h3>{defect.typeDefect}</h3>
+                </li>
+            )
+        })
+        return ( //Creates each bar list item on the review page 
+            <div 
+                className='reviewFormListItem'
+                key={`ReviewBar${countArray.length}`}
+            >
+                <h1>{countArray.length}</h1>
                 <li className='defectedBar '>{bar.barType}</li>
                 {BarDefects}
             </div>
@@ -60,12 +74,6 @@ export default function ReviewForm(props) {
         <form className={props.showReview 
         ? 'showReviewForm' : 'popupForm'
         }>
-        <div className='defectReviewContainer'>
-            <h1>Defects for {`${props.submitDate.getMonth() + 1}/${props.submitDate.getDate()}/${props.submitDate.getFullYear()}`}</h1>
-            <ul className='defectReviewList'>
-                {DefectedBars}
-            </ul>
-        </div>
         <div className='textInputContainer'>
             <div className="userNameInputFieldContainer">
                 <label htmlFor='userName'>User</label>
@@ -104,6 +112,12 @@ export default function ReviewForm(props) {
                 Change Total
                 </button>
             </div>
+        </div>
+        <div className='defectReviewContainer'>
+            <h1>Defects for {`${props.submitDate.getMonth() + 1}/${props.submitDate.getDate()}/${props.submitDate.getFullYear()}`}</h1>
+            <ul className='defectReviewList'>
+                {DefectedBars}
+            </ul>
         </div>
         </form>
     )

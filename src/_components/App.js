@@ -211,6 +211,16 @@ export default function App() {
 
   function clickAddBar() {
     setDefectBarList(oldList => { //Sets all defects and bar info to an object and puts object in defectBarList. #ADD# -> Also resets all fields
+      
+      let defectObjects = []//Puts each defect for the bar being added into an object 
+      for (let i = 0; i < orientationArray.length; i++) { 
+        defectObjects.push({
+          orientation: orientationArray[i],
+          side: SideArray[i],
+          location:locationArray[i],
+          typeDefect:typeDefectArray[i]
+        });
+      }
       return ([
         ...oldList,
         {
@@ -221,12 +231,7 @@ export default function App() {
           humidity: currentHumidity,
           width: currentWidth,
           rackPosition: currentRackPosition,
-          defects: {
-            orientation: orientationArray,
-            side: SideArray,
-            location: locationArray,
-            type: typeDefectArray
-          },
+          defects: defectObjects,
       }
       ])
     });
