@@ -10,10 +10,7 @@ export default function ReviewForm(props) {
         "CORY",
         "SHARON",
         "TRAVIS",
-        "CHARLES",
         "BERJENATO",
-        "PAT",
-        "ADAM",
         "TEMP"
     ];
     const userOptionsHTML = users.map( user => {
