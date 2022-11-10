@@ -3,6 +3,29 @@ import SubmitButton from "./SubmitButton"
 import CancelButton from "./CancelButton"
 
 export default function ReviewForm(props) {
+    //////////////////////////Variables
+    const users = [
+        "SAMMY",
+        "EDDIE",
+        "CORY",
+        "SHARON",
+        "TRAVIS",
+        "CHARLES",
+        "BERJENATO",
+        "PAT",
+        "ADAM",
+        "TEMP"
+    ];
+    const userOptionsHTML = users.map( user => {
+        return (
+            <option
+                value={user}
+                key={user}
+            >
+                {user}
+            </option>
+        )
+    })
     
     ///////////////////////STATES
     const [disableChangeTotalButton, setDisableChangeTotalButton] = React.useState(true); //If true, Change Total button is disabled
@@ -69,7 +92,7 @@ export default function ReviewForm(props) {
                     <h2>{bar.barType}</h2>
                     <h2>{bar.materialType}</h2>
                     <h2>Phase {bar.phase}</h2>
-                    <h2>{bar.temp}°F</h2>
+                    {/* <h2>{bar.temp}°F</h2> */}{/*will be used for paint app*/}  
                     <h2>{bar.humidity}%</h2>
                     <h2>{bar.width}mm</h2>
                     <h2>Rack {bar.rackPosition}</h2>
@@ -92,12 +115,15 @@ export default function ReviewForm(props) {
             />
             <div className="userNameInputFieldContainer">
                 <label htmlFor='userName'>User</label>
-                <input 
+                <select
                     type="text" 
                     id="userName" 
                     name="userName"
                     onChange={onChangeUserName}
-                />
+                >
+                    {userOptionsHTML}
+                </select>
+
             </div>
             <div className="submitDateInputFieldContainer">
                 <label htmlFor='submitDate'>Date</label>

@@ -39,14 +39,14 @@ export default function HeaderPanel1(props) {
             />
         </div>
         <div className='P1HeaderQuarter2'>
-            <div className='temp'>  
+            {/* <div className='temp'>  
                 <h2>Temp</h2>
                 <div>
                     <input  onChange={props.changeTempState} pattern="\d*" maxLength="3" type="text" />
                     <p>F</p>
                 </div>
                
-            </div>
+            </div> */}
             <div className='humidity'>
                 <h2>Humidity</h2>
                 <div>
