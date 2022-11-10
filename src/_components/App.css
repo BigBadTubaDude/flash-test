@@ -20,6 +20,19 @@ html, body {
   text-align: center;
   background-color: var(--background-color);
 }
+.incompleteField  {
+  box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 2px;
+  border-color: rgb(209,20,20,0.2);
+}
+.incompleteFieldParentOfParent *:first-child {
+  box-shadow: rgba(209, 20, 20, 0.3) 15px 2px 100px 10px;
+  border-color: rgb(209,20,20,0.2);
+
+}.incompleteFieldParentOfParent *:nth-child(2) {
+  box-shadow: rgba(209, 20, 20, 0.3) -15px 2px 100px 10px;
+  border-color: rgb(209,20,20,0.2);
+}
+
 .appContainer {
   display: grid;
   grid-template-columns: var(--panel-1-width) 1fr;

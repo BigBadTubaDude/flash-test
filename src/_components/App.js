@@ -50,7 +50,7 @@ export default function App() {
   ///////////////////////////////EFFECTS
   //Submitted data EFFECTS
 
-  React.useEffect( () => {
+  React.useEffect( () => { //Updates session storage every time total bars or defect bar list state changes
     localStorage.setItem('defectBarList', JSON.stringify(defectBarList))
     localStorage.setItem('totalDayBar', JSON.stringify(totalDayBars))
   }, [defectBarList, totalDayBars]
@@ -402,7 +402,8 @@ export default function App() {
             setCurrentDefectCount={setCurrentDefectCount}
             setCurrentRackPosition={setCurrentRackPosition}
           />
-          <div className="barTypeCardContainer">
+          <div className={"barTypeCardContainer"}
+          >
             {barTypeCards}
           </div>
           <div className='buttonsContainer'>
@@ -462,6 +463,8 @@ export default function App() {
 
         {/*Panel 2*/}
       <DefectItems 
+        typeDefectArray={typeDefectArray}
+        locationArray={locationArray}
         onDefectChange={onDefectChange}
         currentDefectCount={currentDefectCount}
         onOrientationChange={onOrientationChange}

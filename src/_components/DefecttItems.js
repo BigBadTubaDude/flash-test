@@ -49,19 +49,27 @@ export default function DefectItems(props) {
                     <div className='defectNumTypeContainer'>
                         <h2>{defectNumber}</h2>
                         <select 
-                        htmlFor="defectType" 
-                        id='defectType'                        
-                        onChange={(event) => props.onDefectChange(event, defectNumber)}
+                            className={props.typeDefectArray[defectNumber - 1] == "" || props.typeDefectArray[defectNumber - 1] == "SELECT TYPE" // If field is empty, adds class for css to bring attention to it
+                                ? "incompleteField"
+                                : ""
+                            }
+                            htmlFor="defectType" 
+                            id='defectType'                        
+                            onChange={(event) => props.onDefectChange(event, defectNumber)}
                         >
                             {DefectOptionsHTML}
                         </select>                
                     </div>
                     <form 
-                    className='locationRadioButtons'
-                    onChange={(event) => props.onLocationChange(event, defectNumber)}>
+                        className={
+                            props.locationArray[defectNumber - 1] == "" // If field is empty, adds class for css to bring attention to it
+                            ? "incompleteField locationRadioButtons"
+                            : "locationRadioButtons"
+                        }
+                        onChange={(event) => props.onLocationChange(event, defectNumber)}>
                         <div key={`Body ${defectNumber}`}>
                             <input 
-                                className='locationRadioButton'
+                                className="locationRadioButton"
                                 type="radio"                
                                 name={`location${defectNumber}`} 
                                 id={`body${defectNumber}`}

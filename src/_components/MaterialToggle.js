@@ -29,7 +29,10 @@ const MaterialToggle = (props) => {
     <div className='materialSelectSection'>
       <h1>{props.currentMaterialType}</h1>
       <Radio.Group 
-        className="materialRadio" 
+        className={props.currentMaterialType == ""
+          ? "materialRadio incompleteFieldParentOfParent"
+          : "materialRadio" 
+        }  
         options={options} 
         onChange={setType} 
         value={checked} 

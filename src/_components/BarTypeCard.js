@@ -8,7 +8,10 @@ import 'antd/dist/antd.css';
 export default function BarTypeCard(props) {
   return (
   <div 
-    className="barTypeCard" 
+    className={props.currentBarType == ""
+      ? "barTypeCard incompleteField"
+      : "barTypeCard" 
+    }
     onClick={() => {props.setCurrentBarType(props.barType)}} //Sets current bar type state to this card when anywhere on card is clicked
   >
       <h1 >{props.barType}</h1>
