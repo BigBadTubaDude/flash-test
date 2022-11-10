@@ -5,6 +5,7 @@ export default function CancelButton(props) {
         <button
             className="reviewButton backButton"
             onClick={props.returnToBarInputScreen}
+            return="false"
         > Back
 
         </button>

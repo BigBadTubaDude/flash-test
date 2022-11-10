@@ -109,7 +109,7 @@ export default function ReviewForm(props) {
                 />
             </div>
             <div className="totalDayBarsInputFieldContainer">
-                <label htmlFor='totalBars'>Total Bars{`(${props.totalDayBars})`}</label>
+                <label htmlFor='totalBars'>Total Bars{` = ${props.totalDayBars} `}<br></br> {`(${props.totalDayBars - props.defectBarList.length} good + ${props.defectBarList.length} defective)`}</label>
                 <input
                     type="number"  
                     id="totalBars" 
@@ -127,7 +127,9 @@ export default function ReviewForm(props) {
                 Change Total
                 </button>
             </div>
-                <CancelButton />
+                <CancelButton 
+                    returnToBarInputScreen={props.returnToBarInputScreen}
+                />
         </div>
         <div className='defectReviewContainer'>
             <h1>Defects for {`${props.submitDate.getMonth() + 1}/${props.submitDate.getDate()}/${props.submitDate.getFullYear()}`}</h1>

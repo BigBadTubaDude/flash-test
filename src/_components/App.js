@@ -271,11 +271,13 @@ export default function App() {
     //Add 1 count to total day bars
     setTotalDayBars(oldcount => oldcount + 1);
   }
-  function submitDayToDatabase() {
+  function submitDayToDatabase(event) {
     ///////////////////////Write code to send to data base
+    event.preventDefault();
     console.log("Submited (not really)")
   }
-  function returnToBarInputScreen() {
+  function returnToBarInputScreen(event) {
+    event.preventDefault();
     setShowReview(false);
   }
   /////////////////////////////////////Panel 2
