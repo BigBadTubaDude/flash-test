@@ -12,10 +12,19 @@ import SubmitButton from './SubmitButton'
 
 export default function App() {
 
+  /////////////////////Local storage
+  const sessionDefectBarList = //If session storage is not set, variable is set to empty
+    localStorage.getItem('defectBarList')
+      ? JSON.parse(localStorage.getItem('defectBarList')) 
+      : [];    
+  const sessionTotalDayBars = //If seesion storage is not set, set to 0
+    localStorage.getItem('totalDayBar')
+      ? JSON.parse(localStorage.getItem('totalDayBar'))
+      : 0
   //////////////////////////////////States
   //Submitted States
-  const [defectBarList, setDefectBarList] = React.useState([]);
-  const [totalDayBars, setTotalDayBars] = React.useState(0);
+  const [defectBarList, setDefectBarList] = React.useState(sessionDefectBarList);
+  const [totalDayBars, setTotalDayBars] = React.useState(sessionTotalDayBars);
   const [userName, setUserName] = React.useState("Not set");
   const [showReview, setShowReview] = React.useState(false);
   const todayDate = new Date();
@@ -39,6 +48,14 @@ export default function App() {
   const [showAddButton, setShowAddButton] = React.useState(false);
 
   ///////////////////////////////EFFECTS
+  //Submitted data EFFECTS
+
+  React.useEffect( () => {
+    localStorage.setItem('defectBarList', JSON.stringify(defectBarList))
+    localStorage.setItem('totalDayBar', JSON.stringify(totalDayBars))
+  }, [defectBarList, totalDayBars]
+
+  )
   //Panel 1 EFFECTS
   React.useEffect( () => {//On change of current bar type
     if(currentBarType == "CU Straight") {
@@ -211,11 +228,11 @@ export default function App() {
   }
   function clickReview() {
     setShowReview(oldVal => !oldVal);
-}
+  }
 
   function clickAddBar() {
     setDefectBarList(oldList => { //Sets all defects and bar info to an object and puts object in defectBarList. #ADD# -> Also resets all fields
-
+      
       let defectObjects = []//Puts each defect for the bar being added into an object 
       for (let i = 0; i < orientationArray.length; i++) { 
         defectObjects.push({
@@ -239,6 +256,7 @@ export default function App() {
       }
       ])
     });
+    
     /////RESET ALL FIELDS AFTER ADDING TO DEFECT BAR LIST
     // resetRadioButtons();
     let radios = document.querySelectorAll('input[type="radio"]');
@@ -273,7 +291,9 @@ export default function App() {
     
     //Add 1 count to total day bars
     setTotalDayBars(oldcount => oldcount + 1);
+    //Save defective bar list to session local storage
   }
+
   function submitDayToDatabase(event) {
     ///////////////////////Write code to send to data base
     event.preventDefault();
