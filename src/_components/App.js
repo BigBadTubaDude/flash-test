@@ -86,12 +86,15 @@ export default function App() {
       if (currentBarType != "" 
       && currentMaterialType != "" 
       && !locationArray.includes("")
-      && !typeDefectArray.includes("")) {
+      && !typeDefectArray.includes("")
+      && currentPhaseSelected != ""
+      && currentHumidity != ""
+      && currentWidth != "") {
           setShowAddButton(true);
       } else {
           setShowAddButton(false);
       }
-  }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount]
+  }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount, currentPhaseSelected, currentWidth, currentHumidity]
   )
 
   ////////////////////////////////Variables
