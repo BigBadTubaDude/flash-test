@@ -384,7 +384,7 @@ export default function App() {
           </div>
           <div className='buttonsContainer'>
             <ReviewButton 
-              showReviewButton={totalDayBars > 0}
+              showReviewButton={totalDayBars >= 0}
               setShowReviewButton={setShowReviewButton}
               showReview={showReview}
               clickReview={clickReview}
