@@ -508,7 +508,7 @@ li.reviewFormDefectItem:nth-of-type(2) { /*First defect item of each bar*/
   background-color: rgb(200,200,210); 
 }
 .totalBarsInput { /* readonly input for total number of daily bars. After .buttonsContainer so width specificity will take precidence */
-  width: 45px;
+  width: 60px;
   height: 40px;
   text-align: center;
   margin:0;
