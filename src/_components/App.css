@@ -11,8 +11,6 @@
   --needs-attention-color: rgb(185, 1, 1);
   --card-background: rgb(60,60,60);
   --radio-background-panel2: rgb(170,170,170);
-  --incomplete-glow: rgba(220, 200, 200, 0.35);
-  --incomplete-border: rgb(209,20,20,0.2)
 }
 
 html, body {
@@ -23,24 +21,23 @@ html, body {
   background-color: var(--background-color);
 }
 .incompleteField  {
-  box-shadow: var(--incomplete-glow) 0px 2px 60px 3px;
-  border-color: var(--incomplete-border);
+  box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 2px;
+  border-color: rgb(209,20,20,0.2);
 }
 .incompleteFieldExtra {
-  box-shadow: var(--incomplete-glow)  0px 2px 60px 10px;
-  border-color: var(--incomplete-border);
+  z-index: -2;
+  box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 10px;
+  border-color: rgb(209,20,20,0.2);
 }
 .incompleteFieldParentOfParent *:first-child {
-  box-shadow: var(--incomplete-glow)  15px 2px 80px 4px;
-  border-color: var(--incomplete-border);
+  box-shadow: rgba(209, 20, 20, 0.3) 15px 2px 100px 5px;
+  border-color: rgb(209,20,20,0.2);
 
 }.incompleteFieldParentOfParent *:nth-child(2) {
-  box-shadow: var(--incomplete-glow)  -15px 2px 100px 3px;
-  border-color: var(--incomplete-border);
+  box-shadow: rgba(209, 20, 20, 0.3) -15px 2px 100px 5px;
+  border-color: rgb(209,20,20,0.2);
 }
-.phaseRadioButtons.incompleteFieldParentOfParent > * {
-  box-shadow: var(--incomplete-glow)  15px 2px 60px 4px;
-}
+
 .appContainer {
   display: grid;
   grid-template-columns: var(--panel-1-width) 1fr;

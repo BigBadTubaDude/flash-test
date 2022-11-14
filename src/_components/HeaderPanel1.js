@@ -97,8 +97,8 @@ export default function HeaderPanel1(props) {
         <div className='rackPositionSection'>
         <h3>{`Phase ${props.currentPhaseSelected}`}</h3>
         <div 
-            className={props.currentPhaseSelected == ""
-                ? "incompleteFieldParentOfParent phaseRadioButtons"
+            className={props.currentRackPosition == ""
+                ? "incompleteField phaseRadioButtons"
                 :"phaseRadioButtons" 
             }
             onChange={props.changePhaseState}
