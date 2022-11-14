@@ -50,7 +50,16 @@ export default function HeaderPanel1(props) {
             <div className='humidity'>
                 <h2>Humidity</h2>
                 <div>
-                    <input onChange={props.changeHumidityState} pattern="\d*" maxLength="3" type="text" />
+                    <input 
+                        onChange={props.changeHumidityState} 
+                        className={props.currentHumidity == ""
+                            ? "incompleteFieldExtra"
+                            : ""
+                        }
+                        pattern="\d*" 
+                        maxLength="3" 
+                        type="text" 
+                    />
                     <p>%</p>
                 </div>
             </div>
@@ -59,7 +68,13 @@ export default function HeaderPanel1(props) {
         <div className='P1HeaderQuarter3'>
             <div className='widthSelectContainer'>
                 <h3>Width</h3>
-                <select onChange={props.changeWidthState}>
+                <select 
+                    onChange={props.changeWidthState}
+                    className={props.currentWidth == ""
+                        ? "incompleteFieldExtra"
+                        : ""
+                    }
+                >
                     {WidthOptionsHTML}
                 </select>
             </div>
@@ -81,7 +96,13 @@ export default function HeaderPanel1(props) {
 
         <div className='rackPositionSection'>
         <h3>{`Phase ${props.currentPhaseSelected}`}</h3>
-        <div className="phaseRadioButtons" onChange={props.changePhaseState}>  
+        <div 
+            className={props.currentRackPosition == ""
+                ? "incompleteField phaseRadioButtons"
+                :"phaseRadioButtons" 
+            }
+            onChange={props.changePhaseState}
+        >  
                 <input type="radio" id="L1" value="L1" name="phase" className="phaseRadioButton barTypeRadios"></input>
                 <label htmlFor="L1">L1</label><br />          
                 <input type="radio" id="L2" value="L2" name="phase" className="phaseRadioButton barTypeRadios"></input>

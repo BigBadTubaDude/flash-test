@@ -24,12 +24,17 @@ html, body {
   box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 2px;
   border-color: rgb(209,20,20,0.2);
 }
+.incompleteFieldExtra {
+  z-index: -2;
+  box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 10px;
+  border-color: rgb(209,20,20,0.2);
+}
 .incompleteFieldParentOfParent *:first-child {
-  box-shadow: rgba(209, 20, 20, 0.3) 15px 2px 100px 10px;
+  box-shadow: rgba(209, 20, 20, 0.3) 15px 2px 100px 5px;
   border-color: rgb(209,20,20,0.2);
 
 }.incompleteFieldParentOfParent *:nth-child(2) {
-  box-shadow: rgba(209, 20, 20, 0.3) -15px 2px 100px 10px;
+  box-shadow: rgba(209, 20, 20, 0.3) -15px 2px 100px 5px;
   border-color: rgb(209,20,20,0.2);
 }
 
