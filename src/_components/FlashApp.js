@@ -10,7 +10,9 @@ import ReviewForm from './ReviewForm';
 import DateObject from 'react-date-object';
 import SubmitButton from './SubmitButton'
 
-export default function App() {
+
+
+export default function FlashApp() {
 
   /////////////////////Local storage
   const sessionDefectBarList = //If session storage is not set, variable is set to empty
@@ -40,6 +42,7 @@ export default function App() {
   const [currentHumidity, setCurrentHumidity] = React.useState("");
   const [currentWidth, setCurrentWidth] = React.useState("");
   const [showReviewButton, setShowReviewButton] = React.useState(false);
+  const [currentDipSprayType, setCurrentDipSprayType] = React.useState("");
   //Panel 2 States
   const [SideArray, setSideArray] = React.useState(["A"]);
   const [locationArray, setLocationArray] = React.useState([""]);
@@ -253,6 +256,7 @@ export default function App() {
           width: currentWidth,
           rackPosition: currentRackPosition,
           defects: defectObjects,
+          dipSpray: currentDipSprayType
       }
       ])
     });
@@ -383,6 +387,8 @@ export default function App() {
         {/*Panel 1*/}
         <div className="Panel1">
           <HeaderPanel1 
+            setCurrentDipSprayType={setCurrentDipSprayType}
+            currentDipSprayType={currentDipSprayType}
             setCurrentPhaseSelected={setCurrentPhaseSelected}
             changeWidthState={changeWidthState}
             changeRackState={changeRackState}

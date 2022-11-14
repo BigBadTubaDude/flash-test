@@ -2,10 +2,7 @@ import MaterialToggle from './MaterialToggle';
 import SideToggle from './SideToggle'
 import React from 'react';
 import ANTButton from "./ANTRackResetButton.js";
-import DipSprayToggle from './DipSprayToggle.js'
-
 export default function HeaderPanel1(props) {
-
 
     const widthList = [
         "",
@@ -35,21 +32,10 @@ export default function HeaderPanel1(props) {
     return (
         <header className='panel1Header'>
         <div className='P1HeaderQuarter1'>
-        {/* <Switch 
-            onChange={props.onMaterialChange}
-            checkedChildren="Copper" 
-            unCheckedChildren="Aluminum" 
-            defaultChecked 
-            className='materialSelectSection'
-        /> */}
             <MaterialToggle 
                 currentMaterialType={props.currentMaterialType} 
                 setCurrentMaterialType={props.setCurrentMaterialType}
                 currentBarType={props.currentBarType}
-            />
-            <DipSprayToggle 
-                currentDipSprayType={props.currentDipSprayType} 
-                setCurrentDipSprayType={props.setCurrentDipSprayType}
             />
         </div>
         <div className='P1HeaderQuarter2'>
