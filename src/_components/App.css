@@ -16,7 +16,7 @@
 html, body {
   overflow: hidden;
 }
-#root  {
+#flash  {
   text-align: center;
   background-color: var(--background-color);
 }
