@@ -9,9 +9,11 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.23.6",
     "antd-button-color": "^1.0.4",
+    "link-react": "^3.0.0",
     "react": "^18.2.0",
     "react-date-object": "^2.1.5",
     "react-dom": "^18.2.0",
+    "react-router-link": "^2.0.2",
     "react-scripts": "^5.0.1",
     "save-dev": "^0.0.1-security",
     "web-vitals": "^2.1.4"

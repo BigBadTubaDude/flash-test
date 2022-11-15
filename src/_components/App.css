@@ -11,33 +11,44 @@
   --needs-attention-color: rgb(185, 1, 1);
   --card-background: rgb(60,60,60);
   --radio-background-panel2: rgb(170,170,170);
+  --incomplete-glow: rgba(220, 200, 200, 0.35);
+  --incomplete-border: rgb(209,20,20,0.2)
 }
 
 html, body {
   overflow: hidden;
 }
-#flash  {
+#flash, #paint  {
   text-align: center;
   background-color: var(--background-color);
 }
+.toPaint {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.displayNone * {
+  display: none;
+}
 .incompleteField  {
-  box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 2px;
-  border-color: rgb(209,20,20,0.2);
+  box-shadow: var(--incomplete-glow) 0px 2px 60px 3px;
+  border-color: var(--incomplete-border);
 }
 .incompleteFieldExtra {
-  z-index: -2;
-  box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 10px;
-  border-color: rgb(209,20,20,0.2);
+  box-shadow: var(--incomplete-glow)  0px 2px 60px 10px;
+  border-color: var(--incomplete-border);
 }
 .incompleteFieldParentOfParent *:first-child {
-  box-shadow: rgba(209, 20, 20, 0.3) 15px 2px 100px 5px;
-  border-color: rgb(209,20,20,0.2);
+  box-shadow: var(--incomplete-glow)  15px 2px 80px 4px;
+  border-color: var(--incomplete-border);
 
 }.incompleteFieldParentOfParent *:nth-child(2) {
-  box-shadow: rgba(209, 20, 20, 0.3) -15px 2px 100px 5px;
-  border-color: rgb(209,20,20,0.2);
+  box-shadow: var(--incomplete-glow)  -15px 2px 100px 3px;
+  border-color: var(--incomplete-border);
 }
-
+.phaseRadioButtons.incompleteFieldParentOfParent > * {
+  box-shadow: var(--incomplete-glow)  15px 2px 60px 4px;
+}
 .appContainer {
   display: grid;
   grid-template-columns: var(--panel-1-width) 1fr;
@@ -70,30 +81,35 @@ html, body {
   align-self: flex-end;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 .P1HeaderQuarter1 > :first-child { /* top part of first quarter of header for Panel 1*/
   transform: translate(10px, -50%);
 }
-/*Material toggle button and h1 display*/
-.materialSelectSection {
+/*Material/dipSpray toggle button and h1 display*/
+.materialSelectSection, .dipSpraySelectSection {
   display:flex;
   flex-direction: column;
-  width:4em;
+  width:6em;
   height: 2.5em;
   position: relative;
-  align-items: center;
 }
-.materialSelectSection > h1 {/*Material label*/
+.dipSpraySelectSection {
+  align-items: center;
+  
+}
+.materialSelectSection > h1, .dipSpraySelectSection > h1  {/*Material/ DipSpray labels*/
   /* height: 26px; */
-  width: 4em;
+  width: 6em;
   font-size: calc(8px + 2vmin);
   color: var(--text-color);
+  align-self: center;
 
   
   
   /* content:" "; */
 }
-.materialRadio { /*Al/CU selector*/
+.materialRadio { /*Al/CU and dip/spray selector*/
   position: absolute;
   bottom:0;
   left:0;
@@ -131,6 +147,7 @@ html, body {
   font-size: .9em;
 }
 .temp > h2, .humidity > h2{ /*h2s "temp" and "humidity"*/
+  visibility: visible;
   color: white;
   font-size: .75em;
 }

@@ -2,6 +2,7 @@ import MaterialToggle from './MaterialToggle';
 import SideToggle from './SideToggle'
 import React from 'react';
 import ANTButton from "./ANTRackResetButton.js";
+import DipSprayToggle from './DipSprayToggle.js'
 export default function HeaderPanel1(props) {
 
     const widthList = [
@@ -37,16 +38,24 @@ export default function HeaderPanel1(props) {
                 setCurrentMaterialType={props.setCurrentMaterialType}
                 currentBarType={props.currentBarType}
             />
+            <DipSprayToggle 
+                currentDipSprayType={props.currentDipSprayType} 
+                setCurrentDipSprayType={props.setCurrentDipSprayType}
+            />
         </div>
         <div className='P1HeaderQuarter2'>
-            {/* <div className='temp'>  
+             <div 
+                className={props.tempShow 
+                    ? 'temp'
+                    : 'displayNone'}
+            >  
                 <h2>Temp</h2>
                 <div>
                     <input  onChange={props.changeTempState} pattern="\d*" maxLength="3" type="text" />
                     <p>F</p>
                 </div>
                
-            </div> */}
+            </div> 
             <div className='humidity'>
                 <h2>Humidity</h2>
                 <div>
@@ -95,9 +104,13 @@ export default function HeaderPanel1(props) {
 
 
         <div className='rackPositionSection'>
-        <h3>{`Phase ${props.currentPhaseSelected}`}</h3>
+        <h3
+            className='phaseH1'    
+        >
+            {`Phase ${props.currentPhaseSelected}`}
+        </h3>
         <div 
-            className={props.currentRackPosition == ""
+            className={props.currentPhaseSelected == ""
                 ? "incompleteField phaseRadioButtons"
                 :"phaseRadioButtons" 
             }

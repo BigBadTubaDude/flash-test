@@ -3,12 +3,13 @@ import './App.css';
 import React from 'react'
 import BarTypeCard from "./BarTypeCard"
 import HeaderPanel1 from './HeaderPanel1';
-import DefectItems from './DefecttItems';
+import FlashDefectItems from './FlashDefectItems';
 import ReviewButton from "./ReviewButton"
 import AddButton from './AddButton';
 import ReviewForm from './ReviewForm';
-import DateObject from 'react-date-object';
-import SubmitButton from './SubmitButton'
+import { Link } from 'react-router-link'
+// import DateObject from 'react-date-object';
+// import SubmitButton from './SubmitButton'
 
 
 
@@ -43,6 +44,7 @@ export default function FlashApp() {
   const [currentWidth, setCurrentWidth] = React.useState("");
   const [showReviewButton, setShowReviewButton] = React.useState(false);
   const [currentDipSprayType, setCurrentDipSprayType] = React.useState("");
+
   //Panel 2 States
   const [SideArray, setSideArray] = React.useState(["A"]);
   const [locationArray, setLocationArray] = React.useState([""]);
@@ -386,6 +388,11 @@ export default function FlashApp() {
     <div className='appContainer'>
         {/*Panel 1*/}
         <div className="Panel1">
+          <Link to='/PaintDefects.html' 
+            className='toPaint'
+          >
+            To paint
+          </Link>
           <HeaderPanel1 
             setCurrentDipSprayType={setCurrentDipSprayType}
             currentDipSprayType={currentDipSprayType}
@@ -396,6 +403,7 @@ export default function FlashApp() {
             changeTempState={changeTempState}
             changeHumidityState={changeHumidityState}
             currentTemp={currentTemp}
+            tempShow={false}
             currentHumidity={currentHumidity}
             changePhaseState={changePhaseState}
             currentPhaseSelected={currentPhaseSelected}
@@ -468,7 +476,7 @@ export default function FlashApp() {
       </div>
 
         {/*Panel 2*/}
-      <DefectItems 
+      <FlashDefectItems 
         typeDefectArray={typeDefectArray}
         locationArray={locationArray}
         onDefectChange={onDefectChange}

@@ -3,28 +3,26 @@ import './App.css';
 import React from 'react'
 import BarTypeCard from "./BarTypeCard"
 import HeaderPanel1 from './HeaderPanel1';
-import DefectItems from './DefecttItems';
+import PaintDefectItems from './PaintDefectItems';
 import ReviewButton from "./ReviewButton"
 import AddButton from './AddButton';
 import ReviewForm from './ReviewForm';
-import DateObject from 'react-date-object';
-import SubmitButton from './SubmitButton'
 
-export default function App() {
+export default function PaintApp() {
 
   /////////////////////Local storage
   const sessionDefectBarList = //If session storage is not set, variable is set to empty
     localStorage.getItem('defectBarList')
       ? JSON.parse(localStorage.getItem('defectBarList')) 
       : [];    
-  const sessionTotalDayBars = //If seesion storage is not set, set to 0
-    localStorage.getItem('totalDayBar')
-      ? JSON.parse(localStorage.getItem('totalDayBar'))
+  const sessionTotalDayPaintBars = //If seesion storage is not set, set to 0
+    localStorage.getItem('totalDayPaintBar')
+      ? JSON.parse(localStorage.getItem('totalDayPaintBar'))
       : 0
   //////////////////////////////////States
   //Submitted States
   const [defectBarList, setDefectBarList] = React.useState(sessionDefectBarList);
-  const [totalDayBars, setTotalDayBars] = React.useState(sessionTotalDayBars);
+  const [totalDayPaintBars, setTotalDayPaintBars] = React.useState(sessionTotalDayPaintBars);
   const [userName, setUserName] = React.useState("Not set");
   const [showReview, setShowReview] = React.useState(false);
   const todayDate = new Date();
@@ -52,8 +50,8 @@ export default function App() {
 
   React.useEffect( () => { //Updates session storage every time total bars or defect bar list state changes
     localStorage.setItem('defectBarList', JSON.stringify(defectBarList))
-    localStorage.setItem('totalDayBar', JSON.stringify(totalDayBars))
-  }, [defectBarList, totalDayBars]
+    localStorage.setItem('totalDayPaintBar', JSON.stringify(totalDayPaintBars))
+  }, [defectBarList, totalDayPaintBars]
 
   )
   //Panel 1 EFFECTS
@@ -253,6 +251,7 @@ export default function App() {
           width: currentWidth,
           rackPosition: currentRackPosition,
           defects: defectObjects,
+          dipSpray: currentDipSprayType
       }
       ])
     });
@@ -290,7 +289,7 @@ export default function App() {
     setCurrentPhaseSelected("");
     
     //Add 1 count to total day bars
-    setTotalDayBars(oldcount => oldcount + 1);
+    setTotalDayPaintBars(oldcount => oldcount + 1);
     //Save defective bar list to session local storage
   }
 
@@ -344,14 +343,14 @@ export default function App() {
     })
 
   }
-  function increaseTotalDayBars() {
-    setTotalDayBars(oldCount => {
+  function increaseTotalDayPaintBars() {
+    setTotalDayPaintBars(oldCount => {
       return (
         oldCount + 1)});
         
   }
-  function decreaseTotalDayBars() {
-    setTotalDayBars(oldCount => {
+  function decreaseTotalDayPaintBars() {
+    setTotalDayPaintBars(oldCount => {
       if (oldCount > 0) {
       return oldCount - 1
       }
@@ -383,12 +382,15 @@ export default function App() {
         {/*Panel 1*/}
         <div className="Panel1">
           <HeaderPanel1 
+            setCurrentDipSprayType={setCurrentDipSprayType}
+            currentDipSprayType={currentDipSprayType}
             setCurrentPhaseSelected={setCurrentPhaseSelected}
             changeWidthState={changeWidthState}
             changeRackState={changeRackState}
             currentWidth={currentWidth}
             changeTempState={changeTempState}
             changeHumidityState={changeHumidityState}
+            tempShow={true}
             currentTemp={currentTemp}
             currentHumidity={currentHumidity}
             changePhaseState={changePhaseState}
@@ -408,11 +410,11 @@ export default function App() {
           </div>
           <div className='buttonsContainer'>
             <ReviewButton 
-              showReviewButton={totalDayBars >= 0}
+              showReviewButton={totalDayPaintBars >= 0}
               setShowReviewButton={setShowReviewButton}
               showReview={showReview}
               clickReview={clickReview}
-              />
+            />
             <ReviewForm 
               defectBarList={defectBarList}
               showReview={showReview}
@@ -420,8 +422,8 @@ export default function App() {
               setSubmitDate={setSubmitDate}
               userName={userName}
               setUserName={setUserName}
-              totalDayBars={totalDayBars}
-              setTotalDayBars={setTotalDayBars}
+              totalDayPaintBars={totalDayPaintBars}
+              setTotalDayPaintBars={setTotalDayPaintBars}
               submitDayToDatabase={submitDayToDatabase}
               returnToBarInputScreen={returnToBarInputScreen}
             />
@@ -431,15 +433,15 @@ export default function App() {
               showReview={showReview}
               showAddButton={showAddButton}              
             />
-            <div className='totalDayBarsDiv'>
+            <div className='totalDayPaintBarsDiv'>
               <label 
                 htmlFor='totalDailyBars'
-                className='totalDayBarsLabel'
+                className='totalDayPaintBarsLabel'
               >Total Daily Bars
               </label>
               <button 
                 className='decreseTotalButton totalInputButton'
-                onClick={decreaseTotalDayBars}
+                onClick={decreaseTotalDayPaintBars}
                 >-
               </button>
                 <input 
@@ -450,11 +452,11 @@ export default function App() {
                     min={1}
                     id="totalDailyBars"
                     readOnly
-                    value={totalDayBars}
+                    value={totalDayPaintBars}
                 />
               <button 
                 className='increaseTotalButton totalInputButton'
-                onClick={increaseTotalDayBars}
+                onClick={increaseTotalDayPaintBars}
                 >+
               </button>
             </div>
@@ -462,7 +464,7 @@ export default function App() {
       </div>
 
         {/*Panel 2*/}
-      <DefectItems 
+      <PaintDefectItems 
         typeDefectArray={typeDefectArray}
         locationArray={locationArray}
         onDefectChange={onDefectChange}
