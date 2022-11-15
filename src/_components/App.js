@@ -382,101 +382,103 @@ export default function App() {
 
   /////////////// FINAL HTML
   return (
-    <div className='appContainer'>
-        {/*Panel 1*/}
-        <div className="Panel1">
-          <HeaderPanel1 
-            setCurrentPhaseSelected={setCurrentPhaseSelected}
-            changeWidthState={changeWidthState}
-            changeRackState={changeRackState}
-            currentWidth={currentWidth}
-            setCurrentDipSprayType={setCurrentDipSprayType}
-            currentDipSprayType={currentDipSprayType}
-            changeTempState={changeTempState}
-            changeHumidityState={changeHumidityState}
-            currentTemp={currentTemp}
-            currentHumidity={currentHumidity}
-            changePhaseState={changePhaseState}
-            currentPhaseSelected={currentPhaseSelected}
-            currentRackPosition={currentRackPosition}
-            currentMaterialType={currentMaterialType}
-            currentBarType={currentBarType}
-            currentDefectCountDisplay={currentDefectCountDisplay}
-            currentDefectCount={currentDefectCount}
-            setCurrentMaterialType={setCurrentMaterialType}
-            setCurrentDefectCount={setCurrentDefectCount}
-            setCurrentRackPosition={setCurrentRackPosition}
-          />
-          <div className={"barTypeCardContainer"}
-          >
-            {barTypeCards}
-          </div>
-          <div className='buttonsContainer'>
-            <ReviewButton 
-              showReviewButton={totalDayBars >= 0}
-              setShowReviewButton={setShowReviewButton}
-              showReview={showReview}
-              clickReview={clickReview}
+    <Router>
+      <div className='appContainer'>
+          {/*Panel 1*/}
+          <div className="Panel1">
+            <HeaderPanel1 
+              setCurrentPhaseSelected={setCurrentPhaseSelected}
+              changeWidthState={changeWidthState}
+              changeRackState={changeRackState}
+              currentWidth={currentWidth}
+              setCurrentDipSprayType={setCurrentDipSprayType}
+              currentDipSprayType={currentDipSprayType}
+              changeTempState={changeTempState}
+              changeHumidityState={changeHumidityState}
+              currentTemp={currentTemp}
+              currentHumidity={currentHumidity}
+              changePhaseState={changePhaseState}
+              currentPhaseSelected={currentPhaseSelected}
+              currentRackPosition={currentRackPosition}
+              currentMaterialType={currentMaterialType}
+              currentBarType={currentBarType}
+              currentDefectCountDisplay={currentDefectCountDisplay}
+              currentDefectCount={currentDefectCount}
+              setCurrentMaterialType={setCurrentMaterialType}
+              setCurrentDefectCount={setCurrentDefectCount}
+              setCurrentRackPosition={setCurrentRackPosition}
               />
-            <ReviewForm 
-              defectBarList={defectBarList}
-              showReview={showReview}
-              submitDate={submitDate}
-              setSubmitDate={setSubmitDate}
-              userName={userName}
-              setUserName={setUserName}
-              totalDayBars={totalDayBars}
-              setTotalDayBars={setTotalDayBars}
-              submitDayToDatabase={submitDayToDatabase}
-              returnToBarInputScreen={returnToBarInputScreen}
-            />
-
-            <AddButton 
-              clickAddBar={clickAddBar}
-              showReview={showReview}
-              showAddButton={showAddButton}              
-            />
-            <div className='totalDayBarsDiv'>
-              <label 
-                htmlFor='totalDailyBars'
-                className='totalDayBarsLabel'
-              >Total Daily Bars
-              </label>
-              <button 
-                className='decreseTotalButton totalInputButton'
-                onClick={decreaseTotalDayBars}
-                >-
-              </button>
-                <input 
-                    type="number" 
-                    name="materialInput" 
-                    // onChange={changeDefectCountState}  
-                    className='totalBarsInput'
-                    min={1}
-                    id="totalDailyBars"
-                    readOnly
-                    value={totalDayBars}
-                />
-              <button 
-                className='increaseTotalButton totalInputButton'
-                onClick={increaseTotalDayBars}
-                >+
-              </button>
+            <div className={"barTypeCardContainer"}
+            >
+              {barTypeCards}
             </div>
-          </div>
+            <div className='buttonsContainer'>
+              <ReviewButton 
+                showReviewButton={totalDayBars >= 0}
+                setShowReviewButton={setShowReviewButton}
+                showReview={showReview}
+                clickReview={clickReview}
+                />
+              <ReviewForm 
+                defectBarList={defectBarList}
+                showReview={showReview}
+                submitDate={submitDate}
+                setSubmitDate={setSubmitDate}
+                userName={userName}
+                setUserName={setUserName}
+                totalDayBars={totalDayBars}
+                setTotalDayBars={setTotalDayBars}
+                submitDayToDatabase={submitDayToDatabase}
+                returnToBarInputScreen={returnToBarInputScreen}
+                />
+
+              <AddButton 
+                clickAddBar={clickAddBar}
+                showReview={showReview}
+                showAddButton={showAddButton}              
+                />
+              <div className='totalDayBarsDiv'>
+                <label 
+                  htmlFor='totalDailyBars'
+                  className='totalDayBarsLabel'
+                  >Total Daily Bars
+                </label>
+                <button 
+                  className='decreseTotalButton totalInputButton'
+                  onClick={decreaseTotalDayBars}
+                  >-
+                </button>
+                  <input 
+                      type="number" 
+                      name="materialInput" 
+                      // onChange={changeDefectCountState}  
+                      className='totalBarsInput'
+                      min={1}
+                      id="totalDailyBars"
+                      readOnly
+                      value={totalDayBars}
+                      />
+                <button 
+                  className='increaseTotalButton totalInputButton'
+                  onClick={increaseTotalDayBars}
+                  >+
+                </button>
+              </div>
+            </div>
+        </div>
+
+          {/*Panel 2*/}
+        <DefectItems 
+          typeDefectArray={typeDefectArray}
+          locationArray={locationArray}
+          onDefectChange={onDefectChange}
+          currentDefectCount={currentDefectCount}
+          onOrientationChange={onOrientationChange}
+          onLocationChange={onLocationChange}
+          onSideChange={onSideChange}
+          />
+
       </div>
-
-        {/*Panel 2*/}
-      <DefectItems 
-        typeDefectArray={typeDefectArray}
-        locationArray={locationArray}
-        onDefectChange={onDefectChange}
-        currentDefectCount={currentDefectCount}
-        onOrientationChange={onOrientationChange}
-        onLocationChange={onLocationChange}
-        onSideChange={onSideChange}
-      />
-
-    </div>
+    </Router>
   );
 }
