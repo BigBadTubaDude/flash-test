@@ -40,6 +40,7 @@ export default function App() {
   const [currentHumidity, setCurrentHumidity] = React.useState("");
   const [currentWidth, setCurrentWidth] = React.useState("");
   const [showReviewButton, setShowReviewButton] = React.useState(false);
+  const [currentDipSprayType, setCurrentDipSprayType] = React.useState("");
   //Panel 2 States
   const [SideArray, setSideArray] = React.useState(["A"]);
   const [locationArray, setLocationArray] = React.useState([""]);
@@ -253,6 +254,7 @@ export default function App() {
           width: currentWidth,
           rackPosition: currentRackPosition,
           defects: defectObjects,
+          dipSpray: currentDipSprayType
       }
       ])
     });
@@ -387,6 +389,8 @@ export default function App() {
             changeWidthState={changeWidthState}
             changeRackState={changeRackState}
             currentWidth={currentWidth}
+            setCurrentDipSprayType={setCurrentDipSprayType}
+            currentDipSprayType={currentDipSprayType}
             changeTempState={changeTempState}
             changeHumidityState={changeHumidityState}
             currentTemp={currentTemp}

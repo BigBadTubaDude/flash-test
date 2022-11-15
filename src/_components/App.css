@@ -11,6 +11,8 @@
   --needs-attention-color: rgb(185, 1, 1);
   --card-background: rgb(60,60,60);
   --radio-background-panel2: rgb(170,170,170);
+  --incomplete-glow: rgba(255, 200, 200, 0.2);
+  --incomplete-border: rgb(209,20,20,0.2)
 }
 
 html, body {
@@ -21,8 +23,8 @@ html, body {
   background-color: var(--background-color);
 }
 .incompleteField  {
-  box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 2px;
-  border-color: rgb(209,20,20,0.2);
+  box-shadow: var(--incomplete-glow) 0px 2px 50px 20px;
+  border-color: var(--incomplete-border);
 }
 .incompleteFieldExtra {
   z-index: -2;
@@ -70,20 +72,23 @@ html, body {
   align-self: flex-end;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 .P1HeaderQuarter1 > :first-child { /* top part of first quarter of header for Panel 1*/
   transform: translate(10px, -50%);
 }
-/*Material toggle button and h1 display*/
-.materialSelectSection {
+/*Material/dipSpray toggle button and h1 display*/
+.materialSelectSection, .dipSpraySelectSection {
   display:flex;
   flex-direction: column;
   width:4em;
   height: 2.5em;
   position: relative;
+}
+.dipSpraySelectSection {
   align-items: center;
 }
-.materialSelectSection > h1 {/*Material label*/
+.materialSelectSection > h1, .dipSpraySelectSection > h1  {/*Material/ DipSpray labels*/
   /* height: 26px; */
   width: 4em;
   font-size: calc(8px + 2vmin);
@@ -97,7 +102,7 @@ html, body {
   position: absolute;
   bottom:0;
   left:0;
-  right:0;
+  /* right:0; */
 }
 
 /*******************Second Section of Header*/

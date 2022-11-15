@@ -2,6 +2,8 @@ import MaterialToggle from './MaterialToggle';
 import SideToggle from './SideToggle'
 import React from 'react';
 import ANTButton from "./ANTRackResetButton.js";
+import DipSprayToggle from './DipSprayToggle.js'
+
 export default function HeaderPanel1(props) {
 
     const widthList = [
@@ -37,6 +39,10 @@ export default function HeaderPanel1(props) {
                 setCurrentMaterialType={props.setCurrentMaterialType}
                 currentBarType={props.currentBarType}
             />
+            <DipSprayToggle 
+                currentDipSprayType={props.currentDipSprayType} 
+                setCurrentDipSprayType={props.setCurrentDipSprayType}
+            />            
         </div>
         <div className='P1HeaderQuarter2'>
             {/* <div className='temp'>  
