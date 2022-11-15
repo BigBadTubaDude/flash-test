@@ -27,7 +27,6 @@ html, body {
   border-color: var(--incomplete-border);
 }
 .incompleteFieldExtra {
-  z-index: -2;
   box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 10px;
   border-color: rgb(209,20,20,0.2);
 }

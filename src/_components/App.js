@@ -7,8 +7,9 @@ import DefectItems from './DefecttItems';
 import ReviewButton from "./ReviewButton"
 import AddButton from './AddButton';
 import ReviewForm from './ReviewForm';
-import DateObject from 'react-date-object';
-import SubmitButton from './SubmitButton'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+// import DateObject from 'react-date-object';
+// import SubmitButton from './SubmitButton'
 
 export default function App() {
 
