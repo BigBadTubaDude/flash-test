@@ -49,6 +49,7 @@ export default function App() {
   const [orientationArray, setOrientationArray] = React.useState(["Top"]);
   const [typeDefectArray, setTypeDefectArray] = React.useState([""]);
   const [showAddButton, setShowAddButton] = React.useState(false);
+  const [leftRightArray, setLeftRightArray] = React.useState(["Left"])
 
   ///////////////////////////////EFFECTS
   //Submitted data EFFECTS
@@ -220,6 +221,7 @@ export default function App() {
   function changePhaseState(event) {
     setCurrentPhaseSelected(event.target.value);
   }
+  //On change of left right toggle
   function changeTempState(event) {
     setCurrentTemp(event.target.value);
   }
@@ -232,7 +234,7 @@ export default function App() {
   function clickReview() {
     setShowReview(oldVal => !oldVal);
   }
-
+  
   function clickAddBar() {
     setDefectBarList(oldList => { //Sets all defects and bar info to an object and puts object in defectBarList. #ADD# -> Also resets all fields
       
@@ -257,7 +259,7 @@ export default function App() {
           rackPosition: currentRackPosition,
           defects: defectObjects,
           dipSpray: currentDipSprayType
-      }
+        }
       ])
     });
     
@@ -297,7 +299,7 @@ export default function App() {
     setTotalDayBars(oldcount => oldcount + 1);
     //Save defective bar list to session local storage
   }
-
+  
   function submitDayToDatabase(event) {
     ///////////////////////Write code to send to data base
     event.preventDefault();
@@ -308,6 +310,18 @@ export default function App() {
     setShowReview(false);
   }
   /////////////////////////////////////Panel 2
+  function changeLeftRightState(event, number) {
+    
+    setLeftRightArray(oldArray => {
+      let newArray = [...oldArray];  
+      if (event == true) {
+        newArray[number - 1] = "Left"; //Changes State associated with defect item changed
+      } else {
+        newArray[number - 1] = "Right";
+      }
+      return newArray;
+    });
+  }
   function onDefectChange(event, number) {
     event.preventDefault();
     setTypeDefectArray(oldArray => {
@@ -490,7 +504,9 @@ export default function App() {
                   currentDefectCount={currentDefectCount}
                   onOrientationChange={onOrientationChange}
                   onLocationChange={onLocationChange}
-                  onSideChange={onSideChange}              
+                  onSideChange={onSideChange}   
+                  changeLeftRightState={changeLeftRightState}
+                  leftRightArray={leftRightArray}          
                   />
               </Route>
             </Switch>

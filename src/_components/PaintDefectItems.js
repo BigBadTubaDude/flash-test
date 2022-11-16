@@ -29,40 +29,40 @@ export default function PaintDefectItems(props) {
         )
     })
 
-    function LocationOptions(props) {
-        let htmlLocations = "";
+    // function LocationOptions(props) {
+    //     let htmlLocations = "";
 
-        for (let i = 0; i < locationOptionsArray.length; i++)  {//Takes each location option and creates html elements
-            htmlLocations += 
-                   `<div key="${locationOptionsArray[i].concat(props.defectNumber)}">
-                        <input 
-                            className="locationRadioButton"
-                            type="radio"
-                            name="${"defect".concat(props.defectNumber)}"
-                            id="${locationOptionsArray[i].concat(props.defectNumber)}"
-                            value='${locationOptionsArray[i]}'>
-                        <label 
-                            htmlFor="${locationOptionsArray[i].concat(props.defectNumber)}">
-                            ${locationOptionsArray[i]}
-                        </label>
-                    </div>`
-        }
-        // htmlLocations = parse(htmlLocations); // React.createElement('p', {}, 'Hello, World!')
-        console.log(htmlLocations)
-        return (parse(htmlLocations))
-    }
+    //     for (let i = 0; i < locationOptionsArray.length; i++)  {//Takes each location option and creates html elements NOT BEING USED, CHECKING RADIO BUTTONS WILL NOT WORK
+    //         htmlLocations += 
+    //                `<div key="${locationOptionsArray[i].concat(props.defectNumber)}">
+    //                     <input 
+    //                         className="locationRadioButton"
+    //                         type="radio"
+    //                         name="${"defect".concat(props.defectNumber)}"
+    //                         id="${locationOptionsArray[i].concat(props.defectNumber)}"
+    //                         value='${locationOptionsArray[i]}'>
+    //                     <label 
+    //                         htmlFor="${locationOptionsArray[i].concat(props.defectNumber)}">
+    //                         ${locationOptionsArray[i]}
+    //                     </label>
+    //                 </div>`
+    //     }
+    //     // htmlLocations = parse(htmlLocations); // React.createElement('p', {}, 'Hello, World!')
+    //     console.log(htmlLocations)
+    //     return (parse(htmlLocations))
+    // }
     const ListItems = defectItemsArray.map( defectNumber => {  //Creates a list item for every defect count passed down from app
             return (
                 <li
                 className='DefectItem' 
                 key={defectNumber}
                 >
-                    <div className='defectNumTypeContainer'>
-                        <h2>{defectNumber}</h2>
+
+                        <h2 className='defectNumLabel'>{defectNumber}</h2>
                         <select 
                             className={props.typeDefectArray[defectNumber - 1] == "" || props.typeDefectArray[defectNumber - 1] == "SELECT TYPE" // If field is empty, adds class for css to bring attention to it
-                                ? "incompleteField"
-                                : ""
+                                ? "defectTypeSelect incompleteField"
+                                : "defectTypeSelect"
                             }
                             htmlFor="defectType" 
                             id='defectType'                        
@@ -70,7 +70,7 @@ export default function PaintDefectItems(props) {
                         >
                             {DefectOptionsHTML}
                         </select>                
-                    </div>
+
                     <form 
                         className={
                             props.locationArray[defectNumber - 1] == "" // If field is empty, adds class for css to bring attention to it
@@ -122,6 +122,12 @@ export default function PaintDefectItems(props) {
                         unCheckedChildren="B" 
                         defaultChecked 
                         className='side'/>
+                    <Switch 
+                        onChange={event => props.changeLeftRightState(event, defectNumber)}
+                        checkedChildren="Left" 
+                        unCheckedChildren="Right" 
+                        defaultChecked 
+                        className='leftRight'/>
                 </li>
             )
         })

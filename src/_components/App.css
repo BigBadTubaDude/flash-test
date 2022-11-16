@@ -62,14 +62,12 @@ html, body {
   justify-content: space-evenly;
   justify-items: stretch;
   align-items: stretch;
-  height: 75px;
   font-size: calc(15px + 2vmin);
   color: var(--text-color);
   padding-bottom: 20px;
 }
 /*First section of header*/
 .P1HeaderQuarter1 {
-  align-self: flex-end;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -109,9 +107,8 @@ html, body {
 .P1HeaderQuarter2 {
   align-self: center;
   display: grid;
-  transform: translate(0, -60px);
-  grid-template-columns: 100px 100px;
-  grid-template-rows: 100px 30px;
+  grid-template-columns: 3.5em 3.5em;
+
   justify-items: center;
 }
 .P1HeaderQuarter2 > * { /* 2 divs each holding temp/humidity h2s and thier input boxes*/
@@ -126,6 +123,7 @@ html, body {
   height: 1.5em;
   color: black;
   font-size: .75em;
+
   
 }
 .P1HeaderQuarter2 > div p { /* % and F after humidity and temp inputs*/
@@ -585,7 +583,7 @@ li.reviewFormDefectItem:nth-of-type(2) { /*First defect item of each bar*/
 li.DefectItem { /*Each list item container (one for every defect)*/
   display: grid;
   grid-template-areas:
-  'head head head head orientation  side'
+  'head head head leftRight orientation  side'
   'loc loc loc loc loc loc';  
   list-style: none;
   padding-bottom: 35px;
@@ -595,24 +593,22 @@ li.DefectItem { /*Each list item container (one for every defect)*/
   margin-right: 30px;
 }
 /******************* Defect Number and defect type drop down*/
-div.defectNumTypeContainer { /* Defect number and type drop down container*/
-  display: flex;
-  grid-area: head;
-  justify-content: space-evenly;
-}
 
-div.defectNumTypeContainer > h2{ /*Defect number label for each defect item*/
+h2.defectNumLabel { /*Defect number label for each defect item*/
   color: white;
   justify-self: center;
   margin: 0;
   cursor: default;
 }
-div.defectNumTypeContainer > select { /*dropdown select box*/
+select.defectTypeSelect { /*dropdown select box*/
   height: 30px;
   width: 10em;
   font-size: .75em;
   justify-self: center;
   align-self: center;
+}
+.leftRight {
+  grid-area: leftRight;
 }
 
 /*****************************Location radio buttons */
