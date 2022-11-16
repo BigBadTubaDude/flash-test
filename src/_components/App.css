@@ -42,6 +42,7 @@ html, body {
 
 .appContainer {
   display: grid;
+  position: relative;
   grid-template-columns: var(--panel-1-width) 1fr;
 }
 .Panel1 {
@@ -353,7 +354,7 @@ button.backButton {
   grid-template-rows: 1fr;
 }
 .buttonsContainer { /*Review, add bar, and total daily bars incrementer*/
-  position:absolute;
+  margin-top: 2em;
   bottom: 0.85%;
   display: flex;
   align-items: center;
@@ -383,8 +384,7 @@ button.backButton {
 .showReviewForm {
   display: block;
   position: absolute;
-  bottom: -20%;
-  left: 0%;
+  inset: 3%;
   z-index: 2;
   background-color: var(--card-background);
   border: 3px solid var(--radio-background-panel2);
@@ -716,5 +716,8 @@ li.DefectItem button:nth-of-type(2).side{ /*A/B toggle */
   .buttonsContainer { /*Review, add bar, and total daily bar incrementer buttons*/
     left:0;
     right: 0;
+  }
+   .showReviewForm {
+
   }
 }
