@@ -11,8 +11,8 @@
   --needs-attention-color: rgb(185, 1, 1);
   --card-background: rgb(60,60,60);
   --radio-background-panel2: rgb(170,170,170);
-  --incomplete-glow: rgba(221, 182, 182, 0.267);
-  --incomplete-border: rgb(209,20,20,0.2)
+  --incomplete-glow: rgba(216, 47, 47, 0.267);
+  --incomplete-border: rgba(167, 37, 37, 0.7);
 }
 
 html, body {
@@ -22,22 +22,22 @@ html, body {
   text-align: center;
   background-color: var(--background-color);
 }
-.incompleteField  {
+
+/* .incompleteField  {
   box-shadow: var(--incomplete-glow) 0px 2px 50px 20px;
-  border-color: var(--incomplete-border);
-}
-.incompleteFieldExtra {
+  border: 2px solid var(--incomplete-border);
+}.incompleteFieldExtra {
   box-shadow: var(--incomplete-glow) 0px 2px 70px 40px;
   border-color: var(--incomplete-border);
-}
-.incompleteFieldParentOfParent *:first-child {
+}.incompleteFieldParentOfParent *:first-child {
   box-shadow: var(--incomplete-glow)15px 2px 100px 5px;
   border-color: var(--incomplete-border);
-
 }.incompleteFieldParentOfParent *:nth-child(2) {
   box-shadow: var(--incomplete-glow) -15px 2px 100px 5px;
   border-color: var(--incomplete-border);
-}.incompleteFieldParentOfParent > * {box-shadow: (--incomplete-glow) 0px 0px 10px 200px inset;}
+}.incompleteFieldParentOfParent > * {
+  box-shadow: (--incomplete-glow) 0px 0px 10px 200px inset;
+} */
 
 
 .appContainer {
@@ -352,13 +352,13 @@ button.reviewHidden {
 button.backButton {
   grid-template-rows: 1fr;
 }
-.buttonsContainer {
+.buttonsContainer { /*Review, add bar, and total daily bars incrementer*/
   position:absolute;
-  bottom: 4%;
+  bottom: 0.85%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 40%;
+  /* width: 40%; */
 }
 .reviewButton {
   background-color: var(--card-text-color);
@@ -712,5 +712,9 @@ li.DefectItem button:nth-of-type(2).side{ /*A/B toggle */
   }
   .barTypeCard:last-child:nth-child(3n - 2) { /*last item if one widow*/
     grid-column-end:  5;
+  }
+  .buttonsContainer { /*Review, add bar, and total daily bar incrementer buttons*/
+    left:0;
+    right: 0;
   }
 }

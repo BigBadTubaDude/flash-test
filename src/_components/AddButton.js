@@ -12,7 +12,7 @@ export default function AddButton(props) {
                 ${props.showReview //If review page is showing, gives add button a class of hideAddButton
                     ? "hideAddButton"
                     : ""}`}
-            >Add Bad Bar
+            >Add Bar
         </button>
     )
 }
