@@ -1,8 +1,7 @@
 import React from 'react'
 import { Switch } from 'antd';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 
-export default function DefectItems(props) {
+export default function FlashDefectItems(props) {
     ////////////////Variables
     const defectTypeList = [
         "SELECT TYPE",
@@ -107,7 +106,7 @@ export default function DefectItems(props) {
                             <input 
                                 className='locationRadioButton'
                                 type="radio"                
-                                name={`location${defectNumber}`} 
+                                name={`defect${defectNumber}`} 
                                 id={`tabEdge${defectNumber}`}
                                 value={locationOptionsArray[3]}>
                             </input>

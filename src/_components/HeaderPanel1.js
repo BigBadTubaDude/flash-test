@@ -45,14 +45,23 @@ export default function HeaderPanel1(props) {
             />            
         </div>
         <div className='P1HeaderQuarter2'>
-            {/* <div className='temp'>  
+             <div className='temp'>  
                 <h2>Temp</h2>
                 <div>
-                    <input  onChange={props.changeTempState} pattern="\d*" maxLength="3" type="text" />
+                    <input  
+                        className={props.currentTemp == ""
+                            ? "incompleteField"
+                            : ""
+                        }
+                        onChange={props.changeTempState} 
+                        pattern="\d*" 
+                        maxLength="3" 
+                        type="text" 
+                    />
                     <p>F</p>
                 </div>
                
-            </div> */}
+            </div> 
             <div className='humidity'>
                 <h2>Humidity</h2>
                 <div>
@@ -104,21 +113,86 @@ export default function HeaderPanel1(props) {
         <h3>{`Phase ${props.currentPhaseSelected}`}</h3>
         <div 
             className={props.currentRackPosition == ""
-                ? "incompleteField phaseRadioButtons"
+                ? " phaseRadioButtons"
                 :"phaseRadioButtons" 
             }
             onChange={props.changePhaseState}
         >  
-                <input type="radio" id="L1" value="L1" name="phase" className="phaseRadioButton barTypeRadios"></input>
-                <label htmlFor="L1">L1</label><br />          
-                <input type="radio" id="L2" value="L2" name="phase" className="phaseRadioButton barTypeRadios"></input>
-                <label htmlFor="L2">L2</label><br />
-                <input type="radio" id="L3" value="L3" name="phase" className="phaseRadioButton barTypeRadios"></input>
-                <label htmlFor="L3">L3</label><br />
-                <input type="radio" id="N" value="N" name="phase" className="phaseRadioButton barTypeRadios"></input>
-                <label htmlFor="N">N</label><br />
-                <input type="radio" id="E" value="E" name="phase" className="phaseRadioButton barTypeRadios"></input>
-                <label htmlFor="E">E</label><br />
+                <input 
+                    type="radio" 
+                    id="L1" 
+                    value="L1" 
+                    name="phase" 
+                    className={props.currentPhaseSelected == ""
+                        ? "phaseRadioButton barTypeRadios incompleteField"
+                        : "phaseRadioButton barTypeRadios"
+                    }
+               />
+                <label 
+                    htmlFor="L1">
+                    L1
+                </label>
+                <br />          
+                <input 
+                    type="radio" 
+                    id="L2" 
+                    value="L2" 
+                    name="phase"
+                    className={props.currentPhaseSelected == ""
+                        ? "phaseRadioButton barTypeRadios incompleteField"
+                        : "phaseRadioButton barTypeRadios"
+                    }
+                />
+                <label 
+                    htmlFor="L2">
+                    L2
+                </label>
+                <br />
+                <input 
+                    type="radio" 
+                    id="L3" 
+                    value="L3" 
+                    name="phase" 
+                    className={props.currentPhaseSelected == ""
+                        ? "phaseRadioButton barTypeRadios incompleteField"
+                        : "phaseRadioButton barTypeRadios"
+                    }
+                />
+                <label 
+                    htmlFor="L3">
+                    L3
+                </label>
+                <br />
+                <input 
+                    type="radio" 
+                    id="N" 
+                    value="N" 
+                    name="phase" 
+                    className={props.currentPhaseSelected == ""
+                        ? "phaseRadioButton barTypeRadios incompleteField"
+                        : "phaseRadioButton barTypeRadios"
+                    }
+                />
+                <label 
+                    htmlFor="N">
+                    N
+                </label>
+                <br />
+                <input 
+                    type="radio" 
+                    id="E" 
+                    value="E" 
+                    name="phase" 
+                    className={props.currentPhaseSelected == ""
+                        ? "phaseRadioButton barTypeRadios incompleteField"
+                        : "phaseRadioButton barTypeRadios"
+                    }
+                />
+                <label 
+                    htmlFor="E">
+                    E
+                </label>
+                <br />
             </div>
             <ANTButton 
                 resetRadioButtons={props.resetRadioButtons}

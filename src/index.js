@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import FlashApp from './_components/FlashApp';
-import PaintApp from './'
+import App from './_components/App';
 import reportWebVitals from './reportWebVitals';
 
 //Flash Test data input page
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <FlashApp />
+    <App />
   </React.StrictMode>
 );
 //Paint defect data input page

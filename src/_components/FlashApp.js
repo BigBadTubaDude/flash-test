@@ -3,7 +3,7 @@ import './App.css';
 import React from 'react'
 import BarTypeCard from "./BarTypeCard"
 import HeaderPanel1 from './HeaderPanel1';
-import DefectItems from './DefecttItems';
+import DefectItems from './DefectItems';
 import ReviewButton from "./ReviewButton"
 import AddButton from './AddButton';
 import ReviewForm from './ReviewForm';

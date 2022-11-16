@@ -3,11 +3,12 @@ import './App.css';
 import React from 'react'
 import BarTypeCard from "./BarTypeCard"
 import HeaderPanel1 from './HeaderPanel1';
-import DefectItems from './DefecttItems';
 import ReviewButton from "./ReviewButton"
 import AddButton from './AddButton';
 import ReviewForm from './ReviewForm';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import PaintDefectItems from './PaintDefectItems';
+import FlashDefectItems from './FlashDefectItems';
 // import DateObject from 'react-date-object';
 // import SubmitButton from './SubmitButton'
 
@@ -468,7 +469,33 @@ export default function App() {
         </div>
 
           {/*Panel 2*/}
-        <DefectItems 
+          <div className='content'>
+            <Switch>
+              <Route exact path="/flash">
+                <FlashDefectItems 
+                  typeDefectArray={typeDefectArray}
+                  locationArray={locationArray}
+                  onDefectChange={onDefectChange}
+                  currentDefectCount={currentDefectCount}
+                  onOrientationChange={onOrientationChange}
+                  onLocationChange={onLocationChange}
+                  onSideChange={onSideChange}              
+                  />
+              </Route>
+              <Route exact path="/paint">
+                <PaintDefectItems 
+                  typeDefectArray={typeDefectArray}
+                  locationArray={locationArray}
+                  onDefectChange={onDefectChange}
+                  currentDefectCount={currentDefectCount}
+                  onOrientationChange={onOrientationChange}
+                  onLocationChange={onLocationChange}
+                  onSideChange={onSideChange}              
+                  />
+              </Route>
+            </Switch>
+        </div>
+        {/* <DefectItems 
           typeDefectArray={typeDefectArray}
           locationArray={locationArray}
           onDefectChange={onDefectChange}
@@ -476,7 +503,7 @@ export default function App() {
           onOrientationChange={onOrientationChange}
           onLocationChange={onLocationChange}
           onSideChange={onSideChange}
-          />
+        /> */}
 
       </div>
     </Router>

@@ -11,7 +11,7 @@
   --needs-attention-color: rgb(185, 1, 1);
   --card-background: rgb(60,60,60);
   --radio-background-panel2: rgb(170,170,170);
-  --incomplete-glow: rgba(255, 200, 200, 0.2);
+  --incomplete-glow: rgba(221, 182, 182, 0.267);
   --incomplete-border: rgb(209,20,20,0.2)
 }
 
@@ -27,17 +27,18 @@ html, body {
   border-color: var(--incomplete-border);
 }
 .incompleteFieldExtra {
-  box-shadow: rgba(209, 20, 20, 0.3) 0px 2px 60px 10px;
-  border-color: rgb(209,20,20,0.2);
+  box-shadow: var(--incomplete-glow) 0px 2px 70px 40px;
+  border-color: var(--incomplete-border);
 }
 .incompleteFieldParentOfParent *:first-child {
-  box-shadow: rgba(209, 20, 20, 0.3) 15px 2px 100px 5px;
-  border-color: rgb(209,20,20,0.2);
+  box-shadow: var(--incomplete-glow)15px 2px 100px 5px;
+  border-color: var(--incomplete-border);
 
 }.incompleteFieldParentOfParent *:nth-child(2) {
-  box-shadow: rgba(209, 20, 20, 0.3) -15px 2px 100px 5px;
-  border-color: rgb(209,20,20,0.2);
-}
+  box-shadow: var(--incomplete-glow) -15px 2px 100px 5px;
+  border-color: var(--incomplete-border);
+}.incompleteFieldParentOfParent > * {box-shadow: (--incomplete-glow) 0px 0px 10px 200px inset;}
+
 
 .appContainer {
   display: grid;
@@ -80,16 +81,16 @@ html, body {
 .materialSelectSection, .dipSpraySelectSection {
   display:flex;
   flex-direction: column;
-  width:4em;
+  width:6em;
   height: 2.5em;
   position: relative;
 }
-.dipSpraySelectSection {
+/* .dipSpraySelectSection {
   align-items: center;
-}
+} */
 .materialSelectSection > h1, .dipSpraySelectSection > h1  {/*Material/ DipSpray labels*/
   /* height: 26px; */
-  width: 4em;
+  width: 100%;
   font-size: calc(8px + 2vmin);
   color: var(--text-color);
 
@@ -101,7 +102,7 @@ html, body {
   position: absolute;
   bottom:0;
   left:0;
-  /* right:0; */
+  right:0;
 }
 
 /*******************Second Section of Header*/
@@ -231,6 +232,9 @@ input::-webkit-inner-spin-button {/*Hides the arrow buttons on number of defects
   display: flex;
   gap: 2px;
   
+}
+.phaseRadioButtons > input[type='radio'] {
+  margin:3px;
 }
 
 .rackPositionRadioButtons > label {
