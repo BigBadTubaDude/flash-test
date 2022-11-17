@@ -124,8 +124,8 @@ export default function PaintDefectItems(props) {
                         className='side'/>
                     <Switch 
                         onChange={event => props.changeLeftRightState(event, defectNumber)}
-                        checkedChildren="Left" 
-                        unCheckedChildren="Right" 
+                        checkedChildren="Right" 
+                        unCheckedChildren="Left" 
                         defaultChecked 
                         className='leftRight'/>
                 </li>

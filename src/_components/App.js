@@ -304,6 +304,21 @@ export default function App() {
     ///////////////////////Write code to send to data base
     event.preventDefault();
     console.log("Submited (not really)")
+    const result = {
+      deffect: [
+        {},
+        {},
+      ]
+    };
+    console.log('result', result);
+    // POST API HERE
+    // URL = provided later
+    // query
+    const sql = "SELECT * FROM TABLE"
+    const data = {
+      query: sql
+    }
+    // fetch()
   }
   function returnToBarInputScreen(event) {
     event.preventDefault();
