@@ -689,7 +689,7 @@ li.DefectItem button:nth-of-type(2).side{ /*A/B toggle */
 .defectReviewList::-webkit-scrollbar-thumb:hover {/* Handle on hover */
   background: #555;  
 }
-@media only screen and (max-width: 1350px) {
+@media only screen and (max-width: 1400px) {
   .appContainer {
     display: flex;
     flex-direction: column;
@@ -718,8 +718,5 @@ li.DefectItem button:nth-of-type(2).side{ /*A/B toggle */
   .buttonsContainer { /*Review, add bar, and total daily bar incrementer buttons*/
     left:0;
     right: 0;
-  }
-   .showReviewForm {
-
   }
 }
