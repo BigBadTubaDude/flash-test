@@ -392,7 +392,7 @@ button.backButton {
   border: 3px solid var(--radio-background-panel2);
   border-radius: 10px;
   width: 96vw;
-  height: 90vh;
+  height: 96vh;
   /* max-height: 400px; */
   display:grid;
   overflow-y: auto;
@@ -639,8 +639,8 @@ li.DefectItem > button.ant-switch { /*Top Bottom toggle button*/
 
 li.DefectItem div.ant-switch-handle::before { /*toggle dot when Bottom is selected*/
   background-color: var(--radio-background-panel2)
-  
-} 
+
+}
 li.DefectItem > .ant-switch {
   background-color: var(--card-background);
 }
