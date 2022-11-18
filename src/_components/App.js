@@ -413,7 +413,8 @@ export default function App() {
   /////////////// FINAL HTML
   return (
     <Router>
-      <div className='appContainer'>
+      <div 
+        className='appContainer'>
           {/*Panel 1*/}
           <div className="Panel1">
             <HeaderPanel1 
