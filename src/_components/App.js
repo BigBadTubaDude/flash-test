@@ -299,27 +299,77 @@ export default function App() {
     setTotalDayBars(oldcount => oldcount + 1);
     //Save defective bar list to session local storage
   }
-  
-  function submitDayToDatabase(event) {
+
+  //Sends data to Paint database tables
+  const url = "https://prod-255.westeurope.logic.azure.com:443/workflows/cb8b8807926b4b5da2815dc4c1ca90b4/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RqlOaUPwWhyuiXszWUXKPWhpkDfnjgJhccGJUwjw1BY"; 
+  function submitPaintDayToDatabase(event) {
+    event.preventDefault();
+    const getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 'query': getDataFromDB })
+    };
+    // const barsResult = {
+    //   defect: [
+    //     {},
+    //     {},
+    //   ]
+    // };
+    // console.log('result', barsResult);
+    // POST API HERE
+    // query
+    const data = {
+      query: getDataFromDB
+    }
+    // fetch()
+    fetch(url, requestOptions)
+      .then(async response => {
+        console.log(response);
+        const isJson = response.headers.get('content-type').includes('application/json');
+        const data = isJson &&  await response.json();
+        if (!response.ok) {
+          const error = (data && data.message) || response.status;
+          return Promise.reject(error);
+        }
+        // this.setState({ postId: data.id })
+      }).catch(error => {
+        // this.setState({ errorMEssage: error.toString() })
+        console.error('an errrror!', error);
+      })
+  }
+
+  //Sends data to Flash Test database tables
+  function submitFlashDayToDatabase(event) {
     ///////////////////////Write code to send to data base
     event.preventDefault();
-    console.log("Submited (not really)")
-    const result = {
-      deffect: [
+    const getDataFromDB = "SELECT * FROM TABLE"
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: 'React POST Request Example' })
+    };
+    const barsResult = {
+      defect: [
         {},
         {},
       ]
     };
-    console.log('result', result);
+    // console.log('result', barsResult);
     // POST API HERE
-    // URL = provided later
     // query
-    const sql = "SELECT * FROM TABLE"
     const data = {
-      query: sql
+      query: getDataFromDB
     }
     // fetch()
+    fetch(url, requestOptions)
+      .then(async response => {
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const data = isJson && await response.json();
+        console.log(data)
+      })
   }
+
   function returnToBarInputScreen(event) {
     event.preventDefault();
     setShowReview(false);
@@ -450,18 +500,37 @@ export default function App() {
                 showReview={showReview}
                 clickReview={clickReview}
                 />
-              <ReviewForm 
-                defectBarList={defectBarList}
-                showReview={showReview}
-                submitDate={submitDate}
-                setSubmitDate={setSubmitDate}
-                userName={userName}
-                setUserName={setUserName}
-                totalDayBars={totalDayBars}
-                setTotalDayBars={setTotalDayBars}
-                submitDayToDatabase={submitDayToDatabase}
-                returnToBarInputScreen={returnToBarInputScreen}
-                />
+                <Switch>
+                  <Route path="/flash">
+                    <ReviewForm 
+                      defectBarList={defectBarList}
+                      showReview={showReview}
+                      submitDate={submitDate}
+                      setSubmitDate={setSubmitDate}
+                      userName={userName}
+                      setUserName={setUserName}
+                      totalDayBars={totalDayBars}
+                      setTotalDayBars={setTotalDayBars}
+                      returnToBarInputScreen={returnToBarInputScreen}
+                      submitDayToDatabase={submitFlashDayToDatabase}
+                    />
+                  </Route>
+                  <Route path="/paint">
+                    <ReviewForm 
+                        defectBarList={defectBarList}
+                        showReview={showReview}
+                        submitDate={submitDate}
+                        setSubmitDate={setSubmitDate}
+                        userName={userName}
+                        setUserName={setUserName}
+                        totalDayBars={totalDayBars}
+                        setTotalDayBars={setTotalDayBars}
+                        returnToBarInputScreen={returnToBarInputScreen}
+                        submitDayToDatabase={submitPaintDayToDatabase}
+                      />                    
+                  </Route>
+                </Switch>
+
 
               <AddButton 
                 clickAddBar={clickAddBar}
