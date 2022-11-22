@@ -213,7 +213,13 @@ h1.barTypeh1 { /*Bar type label*/
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {/*Hides the arrow buttons on number of defects number text input box*/
   display: none;
+  -webkit-appearance: none;
+  margin: 0;
+  
+}input[type=number] {
+  -moz-appearance: textfield;
 }
+
 .rackPositionSection { /*Contains Rack radios, "on rack", and reset button......ALSO NOW CONATAINS Phase radios*/ 
   display: flex;
   flex-direction: column;
@@ -542,6 +548,8 @@ li.reviewFormDefectItem:nth-of-type(2) { /*First defect item of each bar*/
   border-left: none;
   border-right: none;
   border-radius: 0;
+  cursor:default;
+
 }
 .totalInputButton { /*Increase and decrese buttons for total bars display input*/
   width: 45px;
@@ -558,11 +566,13 @@ li.reviewFormDefectItem:nth-of-type(2) { /*First defect item of each bar*/
   border-left: none;
   border-radius: 0 5px 5px 0;
   margin-left:0;
+  cursor: pointer;
 }
 .decreseTotalButton {
   margin-right:0;
   border-right: none;
   border-radius: 5px 0 0 5px;
+  cursor: pointer;
 }
 
 
