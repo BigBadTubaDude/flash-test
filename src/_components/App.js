@@ -49,7 +49,7 @@ export default function App() {
   const [orientationArray, setOrientationArray] = React.useState(["Top"]);
   const [typeDefectArray, setTypeDefectArray] = React.useState([""]);
   const [showAddButton, setShowAddButton] = React.useState(false);
-  const [leftRightArray, setLeftRightArray] = React.useState(["Left"])
+  const [leftRightArray, setLeftRightArray] = React.useState(["Right"])
 
   ///////////////////////////////EFFECTS
   //Submitted data EFFECTS
@@ -380,9 +380,9 @@ export default function App() {
     setLeftRightArray(oldArray => {
       let newArray = [...oldArray];  
       if (event == true) {
-        newArray[number - 1] = "Left"; //Changes State associated with defect item changed
+        newArray[number - 1] = "Right"; //Changes State associated with defect item changed
       } else {
-        newArray[number - 1] = "Right";
+        newArray[number - 1] = "Left";
       }
       return newArray;
     });
