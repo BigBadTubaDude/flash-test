@@ -137,21 +137,22 @@ export default function App() {
       /////////////////////SQL Variables
       const url = "https://prod-255.westeurope.logic.azure.com:443/workflows/cb8b8807926b4b5da2815dc4c1ca90b4/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RqlOaUPwWhyuiXszWUXKPWhpkDfnjgJhccGJUwjw1BY"; 
       //////////////////SQL functions
-      function fetchSQL(requestOptions) {
+      function fetchSQL(requestOptions) { //Submits SQL queries and resets 
         fetch(url, requestOptions)
           .then(async response => {
-            // console.log(response);
+            console.log(response);
             const isJson = response.headers.get('content-type').includes('application/json');
             const data = isJson &&  await response.json();
-            console.log(response.ok)
             if (!response.ok) {
               const error = (data && data.message) || response.status;
               return Promise.reject(error);
+            } else {
+
             }
             // this.setState({ postId: data.id })
           }).catch(error => {
             // this.setState({ errorMEssage: error.toString() })
-            console.error('an errrror!', error);
+            console.error('an error!', error);
           })
       }
         //Sends data to Paint database tables
@@ -182,25 +183,37 @@ export default function App() {
         
         ////////Insert bars into SQL
         //make array with queries to insert each bar
-        let insertBarQueries = [];
+        var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
+        (BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
         for (let i = 0; i < defectBarList.length; i++) {
-          insertBarQueries.push(
-            `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data] 
-            (BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) 
-            VALUES ('${defectBarList[i].barType}','${defectBarList[i].materialType}',${parseInt(defectBarList[i].width)},${parseInt(defectBarList[i].humidity)},'${parseInt(defectBarList[i].temp)}','${defectBarList[i].phase}','${defectBarList[i].rackPosition}','${defectBarList[i].dipSpray}',${submitDate})`
-            );
+          insertBarsQuery += `
+             ('${defectBarList[i].barType}',
+             '${defectBarList[i].materialType}',
+             ${parseInt(defectBarList[i].width)},
+             ${parseInt(defectBarList[i].humidity)},
+             '${parseInt(defectBarList[i].temp)}',
+             '${defectBarList[i].phase}','${defectBarList[i].rackPosition}',
+             '${defectBarList[i].dipSpray[0]}',
+             '${submitDate.toISOString().split('T')[0]}')`
+          ;
+          console.log(insertBarsQuery);
+          if (i != defectBarList.length - 1) {
+            insertBarsQuery += ",";
+          } else {
+            insertBarsQuery += ";";
           }
-          //insert each bar with for loop
-          for (let i = 0; i < insertBarQueries.length; i++) {
-            //Create requestOption for each bar
-            let insertBarRequestOption = {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ 'query': insertBarQueries[i] })
-            };
-            //Insert each bar
-            fetchSQL(insertBarRequestOption);
         }
+
+        //Create requestOption 
+        let insertBarRequestOption = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 'query': insertBarsQuery })
+        };
+        if (defectBarList.length > 0) {   //Only insert if there are bars to insert
+          fetchSQL(insertBarRequestOption); //Inserts defective bars into SQL table 
+        }
+        setDefectBarList([]); //Resets list of bars on review page and in state
       }
        //Sends data to Flash Test database tables
   function submitFlashDayToDatabase(event) {
