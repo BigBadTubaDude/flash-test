@@ -49,6 +49,8 @@ export default function App() {
   const [typeDefectArray, setTypeDefectArray] = React.useState([""]);
   const [showAddButton, setShowAddButton] = React.useState(false);
   const [leftRightArray, setLeftRightArray] = React.useState(["Right"])
+  //Review Page States
+  const [submitFailedBCUserName, setSubmitFailedBCUserName] = React.useState(false);
   
   ///////////////////////////////EFFECTS
   //Submitted data EFFECTS
@@ -118,6 +120,17 @@ export default function App() {
       )
       
       ////////////////////////////////Variables
+      //Review Page
+      ////////////Form not ready to be submitted functions
+      function onSubmitUserNameNotSet(event) {
+        event.preventDefault();
+        setSubmitFailedBCUserName(true)
+        setTimeout(() => {
+            setSubmitFailedBCUserName(false)
+        }, 5000);
+      }
+
+
       //Panel1 Variables
       //Holds all bar types. add or subtract from this array and the corresponding card will be added/deleted automatically
       const barTypes = [
@@ -137,24 +150,46 @@ export default function App() {
       /////////////////////SQL Variables
       const url = "https://prod-255.westeurope.logic.azure.com:443/workflows/cb8b8807926b4b5da2815dc4c1ca90b4/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RqlOaUPwWhyuiXszWUXKPWhpkDfnjgJhccGJUwjw1BY"; 
       //////////////////SQL functions
-      function fetchSQL(requestOptions) { //Submits SQL queries and resets 
-        fetch(url, requestOptions)
-          .then(async response => {
-            console.log(response);
-            const isJson = response.headers.get('content-type').includes('application/json');
-            const data = isJson &&  await response.json();
-            if (!response.ok) {
-              const error = (data && data.message) || response.status;
-              return Promise.reject(error);
-            } else {
+      function fetchSQL(requestOptions, purpose) { //Submits SQL queries and resets 
+        if (purpose == 'submit' && userName == "Not set") { //checks if query is for submitting and that userName is set. Does nothing (returns) if so
+          return;
+        } else if (purpose =='getData'|| purpose=='submit') {
+          fetch(url, requestOptions)
+            .then(async response => {
+              console.log(response.Table);
+              const isJson = response.headers.get('content-type').includes('application/json');
+              const data = isJson &&  await response.json();
+              if (!response.ok) {
+                const error = (data && data.message) || response.status;
+                return Promise.reject(error);
+              } else {
+  
+              }
+              // this.setState({ postId: data.id })
+            }).catch(error => {
+              // this.setState({ errorMEssage: error.toString() })
+              console.error('an error!', error);
+              return error;
+            })
 
-            }
-            // this.setState({ postId: data.id })
-          }).catch(error => {
-            // this.setState({ errorMEssage: error.toString() })
-            console.error('an error!', error);
-          })
+        }
       }
+      // async function fetchSQLTotalBars(requestOptions) { //Submits SQL queries and resets 
+      //   return fetch(url, requestOptions)
+      //     .then(async response => {
+      //       // console.log(response);
+      //       const isJson = response.headers.get('content-type').includes('application/json');
+      //       const data = isJson &&  await response.json();
+      //       if (!response.ok) {
+      //         const error = (data && data.message) || response.status;
+      //         return Promise.reject(error);
+      //       } else return response;
+      //       // this.setState({ postId: data.id })
+      //     }).catch(error => {
+      //       // this.setState({ errorMEssage: error.toString() })
+      //       console.error('Already an entry for this user/date', error);
+      //     })
+      // }
         //Sends data to Paint database tables
       function submitPaintDayToDatabase(event) {
         event.preventDefault();
@@ -165,29 +200,19 @@ export default function App() {
         const getLatestBarIdRequestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({query: getDataFromDB})
+          body: JSON.stringify({'query': getDataFromDB})
         };
-        // const barsResult = {
-          //   defect: [
-            //     {},
-            //     {},
-        //   ]
-        // };
-        // console.log('result', barsResult);
-        // POST API HERE
-        // query
-        
-        
         ///////// fetch bar id for defect bar id
-        fetchSQL(getLatestBarIdRequestOptions);
+        console.log(fetchSQL(getLatestBarIdRequestOptions, 'getData'));
         
-        ////////Insert bars into SQL
-        //make array with queries to insert each bar
+        ////////////////////////Insert bars into SQL
+        //make string with queries to insert each bar
         var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
-        (BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
+        (UserName, BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
         for (let i = 0; i < defectBarList.length; i++) {
           insertBarsQuery += `
-             ('${defectBarList[i].barType}',
+             ('${userName}',
+              '${defectBarList[i].barType}',
              '${defectBarList[i].materialType}',
              ${parseInt(defectBarList[i].width)},
              ${parseInt(defectBarList[i].humidity)},
@@ -211,13 +236,12 @@ export default function App() {
           body: JSON.stringify({ 'query': insertBarsQuery })
         };
         if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-          fetchSQL(insertBarRequestOption); //Inserts defective bars into SQL table 
+          fetchSQL(insertBarRequestOption, 'submit'); //Inserts defective bars into SQL table 
+          setDefectBarList([]); //Resets list of bars on review page and in state
         }
-        setDefectBarList([]); //Resets list of bars on review page and in state
       }
        //Sends data to Flash Test database tables
   function submitFlashDayToDatabase(event) {
-    ///////////////////////Write code to send to data base
     event.preventDefault();
   }
       /////////////////////////FUNCTIONS
@@ -320,7 +344,8 @@ export default function App() {
     setShowReview(oldVal => !oldVal);
   }
   
-  function clickAddBar() {
+  function clickAddBar(event) {
+    event.preventDefault();
     setDefectBarList(oldList => { //Sets all defects and bar info to an object and puts object in defectBarList. #ADD# -> Also resets all fields
       
       let defectObjects = []//Puts each defect for the bar being added into an object 
@@ -534,6 +559,10 @@ export default function App() {
                       setTotalDayBars={setTotalDayBars}
                       returnToBarInputScreen={returnToBarInputScreen}
                       submitDayToDatabase={submitFlashDayToDatabase}
+                      onSubmitUserNameNotSet={onSubmitUserNameNotSet}
+                      submitFailedBCUserName={submitFailedBCUserName}
+                      setSubmitFailedBCUserName={setSubmitFailedBCUserName}
+                      submitFailedBCUserName={submitFailedBCUserName}
                     />
                   </Route>
                   <Route path="/paint">
@@ -548,6 +577,9 @@ export default function App() {
                         setTotalDayBars={setTotalDayBars}
                         returnToBarInputScreen={returnToBarInputScreen}
                         submitDayToDatabase={submitPaintDayToDatabase}
+                        onSubmitUserNameNotSet={onSubmitUserNameNotSet}
+                        setSubmitFailedBCUserName={setSubmitFailedBCUserName}
+                        submitFailedBCUserName={submitFailedBCUserName}
                       />                    
                   </Route>
                 </Switch>

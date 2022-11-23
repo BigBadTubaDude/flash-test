@@ -16,20 +16,19 @@ export default function ReviewForm(props) {
     const userOptionsHTML = users.map( user => {
         return (
             <option
-                value={user}
-                key={user}
+            value={user}
+            key={user}
             >
                 {user}
             </option>
         )
     })
+    let totalBarsInput = document.getElementsByClassName("totalDayBarsInput")
+    // let todayDate = props.submitDate;
     
     ///////////////////////STATES
     const [disableChangeTotalButton, setDisableChangeTotalButton] = React.useState(true); //If true, Change Total button is disabled
     
-    ////////////////////VARIABLES
-    let totalBarsInput = document.getElementsByClassName("totalDayBarsInput")
-    let todayDate = props.submitDate;
 
     //////ON CHANGE FUNCTIONS
     function onChangeSubmitDateState(event) {
@@ -62,6 +61,7 @@ export default function ReviewForm(props) {
             setDisableChangeTotalButton(false);
         }
       }
+
       ////////////CREATE HTML Functions
       var countArray = [];
     const DefectedBars = props.defectBarList.map(bar => {
@@ -109,15 +109,30 @@ export default function ReviewForm(props) {
             <SubmitButton 
               submitDayToDatabase={props.submitDayToDatabase}
               showReview={props.showReview}
+              userName={props.userName}
+              onSubmitUserNameNotSet={props.onSubmitUserNameNotSet}
+              submitFailedBCUserName={props.submitFailedBCUserName}
             />
-            <div className="userNameInputFieldContainer">
+            <div 
+                className="userNameInputFieldContainer"
+                style={props.submitFailedBCUserName && props.userName == "Not set" 
+                    ? {boxShadow: '3px 10px 42px 26px rgba(140,71,71,0.8)'} 
+                    : {}}
+            >
                 <label htmlFor='userName'>User</label>
                 <select
                     type="text" 
                     id="userName" 
                     name="userName"
+                    // defaultValue={props.userName} did not help ( username selection reverts to Not set when bar is added even though State stays the same)
                     onChange={onChangeUserName}
-                >
+                >               
+                <option
+                    value="Not set"
+                    key="NotSet"
+                    >
+                        Not set
+                </option>
                     {userOptionsHTML}
                 </select>
 
