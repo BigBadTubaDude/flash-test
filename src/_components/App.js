@@ -156,7 +156,7 @@ export default function App() {
         } else if (purpose =='getData'|| purpose=='submit') {
           fetch(url, requestOptions)
             .then(async response => {
-              console.log(response.Table);
+              console.log(response.data);
               const isJson = response.headers.get('content-type').includes('application/json');
               const data = isJson &&  await response.json();
               if (!response.ok) {
@@ -203,7 +203,7 @@ export default function App() {
           body: JSON.stringify({'query': getDataFromDB})
         };
         ///////// fetch bar id for defect bar id
-        console.log(fetchSQL(getLatestBarIdRequestOptions, 'getData'));
+        // console.log(fetchSQL(getLatestBarIdRequestOptions, 'getData'));
         
         ////////////////////////Insert bars into SQL
         //make string with queries to insert each bar
@@ -221,7 +221,7 @@ export default function App() {
              '${defectBarList[i].dipSpray[0]}',
              '${submitDate.toISOString().split('T')[0]}')`
           ;
-          console.log(insertBarsQuery);
+          // console.log(insertBarsQuery);
           if (i != defectBarList.length - 1) {
             insertBarsQuery += ",";
           } else {
@@ -237,7 +237,7 @@ export default function App() {
         };
         if (defectBarList.length > 0) {   //Only insert if there are bars to insert
           fetchSQL(insertBarRequestOption, 'submit'); //Inserts defective bars into SQL table 
-          setDefectBarList([]); //Resets list of bars on review page and in state
+          //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
         }
       }
        //Sends data to Flash Test database tables

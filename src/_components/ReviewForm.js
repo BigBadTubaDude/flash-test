@@ -66,11 +66,11 @@ export default function ReviewForm(props) {
       var countArray = [];
     const DefectedBars = props.defectBarList.map(bar => {
         countArray.push("count") // This keeps a running number for displaying next to each bar. Use .length each iteration of .map 
-        const BarDefects = bar.defects.map(defect => { //Creates each bar's individual defect list items
+        const BarDefects = bar.defects.map((defect, index) => { //Creates each bar's individual defect list items
             return (
                 <li 
                     className='reviewFormDefectItem'
-                    key={`${countArray.length}-${defect.location}-${defect.side}-${defect.orientation}-${defect.typeDefect}`}
+                    key={`${index}-${defect.location}-${defect.side}-${defect.orientation}-${defect.typeDefect}`}
                 >
                     <h3>{defect.location}</h3>
                     <h3>{defect.orientation}</h3>
