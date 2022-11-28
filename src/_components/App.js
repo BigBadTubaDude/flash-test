@@ -23,6 +23,9 @@ export default function App() {
       ? JSON.parse(localStorage.getItem('totalDayBar'))
       : 0;
   //////////////////////////////////States
+  //Retrieved states
+  const [lastBarInDB, setLastBarInDB] = React.useState();
+
   //Submitted States
   const [defectBarList, setDefectBarList] = React.useState(sessionDefectBarList);
   const [totalDayBars, setTotalDayBars] = React.useState(sessionTotalDayBars);
@@ -150,20 +153,68 @@ export default function App() {
       /////////////////////SQL Variables
       const url = "https://prod-255.westeurope.logic.azure.com:443/workflows/cb8b8807926b4b5da2815dc4c1ca90b4/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RqlOaUPwWhyuiXszWUXKPWhpkDfnjgJhccGJUwjw1BY"; 
       //////////////////SQL functions
-      function fetchSQL(requestOptions, purpose) { //Submits SQL queries and resets 
-        if (purpose == 'submit' && userName == "Not set") { //checks if query is for submitting and that userName is set. Does nothing (returns) if so
-          return;
-        } else if (purpose =='getData'|| purpose=='submit') {
+      function selectSetFetchSQL(requestOptions) { //Submits SQL queries and resets 
           fetch(url, requestOptions)
             .then(async response => {
-              console.log(response.data);
+              response.json().then(data => {
+                // set State  
+                setLastBarInDB(data.Table1[data.Table1.length - 1].BarId + 1);//sets number to first bar to be submitted
+                console.log(data.Table1[data.Table1.length - 1].BarId)
+                // console.log(data.Table1[4].BarId)
+                // console.log(response.Table1);
+              });
+              // console.log(response);
+              // response.json().then(data => {console.log(data)});
+              // console.log(response.json().then(data => {data}));
+              for (let b = 0; b < defectBarList.length; b++) {
+                for (let d = 0; d < defectBarList[b].defects.length; d++) {
+                  console.log(defectBarList[b].defects[d]);
+                }
+                setLastBarInDB(oldNumber => {return oldNumber + 1}); //sets number to next bar to be submitted
+              }
               const isJson = response.headers.get('content-type').includes('application/json');
               const data = isJson &&  await response.json();
+
               if (!response.ok) {
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
               } else {
-  
+                // console.log(data);
+              }
+              // this.setState({ postId: data.id })
+            }).catch(error => {
+              // this.setState({ errorMEssage: error.toString() })
+              console.error('an error!', error);
+              return error;
+            })
+
+        }
+      
+      function insertFetchSQL(requestOptions) { //Submits SQL queries and resets 
+        if (userName == "Not set") { //checks that userName is set. Does nothing (returns) if not
+          return;
+        } else {
+          fetch(url, requestOptions)
+            .then(async response => {
+              // response.json().then(data => {
+              //   // set State  
+              //   setLastBarInDB(data.Table1[data.Table1.length - 1].BarId)
+              //   console.log(data.Table1[2].BarId)
+              //   // console.log(response.Table1);
+              // });
+              // console.log(response);
+              // response.json().then(data => {console.log(data)});
+              // console.log(response.json().then(data => {data}));
+              
+              
+              const isJson = response.headers.get('content-type').includes('application/json');
+              const data = isJson &&  await response.json();
+
+              if (!response.ok) {
+                const error = (data && data.message) || response.status;
+                return Promise.reject(error);
+              } else {
+                // console.log(data);
               }
               // this.setState({ postId: data.id })
             }).catch(error => {
@@ -203,7 +254,7 @@ export default function App() {
           body: JSON.stringify({'query': getDataFromDB})
         };
         ///////// fetch bar id for defect bar id
-        // console.log(fetchSQL(getLatestBarIdRequestOptions, 'getData'));
+        selectSetFetchSQL(getLatestBarIdRequestOptions);
         
         ////////////////////////Insert bars into SQL
         //make string with queries to insert each bar
@@ -229,6 +280,13 @@ export default function App() {
           }
         }
 
+        ///////////////////Insert Defects into SQL
+
+var insertDefectQuery = `
+    INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
+    (BarId, )
+`;
+
         //Create requestOption 
         let insertBarRequestOption = {
           method: 'POST',
@@ -236,7 +294,7 @@ export default function App() {
           body: JSON.stringify({ 'query': insertBarsQuery })
         };
         if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-          fetchSQL(insertBarRequestOption, 'submit'); //Inserts defective bars into SQL table 
+          insertFetchSQL(insertBarRequestOption); //Inserts defective bars into SQL table 
           //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
         }
       }
