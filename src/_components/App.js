@@ -63,7 +63,7 @@ export default function App() {
 // }, [firstBarToSubmit]
 
 // )
-React.useEffect(() => {
+async function defectInsert() {
   var currentBarId = firstBarToSubmit;
   var insertDefectsQuery = `
       INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
@@ -78,27 +78,22 @@ React.useEffect(() => {
         '${defectBarList[b]['defects'][d]['orientation'][0]}',
         '${defectBarList[b]['defects'][d]['side']}',
         '${defectBarList[b]['defects'][d]['leftRight'][0]}',
-        '${submitDate.toISOString().split('T')[0]}')`
+        '${submitDate.toISOString().split('T')[0]}'),`
         ;
-        if (b != defectBarList.length - 1 && d != defectBarList.length) { //if there are more values to submit, add "," otherwise end with ";"
-          insertDefectsQuery += ",";
-        } else {
-          insertDefectsQuery += ";";
-        }
+      }
+      currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
     }
-    currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
-  }
-  let insertDefectRequestOption = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ 'query': insertDefectsQuery })
+    insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";"
+    let insertDefectRequestOption = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 'query': insertDefectsQuery })
+    };
+    if (defectBarList.length > 0) {   //Only insert if there are bars to insert
+      insertFetchSQL(insertDefectRequestOption)
+      //   //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+    }
   };
-  if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-    insertFetchSQL(insertDefectRequestOption)
-    //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
-  }
-},[firstBarToSubmit]
-);
 
   React.useEffect( () => { //Updates session storage every time total bars or defect bar list state changes
     localStorage.setItem('defectBarList', JSON.stringify(defectBarList))
@@ -200,7 +195,8 @@ React.useEffect(() => {
             .then(async response => {
               response.json().then(data => {
                 // set State  
-                setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1);//sets number to first bar to be submitted
+                console.log(requestOptions)
+                setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId));//sets number to first bar to be submitted
                 // console.log(data.Table1[4].BarId)
                 // console.log(response.Table1);
               });
@@ -215,6 +211,7 @@ React.useEffect(() => {
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
               } else {
+                return data;
                 // console.log(data);
               }
               // this.setState({ postId: data.id })
@@ -230,7 +227,13 @@ React.useEffect(() => {
         if (userName == "Not set") { //checks that userName is set. Does nothing (returns) if not
           return;
         } else {
-          fetch(url, requestOptions)
+          var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
+          const getFirstBarIdRequestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({'query': getDataFromDB})
+          };
+          fetch(url, getFirstBarIdRequestOptions)
             .then(async response => {
               // response.json().then(data => {
               //   // set State  
@@ -244,22 +247,27 @@ React.useEffect(() => {
               
               
               const isJson = response.headers.get('content-type').includes('application/json');
-              const data = isJson &&  await response.json();
+              const data = isJson && await response.json();
 
               if (!response.ok) {
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
               } else {
                 // console.log(data);
-                return Promise.resolve()
+                return "bars successfully inserted"
               }
               // this.setState({ postId: data.id })
-            })
-            .catch(error => {
+            }).then((result) => {
+              console.log(result);
+
+              // return getFirstBarIdRequestOptions        //Create query to insert each bar into SQL
+            }
+            ).catch(error => {
               // this.setState({ errorMEssage: error.toString() })
               console.error('an error!', error);
               return error;
             })
+          
         }
       }
       // async function fetchSQLTotalBars(requestOptions) { //Submits SQL queries and resets 
@@ -307,7 +315,7 @@ React.useEffect(() => {
         }
         
         ///////////////////Insert Defects into SQL Query
-        var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
+
   
         
         ///////Create requestOptions 
@@ -317,17 +325,13 @@ React.useEffect(() => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 'query': insertBarsQuery })
         };
-        //Create query to insert each bar into SQL
-        const getFirstBarIdRequestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({'query': getDataFromDB})
-        };
+
         //insert defects request options
 
         if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-          insertFetchSQL(insertBarRequestOption).then(
-            selectSetFirstBarFetchSQL(getFirstBarIdRequestOptions) //Gets the first number to be assigned to BarId for defect inserts and assigns it to firstBarToSubmit state
+          insertFetchSQL(insertBarRequestOption)
+          .then(requestOp => selectSetFirstBarFetchSQL(requestOp)
+          .then(defectInsert()) //Gets the first number to be assigned to BarId for defect inserts and assigns it to firstBarToSubmit state
           ); //Inserts defective bars into SQL table 
           ///////// fetch bar id for defect bar id
 
