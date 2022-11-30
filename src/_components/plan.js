@@ -30,12 +30,17 @@ async function defectInsert() { //66
       }
     };
 
-    function selectSetFirstBarFetchSQL(requestOptions) { //Submits SQL queries and resets 193
-        fetch(url, requestOptions)
+    async function selectSetFirstBarFetchSQL() { //Submits SQL queries and resets 193
+        var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
+        const getFirstBarIdRequestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({'query': getDataFromDB})
+        };
+        fetch(url, getFirstBarIdRequestOptions)
           .then(async response => {
             response.json().then(data => {
               // set State  
-              console.log(requestOptions)
               setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId));//sets number to first bar to be submitted
               // console.log(data.Table1[4].BarId)
               // console.log(response.Table1);
@@ -67,12 +72,7 @@ async function insertFetchSQL(requestOptions) { //Submits SQL queries and resets
     if (userName == "Not set") { //checks that userName is set. Does nothing (returns) if not
       return;
     } else {
-      var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
-      const getFirstBarIdRequestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({'query': getDataFromDB})
-      };
+
       fetch(url, getFirstBarIdRequestOptions)
         .then(async response => {
           const isJson = response.headers.get('content-type').includes('application/json');
@@ -83,7 +83,7 @@ async function insertFetchSQL(requestOptions) { //Submits SQL queries and resets
             return Promise.reject(error);
           } else {
             // console.log(data);
-            return "bar id gotten"
+            return "bars submitted"
           }
           // this.setState({ postId: data.id })
         }).catch(error => {
@@ -137,9 +137,9 @@ async function insertFetchSQL(requestOptions) { //Submits SQL queries and resets
 
     if (defectBarList.length > 0) {   //Only insert if there are bars to insert
       insertFetchSQL(insertBarRequestOption)
-      .then(requestOp => selectSetFirstBarFetchSQL(requestOp)
+      .then(selectSetFirstBarFetchSQL())
       .then(defectInsert()) //Gets the first number to be assigned to BarId for defect inserts and assigns it to firstBarToSubmit state
-      ); //Inserts defective bars into SQL table 
+      ; //Inserts defective bars into SQL table 
       ///////// fetch bar id for defect bar id
 
       //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT

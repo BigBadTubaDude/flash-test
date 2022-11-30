@@ -63,7 +63,7 @@ export default function App() {
 // }, [firstBarToSubmit]
 
 // )
-async function defectInsert() {
+function defectInsert() {
   var currentBarId = firstBarToSubmit;
   var insertDefectsQuery = `
       INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
@@ -189,14 +189,21 @@ async function defectInsert() {
       var currentDefectCountDisplay = currentDefectCount; //using this variable allows changing of state in one componet(BarTypeCard where up and down buttons are pressed) to be passed up and then passed down as a variable to panel 1 header to be displayed
       /////////////////////SQL Variables
       const url = "https://prod-255.westeurope.logic.azure.com:443/workflows/cb8b8807926b4b5da2815dc4c1ca90b4/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RqlOaUPwWhyuiXszWUXKPWhpkDfnjgJhccGJUwjw1BY"; 
+
+
       //////////////////SQL functions
-      function selectSetFirstBarFetchSQL(requestOptions) { //Submits SQL queries and resets 
-          fetch(url, requestOptions)
+      function selectSetFirstBarFetchSQL() { //Submits SQL queries and resets 
+        var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
+        const getFirstBarIdRequestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({'query': getDataFromDB})
+        };
+        fetch(url, getFirstBarIdRequestOptions)
             .then(async response => {
               response.json().then(data => {
                 // set State  
-                console.log(requestOptions)
-                setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId));//sets number to first bar to be submitted
+                setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1);//sets number to first bar to be submitted
                 // console.log(data.Table1[4].BarId)
                 // console.log(response.Table1);
               });
@@ -223,17 +230,11 @@ async function defectInsert() {
 
         }
       
-      async function insertFetchSQL(requestOptions) { //Submits SQL queries and resets 
+      function insertFetchSQL(requestOptions) { //Submits SQL queries and resets 
         if (userName == "Not set") { //checks that userName is set. Does nothing (returns) if not
           return;
         } else {
-          var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
-          const getFirstBarIdRequestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({'query': getDataFromDB})
-          };
-          fetch(url, getFirstBarIdRequestOptions)
+          fetch(url, requestOptions)
             .then(async response => {
               // response.json().then(data => {
               //   // set State  
@@ -257,10 +258,6 @@ async function defectInsert() {
                 return "bars successfully inserted"
               }
               // this.setState({ postId: data.id })
-            }).then((result) => {
-              console.log(result);
-
-              // return getFirstBarIdRequestOptions        //Create query to insert each bar into SQL
             }
             ).catch(error => {
               // this.setState({ errorMEssage: error.toString() })
@@ -330,9 +327,9 @@ async function defectInsert() {
 
         if (defectBarList.length > 0) {   //Only insert if there are bars to insert
           insertFetchSQL(insertBarRequestOption)
-          .then(requestOp => selectSetFirstBarFetchSQL(requestOp)
-          .then(defectInsert()) //Gets the first number to be assigned to BarId for defect inserts and assigns it to firstBarToSubmit state
-          ); //Inserts defective bars into SQL table 
+          .then(() => selectSetFirstBarFetchSQL())
+          .then(() => defectInsert()) //Gets the first number to be assigned to BarId for defect inserts and assigns it to firstBarToSubmit state
+          ; //Inserts defective bars into SQL table 
           ///////// fetch bar id for defect bar id
 
           //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
