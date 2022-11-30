@@ -63,34 +63,31 @@ export default function App() {
 // }, [firstBarToSubmit]
 
 // )
-function defectInsert() {
-  var currentBarId = firstBarToSubmit;
-  var insertDefectsQuery = `
-      INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
-      (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
-      VALUES `;
-  for (let b = 0; b < defectBarList.length; b++) {
-    for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
-      insertDefectsQuery += `(
-        ${currentBarId},
-        '${defectBarList[b]['defects'][d]['location']}',
-        '${defectBarList[b]['defects'][d]['typeDefect']}',
-        '${defectBarList[b]['defects'][d]['orientation'][0]}',
-        '${defectBarList[b]['defects'][d]['side']}',
-        '${defectBarList[b]['defects'][d]['leftRight'][0]}',
-        '${submitDate.toISOString().split('T')[0]}'),`
-        ;
-      }
-      currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
-    }
-    insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";"
+function defectInsert(requestOptions) {
+  // alert(requestOptions)
     let insertDefectRequestOption = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'query': insertDefectsQuery })
+      body: JSON.stringify({ 'query': requestOptions })
     };
     if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-      insertFetchSQL(insertDefectRequestOption)
+
+      fetch(url, insertDefectRequestOption)
+      .then(/*async*/ response => {
+        const isJson = response.headers.get('content-type').includes('application/json');
+        const data = isJson && /*await*/ response.json();
+        if (!response.ok) {
+          const error = (data && data.message) || response.status;
+          // alert(response.ok)
+          return Promise.reject(error);
+        } else {
+          return Promise.resolve(response.ok)
+        }
+      }            
+      ).then(ok => ok,error => {
+        console.error('an error!defect', error);
+        return error;
+      })
       //   //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
     }
   };
@@ -192,61 +189,52 @@ function defectInsert() {
 
 
       //////////////////SQL functions
-      function selectSetFirstBarFetchSQL() { //Submits SQL queries and resets 
-        var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
-        const getFirstBarIdRequestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({'query': getDataFromDB})
-        };
-        fetch(url, getFirstBarIdRequestOptions)
-            .then(async response => {
+      function selectSetFirstBarFetchSQL(requestOptions) { //Submits SQL queries and resets / 
+        // alert(requestOptions)
+        fetch(url, requestOptions)
+            .then( response => async function(resolve, reject) {
               response.json().then(data => {
                 // set State  
-                setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1);//sets number to first bar to be submitted
-                // console.log(data.Table1[4].BarId)
-                // console.log(response.Table1);
+                setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1);//
               });
-              // console.log(response);
-              // response.json().then(data => {console.log(data)});
-              // console.log(response.json().then(data => {data}));
-
               const isJson = response.headers.get('content-type').includes('application/json');
-              const data = isJson &&  await response.json();
-
+              const data = isJson && await response.json();
               if (!response.ok) {
                 const error = (data && data.message) || response.status;
+                alert("middle of selectfirstbar")
                 return Promise.reject(error);
               } else {
-                return data;
-                // console.log(data);
+                var currentBarId = firstBarToSubmit;
+                var insertDefectsQuery = `
+                    INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
+                    (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
+                    VALUES `;
+                for (let b = 0; b < defectBarList.length; b++) {
+                  for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
+                    insertDefectsQuery += `(
+                      ${currentBarId},
+                      '${defectBarList[b]['defects'][d]['location']}',
+                      '${defectBarList[b]['defects'][d]['typeDefect']}',
+                      '${defectBarList[b]['defects'][d]['orientation'][0]}',
+                      '${defectBarList[b]['defects'][d]['side']}',
+                      '${defectBarList[b]['defects'][d]['leftRight'][0]}',
+                      '${submitDate.toISOString().split('T')[0]}'),`
+                      ;
+                    }
+                    currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
+                  }
+                  insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";"
+                  alert(insertDefectsQuery + " select")
+                  return Promise.resolve(insertDefectsQuery)
               }
-              // this.setState({ postId: data.id })
-            }).catch(error => {
-              // this.setState({ errorMEssage: error.toString() })
-              console.error('an error!', error);
-              return error;
             })
-
         }
-      
       function insertFetchSQL(requestOptions) { //Submits SQL queries and resets 
         if (userName == "Not set") { //checks that userName is set. Does nothing (returns) if not
           return;
         } else {
           fetch(url, requestOptions)
-            .then(async response => {
-              // response.json().then(data => {
-              //   // set State  
-              //   setLastBarInDB(data.Table1[data.Table1.length - 1].BarId)
-              //   console.log(data.Table1[2].BarId)
-              //   // console.log(response.Table1);
-              // });
-              // console.log(response);
-              // response.json().then(data => {console.log(data)});
-              // console.log(response.json().then(data => {data}));
-              
-              
+            .then(async response => {                  
               const isJson = response.headers.get('content-type').includes('application/json');
               const data = isJson && await response.json();
 
@@ -254,16 +242,25 @@ function defectInsert() {
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
               } else {
-                // console.log(data);
-                return "bars successfully inserted"
+                var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
+                return Promise.resolve( {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({'query': getDataFromDB})
+                });
+
+                // return "bars successfully inserted"
               }
               // this.setState({ postId: data.id })
-            }
-            ).catch(error => {
-              // this.setState({ errorMEssage: error.toString() })
-              console.error('an error!', error);
+            },error => {
+              console.error('an error!bar', error);
+              alert("no")
               return error;
             })
+            .then(selRequestOptions => selectSetFirstBarFetchSQL(selRequestOptions))
+            .then(defRequestOptions => {
+              alert(defRequestOptions)
+              defectInsert(defRequestOptions)})
           
         }
       }
@@ -327,10 +324,6 @@ function defectInsert() {
 
         if (defectBarList.length > 0) {   //Only insert if there are bars to insert
           insertFetchSQL(insertBarRequestOption)
-          .then(() => selectSetFirstBarFetchSQL())
-          .then(() => defectInsert()) //Gets the first number to be assigned to BarId for defect inserts and assigns it to firstBarToSubmit state
-          ; //Inserts defective bars into SQL table 
-          ///////// fetch bar id for defect bar id
 
           //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
         }
