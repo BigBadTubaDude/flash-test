@@ -33,6 +33,7 @@ export default function App() {
   const [showReview, setShowReview] = React.useState(false);
   const todayDate = new Date();
   const [submitDate, setSubmitDate] = React.useState(todayDate)
+  const [dataState, setDataState] = React.useState();
   
   //Panel 1 States
   const [currentBarType, setCurrentBarType] = React.useState("");
@@ -58,20 +59,22 @@ export default function App() {
   ///////////////////////////////EFFECTS
   //Submitted data EFFECTS
   
-// React.useEffect( () => {
+  // React.useEffect( () => {
     
-// }, [firstBarToSubmit]
+    // }, [firstBarToSubmit]
 
-// )
+    // )
 function defectInsert(requestOptions) {
-  // alert(requestOptions)
-    let insertDefectRequestOption = {
+  // console.log(requestOptions())
+  
+  let insertDefectRequestOption = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'query': requestOptions })
+      body: JSON.stringify({ 'query': requestOptions() })
     };
     if (defectBarList.length > 0) {   //Only insert if there are bars to insert
 
+      
       fetch(url, insertDefectRequestOption)
       .then(/*async*/ response => {
         const isJson = response.headers.get('content-type').includes('application/json');
@@ -190,48 +193,50 @@ function defectInsert(requestOptions) {
 
       //////////////////SQL functions
       async function selectSetFirstBarFetchSQL(requestOptions) { //Submits SQL queries and resets / 
-        // alert(requestOptions)
-        return fetch(url, requestOptions)
-        .then( response => async function(resolve, reject) {
-          alert(response + " beginning of selectsetfirstbarsql")
-          /*await*/ response.json().then(data => {
-                // set State  
-                setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1);//
-              });
-                const isJson = response.headers.get('content-type').includes('application/json');
-                const data = isJson && await response.json();
-                if (!response.ok) {
-                  const error = (data && data.message) || response.status;
-                  alert("middle of selectfirstbar")
-                  return reject(error);
-                } else {
-                  var currentBarId = firstBarToSubmit;
-                  var insertDefectsQuery = `
-                      INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
-                      (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
-                      VALUES `;
-                  for (let b = 0; b < defectBarList.length; b++) {
-                    for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
-                      insertDefectsQuery += `(
-                        ${currentBarId},
-                        '${defectBarList[b]['defects'][d]['location']}',
-                        '${defectBarList[b]['defects'][d]['typeDefect']}',
-                        '${defectBarList[b]['defects'][d]['orientation'][0]}',
-                        '${defectBarList[b]['defects'][d]['side']}',
-                        '${defectBarList[b]['defects'][d]['leftRight'][0]}',
-                        '${submitDate.toISOString().split('T')[0]}'),`
-                        ;
-                      }
-                      currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
-                    }
-                    insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";"
-                    alert(insertDefectsQuery + " info returned by selectSetFirstBarFetch")
-                    return resolve(insertDefectsQuery)
-                }
-              })
+        // console.log(requestOptions)
+        return async function(resolve, reject) {
+          const response = await fetch(url, requestOptions);
+          response.json().then(data => {
+            // console.log("made it here" + data);
+            // set State  
+            setDataState(data);
+            setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1); //
+          });
+          const isJson = response.headers.get('content-type').includes('application/json');
+          const data_1 = isJson && dataState;
+        if (!response.ok) {
+          const error = (data_1 && data_1.message) || response.status;
+          alert("middle of selectfirstbar");
+          return reject(error);
+        } else {
+          var currentBarId = firstBarToSubmit;
+          // console.log(response.ok)
+          var insertDefectsQuery = `
+                    INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
+                    (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
+                    VALUES `;
+          for (let b = 0; b < defectBarList.length; b++) {
+            for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
+              insertDefectsQuery += `(
+                      ${currentBarId},
+                      '${defectBarList[b]['defects'][d]['location']}',
+                      '${defectBarList[b]['defects'][d]['typeDefect']}',
+                      '${defectBarList[b]['defects'][d]['orientation'][0]}',
+                      '${defectBarList[b]['defects'][d]['side']}',
+                      '${defectBarList[b]['defects'][d]['leftRight'][0]}',
+                      '${submitDate.toISOString().split('T')[0]}'),`;
             }
-        
-      function insertFetchSQL(requestOptions) { //Submits SQL queries and resets 
+            currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
+          }
+          
+          insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";";
+          console.log(insertDefectsQuery);
+          return insertDefectsQuery;
+        }
+        };
+            }
+        //https://javascript.info/promise-api
+      async function insertFetchSQL(requestOptions) { //Submits SQL queries and resets 
         if (userName == "Not set") { //checks that userName is set. Does nothing (returns) if not
           return;
         } else {
