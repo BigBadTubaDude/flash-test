@@ -64,42 +64,11 @@ export default function App() {
     // }, [firstBarToSubmit]
 
     // )
-function defectInsert(requestOptions) {
-  // console.log(requestOptions())
-  
-  let insertDefectRequestOption = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'query': requestOptions() })
-    };
-    if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-
-      
-      fetch(url, insertDefectRequestOption)
-      .then(/*async*/ response => {
-        const isJson = response.headers.get('content-type').includes('application/json');
-        const data = isJson && /*await*/ response.json();
-        if (!response.ok) {
-          const error = (data && data.message) || response.status;
-          // alert(response.ok)
-          return Promise.reject(error);
-        } else {
-          return Promise.resolve(response.ok)
-        }
-      }            
-      ).then(ok => ok,error => {
-        console.error('an error!defect', error);
-        return error;
-      })
-      //   //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
-    }
-  };
 
   React.useEffect( () => { //Updates session storage every time total bars or defect bar list state changes
     localStorage.setItem('defectBarList', JSON.stringify(defectBarList))
     localStorage.setItem('totalDayBar', JSON.stringify(totalDayBars))
   }, [defectBarList, totalDayBars]
-  
   )
   //Panel 1 EFFECTS
   React.useEffect( () => {//On change of current bar type
@@ -109,233 +78,244 @@ function defectInsert(requestOptions) {
     },  [currentBarType]
     );
     
-    React.useEffect( () => {//On change of current material type
-      if (currentBarType == "CU Straight") {//If bar type is CU Straight and user tries to change material to AL, will not let them
-        setCurrentMaterialType("Copper");
-      }
-    },  [currentMaterialType]
-    );
+  React.useEffect( () => {//On change of current material type
+    if (currentBarType == "CU Straight") {//If bar type is CU Straight and user tries to change material to AL, will not let them
+      setCurrentMaterialType("Copper");
+    }
+  },  [currentMaterialType]
+  );
 
-    React.useEffect( () => {//On change of current number of Defects
-      currentDefectCountDisplay = currentDefectCount;
-    },  [currentDefectCount]
-    );
+  React.useEffect( () => {//On change of current number of Defects
+    currentDefectCountDisplay = currentDefectCount;
+  },  [currentDefectCount]
+  );
     
-    React.useEffect( () => {
-      // if(currentRackPosition == "") {
-        document.getElementsByClassName("rackPositionRadioButton").checked = false;
-        // }
-      }, [currentRackPosition]
-      );
-      
-      //Panel 2 EFFECTS
-      React.useEffect( () => { //When number of defects is reduced, State arrays are truncated so as not to include extra data
-        if (currentDefectCount != "") {
-          setLocationArray(oldArray => {
-            return oldArray.slice(0, currentDefectCount)
-          })
-          setOrientationArray(oldArray => {
-            return oldArray.slice(0, currentDefectCount)
-          })
-          setTypeDefectArray(oldArray => {
-            return oldArray.slice(0, currentDefectCount)
-          })
-        }
-        
-      }, [currentDefectCount]
-      );
-      React.useEffect(() => {
-        if (currentBarType != "" 
-        && currentMaterialType != "" 
-        && !locationArray.includes("")
-        && !typeDefectArray.includes("")
-        && currentPhaseSelected != ""
-        && currentHumidity != ""
-        && currentWidth != "") {
-          setShowAddButton(true);
-        } else {
-          setShowAddButton(false);
-        }
-      }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount, currentPhaseSelected, currentWidth, currentHumidity]
-      )
-      
-      ////////////////////////////////Variables
-      //Review Page
-      ////////////Form not ready to be submitted functions
-      function onSubmitUserNameNotSet(event) {
-        event.preventDefault();
-        setSubmitFailedBCUserName(true)
-        setTimeout(() => {
-            setSubmitFailedBCUserName(false)
-        }, 5000);
-      }
-
-
-      //Panel1 Variables
-      //Holds all bar types. add or subtract from this array and the corresponding card will be added/deleted automatically
-      const barTypes = [
-        "DL Straight", 
-        "FL Straight", 
-        "CU Straight", 
-        "OFFSET: EOL/EOR", 
-        "PANEL FLANGE", 
-        "COMBO FLG", 
-        "OFFSET: FOU/FOD",
-        "ELBOW: FED/FEU", 
-        "ELBOW ER/EL", 
-        "COMBO ELBOW",
-        "FLAT TEE",
-      ]
-      var currentDefectCountDisplay = currentDefectCount; //using this variable allows changing of state in one componet(BarTypeCard where up and down buttons are pressed) to be passed up and then passed down as a variable to panel 1 header to be displayed
-      /////////////////////SQL Variables
-      const url = "https://prod-255.westeurope.logic.azure.com:443/workflows/cb8b8807926b4b5da2815dc4c1ca90b4/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RqlOaUPwWhyuiXszWUXKPWhpkDfnjgJhccGJUwjw1BY"; 
-
-
-      //////////////////SQL functions
-      async function selectSetFirstBarFetchSQL(requestOptions) { //Submits SQL queries and resets / 
-        // console.log(requestOptions)
-        return async function(resolve, reject) {
-          const response = await fetch(url, requestOptions);
-          response.json().then(data => {
-            // console.log("made it here" + data);
-            // set State  
-            setDataState(data);
-            setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1); //
-          });
-          const isJson = response.headers.get('content-type').includes('application/json');
-          const data_1 = isJson && dataState;
-        if (!response.ok) {
-          const error = (data_1 && data_1.message) || response.status;
-          alert("middle of selectfirstbar");
-          return reject(error);
-        } else {
-          var currentBarId = firstBarToSubmit;
-          // console.log(response.ok)
-          var insertDefectsQuery = `
-                    INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
-                    (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
-                    VALUES `;
-          for (let b = 0; b < defectBarList.length; b++) {
-            for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
-              insertDefectsQuery += `(
-                      ${currentBarId},
-                      '${defectBarList[b]['defects'][d]['location']}',
-                      '${defectBarList[b]['defects'][d]['typeDefect']}',
-                      '${defectBarList[b]['defects'][d]['orientation'][0]}',
-                      '${defectBarList[b]['defects'][d]['side']}',
-                      '${defectBarList[b]['defects'][d]['leftRight'][0]}',
-                      '${submitDate.toISOString().split('T')[0]}'),`;
-            }
-            currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
-          }
-          
-          insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";";
-          console.log(insertDefectsQuery);
-          return insertDefectsQuery;
-        }
-        };
-            }
-        //https://javascript.info/promise-api
-      async function insertFetchSQL(requestOptions) { //Submits SQL queries and resets 
-        if (userName == "Not set") { //checks that userName is set. Does nothing (returns) if not
-          return;
-        } else {
-          fetch(url, requestOptions)
-            .then(async response => {                  
-              const isJson = response.headers.get('content-type').includes('application/json');
-              const data = isJson && await response.json();
-
-              if (!response.ok) {
-                const error = (data && data.message) || response.status;
-                return Promise.reject(error);
-              } else {
-                var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
-                return Promise.resolve( {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({'query': getDataFromDB})
-                });
-
-                // return "bars successfully inserted"
-              }
-              // this.setState({ postId: data.id })
-            },error => {
-              console.error('an error!bar', error);
-              // alert("no")
-              return error;
-            })
-            .then(selRequestOptions => selectSetFirstBarFetchSQL(selRequestOptions))
-            .then(defRequestOptions => {
-              // alert(defRequestOptions + "passing to defectInsert")
-              defectInsert(defRequestOptions)})
-          
-        }
-      }
-      // async function fetchSQLTotalBars(requestOptions) { //Submits SQL queries and resets 
-      //   return fetch(url, requestOptions)
-      //     .then(async response => {
-      //       // console.log(response);
-      //       const isJson = response.headers.get('content-type').includes('application/json');
-      //       const data = isJson &&  await response.json();
-      //       if (!response.ok) {
-      //         const error = (data && data.message) || response.status;
-      //         return Promise.reject(error);
-      //       } else return response;
-      //       // this.setState({ postId: data.id })
-      //     }).catch(error => {
-      //       // this.setState({ errorMEssage: error.toString() })
-      //       console.error('Already an entry for this user/date', error);
-      //     })
+  React.useEffect( () => {
+    // if(currentRackPosition == "") {
+      document.getElementsByClassName("rackPositionRadioButton").checked = false;
       // }
-        //Sends data to Paint database tables
+    }, [currentRackPosition]
+    );
+      
+  //Panel 2 EFFECTS
+  React.useEffect( () => { //When number of defects is reduced, State arrays are truncated so as not to include extra data
+    if (currentDefectCount != "") {
+      setLocationArray(oldArray => {
+        return oldArray.slice(0, currentDefectCount)
+      })
+      setOrientationArray(oldArray => {
+        return oldArray.slice(0, currentDefectCount)
+      })
+      setTypeDefectArray(oldArray => {
+        return oldArray.slice(0, currentDefectCount)
+      })
+    }
+    
+  }, [currentDefectCount]
+  );
 
-      function submitPaintDayToDatabase(event) {
-        event.preventDefault();            
-        ////////////////////////Insert bars into SQL
-        //make string with queries to insert each bar
-        var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
-        (UserName, BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
-        for (let i = 0; i < defectBarList.length; i++) {
-          insertBarsQuery += `
-             ('${userName}',
-              '${defectBarList[i].barType}',
-             '${defectBarList[i].materialType}',
-             ${parseInt(defectBarList[i].width)},
-             ${parseInt(defectBarList[i].humidity)},
-             '${parseInt(defectBarList[i].temp)}',
-             '${defectBarList[i].phase}','${defectBarList[i].rackPosition}',
-             '${defectBarList[i].dipSpray[0]}',
-             '${submitDate.toISOString().split('T')[0]}')`
-             ;
-          // console.log(insertBarsQuery);
-          if (i != defectBarList.length - 1) {
-            insertBarsQuery += ",";
-          } else {
-            insertBarsQuery += ";";
-          }
-        }
-        
-        ///////////////////Insert Defects into SQL Query
+  React.useEffect(() => {
+    if (currentBarType != "" 
+    && currentMaterialType != "" 
+    && !locationArray.includes("")
+    && !typeDefectArray.includes("")
+    && currentPhaseSelected != ""
+    && currentHumidity != ""
+    && currentWidth != "") {
+      setShowAddButton(true);
+    } else {
+      setShowAddButton(false);
+    }
+  }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount, currentPhaseSelected, currentWidth, currentHumidity]
+  )
+      
+  ////////////////////////////////Variables
+  //Review Page
+  ////////////Form not ready to be submitted functions
+  function onSubmitUserNameNotSet(event) {
+    event.preventDefault();
+    setSubmitFailedBCUserName(true)
+    setTimeout(() => {
+        setSubmitFailedBCUserName(false)
+    }, 5000);
+  }
 
+
+  //Panel1 Variables
+  //Holds all bar types. add or subtract from this array and the corresponding card will be added/deleted automatically
+  const barTypes = [
+    "DL Straight", 
+    "FL Straight", 
+    "CU Straight", 
+    "OFFSET: EOL/EOR", 
+    "PANEL FLANGE", 
+    "COMBO FLG", 
+    "OFFSET: FOU/FOD",
+    "ELBOW: FED/FEU", 
+    "ELBOW ER/EL", 
+    "COMBO ELBOW",
+    "FLAT TEE",
+  ]
+  var currentDefectCountDisplay = currentDefectCount; //using this variable allows changing of state in one componet(BarTypeCard where up and down buttons are pressed) to be passed up and then passed down as a variable to panel 1 header to be displayed
+  /////////////////////SQL Variables
+  const url = "https://prod-255.westeurope.logic.azure.com:443/workflows/cb8b8807926b4b5da2815dc4c1ca90b4/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RqlOaUPwWhyuiXszWUXKPWhpkDfnjgJhccGJUwjw1BY"; 
+
+
+  //////////////////SQL functions
   
-        
-        ///////Create requestOptions 
-        //insert bars request options
-        let insertBarRequestOption = {
+
+
+    //https://javascript.info/promise-api
+  async function insertFetchSQL(requestOptions) { //Submits SQL queries and resets 
+    if (userName == "Not set") { //checks that userName is set. Does nothing (returns) if not
+      return;
+    } 
+    else {
+      const response = await fetch(url, requestOptions)               
+      const isJson = response.headers.get('content-type').includes('application/json');
+      const data = isJson && response.json();
+      if (!response.ok) {
+        const error = (data && data.message) || response.status;
+        Promise.reject(error);
+      } 
+      else {
+        var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
+        const selectGetLastBarIDFromSQL = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 'query': insertBarsQuery })
+          body: JSON.stringify({'query': getDataFromDB})
         };
-
-        //insert defects request options
-
-        if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-          insertFetchSQL(insertBarRequestOption)
-
-          //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
-        }
+        const defRequestOptions = await selectSetFirstBarFetchSQL(selectGetLastBarIDFromSQL);
+        // console.log(defRequestOptions + "passing to defectInsert")
+        defectInsert(defRequestOptions);
       }
-       //Sends data to Flash Test database tables
+    }
+  }
+  async function selectSetFirstBarFetchSQL(requestOptions, reject, resolve) { //Submits SQL queries and resets / 
+    // console.log(requestOptions)
+    
+      const response = await fetch(url, requestOptions);
+      const getData = async function() {
+        await response.json().then(data => {
+          // set State  
+          setDataState(data);
+          setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1);
+          const isJson = response.headers.get('content-type').includes('application/json');
+          const data_1 = isJson && dataState;
+          return data_1; //
+        });
+      } 
+      const data = await getData();
+    if (!response.ok) {
+      const error = (data && data.message) || response.status;
+      alert("response.ok is " + response.ok);
+      return reject(error);
+    } else {
+      var currentBarId = firstBarToSubmit;
+      // console.log(response.ok)
+      var insertDefectsQuery = `
+                INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
+                (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
+                VALUES `;
+      for (let b = 0; b < defectBarList.length; b++) {
+        for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
+          insertDefectsQuery += `(
+                  ${currentBarId},
+                  '${defectBarList[b]['defects'][d]['location']}',
+                  '${defectBarList[b]['defects'][d]['typeDefect']}',
+                  '${defectBarList[b]['defects'][d]['orientation'][0]}',
+                  '${defectBarList[b]['defects'][d]['side']}',
+                  '${defectBarList[b]['defects'][d]['leftRight'][0]}',
+                  '${submitDate.toISOString().split('T')[0]}'),`;
+        }
+        currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
+      }
+      
+      insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";";
+      // console.log(insertDefectsQuery);
+      return Promise.resolve(insertDefectsQuery);
+    }
+  }
+  function defectInsert(requestOptions) {
+    console.log(requestOptions)
+    
+    let insertDefectRequestOption = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 'query': requestOptions })
+      };
+      if (defectBarList.length > 0) {   //Only insert if there are bars to insert
+
+        
+        fetch(url, insertDefectRequestOption)
+        .then(/*async*/ response => {
+          const isJson = response.headers.get('content-type').includes('application/json');
+          const data = isJson && /*await*/ response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.status;
+            // alert(response.ok)
+            return Promise.reject(error);
+          } else {
+            return Promise.resolve(response.ok)
+          }
+        }            
+        ).then(ok => ok,error => {
+          console.error('an error!defect', error);
+          return error;
+        })
+        //   //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+      }
+  };
+
+        //Sends data to Paint database tables
+
+  function submitPaintDayToDatabase(event) {
+    event.preventDefault();            
+    ////////////////////////Insert bars into SQL
+    //make string with queries to insert each bar
+    var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
+    (UserName, BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
+    for (let i = 0; i < defectBarList.length; i++) {
+      insertBarsQuery += `
+          ('${userName}',
+          '${defectBarList[i].barType}',
+          '${defectBarList[i].materialType}',
+          ${parseInt(defectBarList[i].width)},
+          ${parseInt(defectBarList[i].humidity)},
+          '${parseInt(defectBarList[i].temp)}',
+          '${defectBarList[i].phase}','${defectBarList[i].rackPosition}',
+          '${defectBarList[i].dipSpray[0]}',
+          '${submitDate.toISOString().split('T')[0]}')`
+          ;
+      // console.log(insertBarsQuery);
+      if (i != defectBarList.length - 1) {
+        insertBarsQuery += ",";
+      } else {
+        insertBarsQuery += ";";
+      }
+    }
+    
+    ///////////////////Insert Defects into SQL Query
+
+
+    
+    ///////Create requestOptions 
+    //insert bars request options
+    let insertBarRequestOption = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 'query': insertBarsQuery })
+    };
+
+    //insert defects request options
+
+    if (defectBarList.length > 0) {   //Only insert if there are bars to insert
+      insertFetchSQL(insertBarRequestOption)
+
+      //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+    }
+  }
+  //Sends data to Flash Test database tables
   function submitFlashDayToDatabase(event) {
     event.preventDefault();
   }
