@@ -1,6 +1,6 @@
 import React from 'react';
 import SubmitButton from "./SubmitButton"
-import CancelButton from "./CancelButton"
+import BackButton from "./BackButton"
 
 export default function ReviewForm(props) {
     //////////////////////////Variables
@@ -103,16 +103,18 @@ export default function ReviewForm(props) {
 
     return (
         <form className={props.showReview 
-        ? 'showReviewForm' : 'popupForm'
-        }>
+        ? 'showReviewForm' : 'popupForm'}
+        onKeyDown={(event) => {if (event.key == 'Enter') event.preventDefault();}} //Prevents user from submitting form with enter key
+        >
         <div className='textInputContainer'>
-            <SubmitButton 
-              submitDayToDatabase={props.submitDayToDatabase}
-              showReview={props.showReview}
-              userName={props.userName}
-              onSubmitUserNameNotSet={props.onSubmitUserNameNotSet}
-              submitFailedBCUserName={props.submitFailedBCUserName}
-            />
+            <button                             
+                className={`${props.showReview && "showSubmit"} finalSubmitButton reviewButton`}
+                onClick={props.userName != 'Not set' 
+                        ? props.submitDayToDatabase
+                        : props.onSubmitUserNameNotSet}
+                >
+                Submit
+            </button>
             <div 
                 className="userNameInputFieldContainer"
                 style={props.submitFailedBCUserName && props.userName == "Not set" 
@@ -165,7 +167,7 @@ export default function ReviewForm(props) {
                 Change Total
                 </button>
             </div>
-                <CancelButton 
+                <BackButton 
                     returnToBarInputScreen={props.returnToBarInputScreen}
                 />
         </div>

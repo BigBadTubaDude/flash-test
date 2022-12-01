@@ -57,13 +57,7 @@ export default function App() {
   const [submitFailedBCUserName, setSubmitFailedBCUserName] = React.useState(false);
   
   ///////////////////////////////EFFECTS
-  //Submitted data EFFECTS
-  
-  // React.useEffect( () => {
-    
-    // }, [firstBarToSubmit]
-
-    // )
+  //SESSION data EFFECTS
 
   React.useEffect( () => { //Updates session storage every time total bars or defect bar list state changes
     localStorage.setItem('defectBarList', JSON.stringify(defectBarList))
@@ -163,32 +157,123 @@ export default function App() {
 
   //////////////////SQL functions
   
+  function submitPaintDayToDatabase(event) {
+    event.preventDefault();            
+    ////////////////////////Insert bars into SQL
+    //make string with queries to insert each bar
+    var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
+    (UserName, BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
+    for (let i = 0; i < defectBarList.length; i++) {
+      insertBarsQuery += `
+          ('${userName}',
+          '${defectBarList[i].barType}',
+          '${defectBarList[i].materialType}',
+          ${parseInt(defectBarList[i].width)},
+          ${parseInt(defectBarList[i].humidity)},
+          '${parseInt(defectBarList[i].temp)}',
+          '${defectBarList[i].phase}','${defectBarList[i].rackPosition}',
+          '${defectBarList[i].dipSpray[0]}',
+          '${submitDate.toISOString().split('T')[0]}')`
+          ;
+      // console.log(insertBarsQuery);
+      if (i != defectBarList.length - 1) {
+        insertBarsQuery += ",";
+      } else {
+        insertBarsQuery += ";";
+      }
+    }
 
+    var insertTotalBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Total_Bars_Data]
+    (UserName, dateEntered, totalBars) VALUES (
+    '${userName}',
+    '${submitDate.toISOString().split('T')[0]}',
+    ${totalDayBars}
+    )`;
+    
+    ///////Create requestOptions 
+    //insert bars request options
+    let insertBarRequestOption = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 'query': insertBarsQuery })
+    };
+    //insert bars request options
+    let insertTotalBarsRequestOption = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 'query': insertTotalBarsQuery })
+    };
+
+    //insert defects request options
+
+    if (defectBarList.length > 0) {   //Only insert if there are bars to insert
+      insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
+
+      //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+    }
+  }
 
     //https://javascript.info/promise-api
-  async function insertFetchSQL(requestOptions) { //Submits SQL queries and resets 
+  async function insertFetchSQL(barRequestOptions, totalRequestOptions) { //Submits SQL queries and resets 
     if (userName == "Not set") { //checks that userName is set. Does nothing (returns) if not
       return;
     } 
     else {
-      const response = await fetch(url, requestOptions)               
-      const isJson = response.headers.get('content-type').includes('application/json');
-      const data = isJson && response.json();
-      if (!response.ok) {
-        const error = (data && data.message) || response.status;
-        Promise.reject(error);
-      } 
-      else {
-        var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
-        const selectGetLastBarIDFromSQL = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({'query': getDataFromDB})
-        };
-        const defRequestOptions = await selectSetFirstBarFetchSQL(selectGetLastBarIDFromSQL);
-        // console.log(defRequestOptions + "passing to defectInsert")
-        defectInsert(defRequestOptions);
+      const response = 
+        await Promise.all( //Trys to insert bars and total amount for day. If either fails, returns error
+          [
+            fetch(url, barRequestOptions),
+            insertTotalBars(totalRequestOptions)
+          ]
+      )
+      console.log(response)
+      for (let i = 0; i < response.length; i++) {
+        const isJson = response[i].headers.get('content-type').includes('application/json');
+        const data = isJson && response[i].json();
+        if (!response[i].ok) {
+          const error = (data && data.message) || response[i].status;
+          return Promise.reject(error);
+        } 
       }
+      var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
+      const selectGetLastBarIDFromSQL = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({'query': getDataFromDB})
+      };
+      console.log("about to pass to selectSetFirstBarSQL");
+      console.log(selectGetLastBarIDFromSQL);
+      const defRequestOptions = await selectSetFirstBarFetchSQL(selectGetLastBarIDFromSQL);
+      // console.log(defRequestOptions + "passing to defectInsert")
+      defectInsert(defRequestOptions);
+    }
+  }
+  async function insertTotalBars(requestOptions) {//Checks if user has already submitted totals for the day. If so,  asks user if they want to override. Then overrides if yes
+    //Looks in SQL to see if user has already submitted for date
+    const selectTotalEntries = `
+      SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Total_Bars_Data] 
+      WHERE userName='${userName}'
+      AND dateEntered='${submitDate.toISOString().split('T')[0]}'
+    `
+    const selectTotalEntriesRequestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({'query': selectTotalEntries})
+    };
+    const response = await fetch(url, selectTotalEntriesRequestOptions);
+    const data = await response.json()
+    // console.log(data);
+    // console.log(response)
+    if (Object.keys(data).length == 0) {
+      // console.log("total for " + submitDate.toISOString().split('T')[0] + " submitted.")
+      return fetch(url, requestOptions)
+      .catch(error => {
+        console.log(error + " total not submitted");
+        return error;
+      })
+    } else { //If user already has a total day bars entry for submitdate date
+      console.log("User already submiited for this day"); //add feature to allow user to override old data
+      throw new Error("Already user/date match in database");
     }
   }
   async function selectSetFirstBarFetchSQL(requestOptions, reject, resolve) { //Submits SQL queries and resets / 
@@ -196,7 +281,7 @@ export default function App() {
     
       const response = await fetch(url, requestOptions);
       const getData = async function() {
-        await response.json().then(data => {
+        response.json().then(data => {
           // set State  
           setDataState(data);
           setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1);
@@ -245,15 +330,13 @@ export default function App() {
         body: JSON.stringify({ 'query': requestOptions })
       };
       if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-
-        
         fetch(url, insertDefectRequestOption)
-        .then(/*async*/ response => {
+        .then( response => {
           const isJson = response.headers.get('content-type').includes('application/json');
-          const data = isJson && /*await*/ response.json();
+          const data = isJson &&  response.json();
           if (!response.ok) {
             const error = (data && data.message) || response.status;
-            // alert(response.ok)
+            alert(response.ok)
             return Promise.reject(error);
           } else {
             return Promise.resolve(response.ok)
@@ -263,58 +346,14 @@ export default function App() {
           console.error('an error!defect', error);
           return error;
         })
-        //   //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+       setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
       }
   };
 
         //Sends data to Paint database tables
 
-  function submitPaintDayToDatabase(event) {
-    event.preventDefault();            
-    ////////////////////////Insert bars into SQL
-    //make string with queries to insert each bar
-    var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
-    (UserName, BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
-    for (let i = 0; i < defectBarList.length; i++) {
-      insertBarsQuery += `
-          ('${userName}',
-          '${defectBarList[i].barType}',
-          '${defectBarList[i].materialType}',
-          ${parseInt(defectBarList[i].width)},
-          ${parseInt(defectBarList[i].humidity)},
-          '${parseInt(defectBarList[i].temp)}',
-          '${defectBarList[i].phase}','${defectBarList[i].rackPosition}',
-          '${defectBarList[i].dipSpray[0]}',
-          '${submitDate.toISOString().split('T')[0]}')`
-          ;
-      // console.log(insertBarsQuery);
-      if (i != defectBarList.length - 1) {
-        insertBarsQuery += ",";
-      } else {
-        insertBarsQuery += ";";
-      }
-    }
-    
-    ///////////////////Insert Defects into SQL Query
 
 
-    
-    ///////Create requestOptions 
-    //insert bars request options
-    let insertBarRequestOption = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'query': insertBarsQuery })
-    };
-
-    //insert defects request options
-
-    if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-      insertFetchSQL(insertBarRequestOption)
-
-      //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
-    }
-  }
   //Sends data to Flash Test database tables
   function submitFlashDayToDatabase(event) {
     event.preventDefault();
@@ -503,6 +542,7 @@ export default function App() {
   function returnToBarInputScreen(event) {
     event.preventDefault();
     setShowReview(false);
+    setUserName("Not set");
   }
   /////////////////////////////////////Panel 2
   function changeLeftRightState(event, number) {
