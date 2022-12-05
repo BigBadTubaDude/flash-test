@@ -112,7 +112,7 @@ export default function ReviewForm(props) {
                 onClick={props.userName != 'Not set' 
                         ? props.submitDayToDatabase
                         : props.onSubmitUserNameNotSet}
-                >
+            >
                 Submit
             </button>
             <div 
