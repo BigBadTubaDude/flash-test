@@ -39,7 +39,6 @@ html, body {
   box-shadow: (--incomplete-glow) 0px 0px 10px 200px inset;
 } */
 
-
 .appContainer {
   display: grid;
   position: relative;
@@ -92,7 +91,7 @@ html, body {
   width: 100%;
   font-size: calc(8px + 2vmin);
   color: var(--text-color);
-
+  
   
   
   /* content:" "; */
@@ -109,7 +108,7 @@ html, body {
   align-self: center;
   display: grid;
   grid-template-columns: 3.5em 3.5em;
-
+  
   justify-items: center;
 }
 .P1HeaderQuarter2 > * { /* 2 divs each holding temp/humidity h2s and thier input boxes*/
@@ -117,16 +116,17 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  
 }
 .P1HeaderQuarter2 input { /*Text inputs for temp and humidity*/
   width: 2.0em;
   height: 1.5em;
   color: black;
   font-size: .75em;
-
+  
   
 }
+
 .P1HeaderQuarter2 > div p { /* % and F after humidity and temp inputs*/
   /* position: absolute; */
   /* right: 0;
@@ -321,9 +321,7 @@ button.noHighlight:focus {
 .barTypeCard {
   grid-column: span 2;
   cursor: pointer;
-  
 }
-
 
 .barTypeCard > h1 {
   color: var(--card-text-color);
@@ -357,6 +355,15 @@ button.reviewShow {
 }
 button.reviewHidden {
   visibility: hidden;
+}
+button.disabled.reviewButton {
+  content: "Processing";
+  background-color: rgb(170,170,170);
+  -webkit-box-shadow: inset 0px 0px 5px rgb(170,170,170);
+     -moz-box-shadow: inset 0px 0px 5px rgb(170,170,170);
+          box-shadow: inset 0px 0px 10px rgb(170,170,170);
+   outline: none;
+
 }
 button.backButton {
   grid-template-rows: 1fr;

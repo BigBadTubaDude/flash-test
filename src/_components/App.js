@@ -55,6 +55,7 @@ export default function App() {
   const [leftRightArray, setLeftRightArray] = React.useState(["Right"])
   //Review Page States
   const [submitFailedBCUserName, setSubmitFailedBCUserName] = React.useState(false);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = React.useState(false);
   
   ///////////////////////////////EFFECTS
   //SESSION data EFFECTS
@@ -206,7 +207,8 @@ export default function App() {
 
     //insert defects request options
 
-    if (defectBarList.length > 0) {   //Only insert if there are bars to insert
+    if (defectBarList.length > 0) { 
+        //Only insert if there are bars to insert
       insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
 
       //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
@@ -219,6 +221,8 @@ export default function App() {
       return;
     } 
     else {
+      document.getElementsByClassName('finalSubmitButton')[0].disabled = true;
+      setSubmitButtonDisabled(true);
       const response = 
         await Promise.all( //Trys to insert bars and total amount for day. If either fails, returns error
           [
@@ -226,7 +230,7 @@ export default function App() {
             insertTotalBars(totalRequestOptions)
           ]
       )
-      console.log(response)
+      // .catch()
       for (let i = 0; i < response.length; i++) {
         const isJson = response[i].headers.get('content-type').includes('application/json');
         const data = isJson && response[i].json();
@@ -241,8 +245,6 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({'query': getDataFromDB})
       };
-      console.log("about to pass to selectSetFirstBarSQL");
-      console.log(selectGetLastBarIDFromSQL);
       const defRequestOptions = await selectSetFirstBarFetchSQL(selectGetLastBarIDFromSQL);
       // console.log(defRequestOptions + "passing to defectInsert")
       defectInsert(defRequestOptions);
@@ -272,7 +274,9 @@ export default function App() {
         return error;
       })
     } else { //If user already has a total day bars entry for submitdate date
-      console.log("User already submiited for this day"); //add feature to allow user to override old data
+      alert("User already submiited for this day"); //add feature to allow user to override old data
+      setSubmitButtonDisabled(false);
+      document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
       throw new Error("Already user/date match in database");
     }
   }
@@ -346,7 +350,13 @@ export default function App() {
           console.error('an error!defect', error);
           return error;
         })
+        // .finally(() => {
+        //   setSubmitButtonDisabled(false);
+        //   document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
+        // })
        setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+        setSubmitButtonDisabled(false);
+        document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
       }
   };
 
@@ -673,6 +683,8 @@ export default function App() {
                 <Switch>
                   <Route path="/flash">
                     <ReviewForm 
+                      setSubmitButtonDisabled={setSubmitButtonDisabled}
+                      submitButtonDisabled={submitButtonDisabled}
                       defectBarList={defectBarList}
                       showReview={showReview}
                       submitDate={submitDate}
@@ -686,11 +698,12 @@ export default function App() {
                       onSubmitUserNameNotSet={onSubmitUserNameNotSet}
                       submitFailedBCUserName={submitFailedBCUserName}
                       setSubmitFailedBCUserName={setSubmitFailedBCUserName}
-                      submitFailedBCUserName={submitFailedBCUserName}
                     />
                   </Route>
                   <Route path="/paint">
                     <ReviewForm 
+                        setSubmitButtonDisabled={setSubmitButtonDisabled}
+                        submitButtonDisabled={submitButtonDisabled}
                         defectBarList={defectBarList}
                         showReview={showReview}
                         submitDate={submitDate}

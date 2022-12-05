@@ -1,5 +1,4 @@
 import React from 'react';
-import SubmitButton from "./SubmitButton"
 import BackButton from "./BackButton"
 
 export default function ReviewForm(props) {
@@ -108,12 +107,12 @@ export default function ReviewForm(props) {
         >
         <div className='textInputContainer'>
             <button                             
-                className={`${props.showReview && "showSubmit"} finalSubmitButton reviewButton`}
+                className={`${props.showReview && "showSubmit"} finalSubmitButton reviewButton ${props.submitButtonDisabled ? "disabled" : ""}`}
                 onClick={props.userName != 'Not set' 
                         ? props.submitDayToDatabase
                         : props.onSubmitUserNameNotSet}
             >
-                Submit
+            {props.submitButtonDisabled ? "Processing" : "Submit"}
             </button>
             <div 
                 className="userNameInputFieldContainer"
