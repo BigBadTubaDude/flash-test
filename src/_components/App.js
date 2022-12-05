@@ -247,6 +247,7 @@ export default function App() {
       };
       const defRequestOptions = await selectSetFirstBarFetchSQL(selectGetLastBarIDFromSQL);
       // console.log(defRequestOptions + "passing to defectInsert")
+      console.log(firstBarToSubmit);
       defectInsert(defRequestOptions);
     }
   }
@@ -282,13 +283,16 @@ export default function App() {
   }
   async function selectSetFirstBarFetchSQL(requestOptions, reject, resolve) { //Submits SQL queries and resets / 
     // console.log(requestOptions)
-    
+   
       const response = await fetch(url, requestOptions);
       const getData = async function() {
         response.json().then(data => {
           // set State  
+            //  promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
+      // await promisedSetState({ firstBarToSubmit: data.Table1[data.Table1.length - defectBarList.length].BarId });
           setDataState(data);
-          setFirstBarToSubmit((data.Table1[data.Table1.length - 1].BarId) + 1);
+          setFirstBarToSubmit((data.Table1[data.Table1.length - defectBarList.length].BarId));
+          // console.log(data.Table1[data.Table1.length - defectBarList.length].BarId)
           const isJson = response.headers.get('content-type').includes('application/json');
           const data_1 = isJson && dataState;
           return data_1; //
@@ -300,6 +304,7 @@ export default function App() {
       alert("response.ok is " + response.ok);
       return reject(error);
     } else {
+      console.log(firstBarToSubmit);
       var currentBarId = firstBarToSubmit;
       // console.log(response.ok)
       var insertDefectsQuery = `
@@ -326,13 +331,14 @@ export default function App() {
     }
   }
   function defectInsert(requestOptions) {
-    console.log(requestOptions)
+    // console.log(requestOptions)
     
     let insertDefectRequestOption = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 'query': requestOptions })
       };
+      console.log(insertDefectRequestOption)
       if (defectBarList.length > 0) {   //Only insert if there are bars to insert
         fetch(url, insertDefectRequestOption)
         .then( response => {
@@ -354,7 +360,7 @@ export default function App() {
         //   setSubmitButtonDisabled(false);
         //   document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
         // })
-       setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+      //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
         setSubmitButtonDisabled(false);
         document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
       }
