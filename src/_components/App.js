@@ -551,6 +551,8 @@ export default function App() {
 
   function returnToBarInputScreen(event) {
     event.preventDefault();
+    let userSelectElement = document.getElementById('userName');
+    userSelectElement.value = "Not set"
     setShowReview(false);
     setUserName("Not set");
   }
