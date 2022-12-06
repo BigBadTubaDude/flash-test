@@ -11,23 +11,23 @@ export default function ANTButton(props) {
       radios[i].checked = false;
     }
     //For clearing tables when working from home
-    var insertTotalBarsQuery = `DELETE FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]`;
-    let insertBarRequestOption = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'query': insertTotalBarsQuery })
-    }
-      var selectSQL = `SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]`;
-      let selectBarRequestOption = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'query': selectSQL })
-      };
-      async function seeData() {
-        let data = await fetch(url, selectBarRequestOption);
-        console.log(data.Table1)
+    // var insertTotalBarsQuery = `DELETE FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]`;
+    // let insertBarRequestOption = {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ 'query': insertTotalBarsQuery })
+    // }
+    //   var selectSQL = `SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]`;
+    //   let selectBarRequestOption = {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ 'query': selectSQL })
+    //   };
+    //   async function seeData() {
+    //     let data = await fetch(url, selectBarRequestOption);
+    //     console.log(data.Table1)
 
-      }
+    //   }
     };
   
     return (
