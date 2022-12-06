@@ -95,8 +95,6 @@ export default function ReviewForm(props) {
         )
     })
 
-    
-
     return (
         <form className={props.showReview 
         ? 'showReviewForm' : 'popupForm'}
@@ -135,7 +133,7 @@ export default function ReviewForm(props) {
                 </select>
 
             </div>
-            <div className="submitDateInputFieldContainer">
+            {/* <div className="submitDateInputFieldContainer"> Previously planned to give user option to correct previous dates. This opens the app to too many errors so corrections will be made by emailing me for now
                 <label htmlFor='submitDate'>Date</label>
                 <input 
                     type="date" 
@@ -143,7 +141,7 @@ export default function ReviewForm(props) {
                     name="submitDate"
                     onChange={onChangeSubmitDateState} 
                 />
-            </div>
+            </div> */}
             <div className="totalDayBarsInputFieldContainer">
                 <label htmlFor='totalBars'>Total Bars{` = ${props.totalDayBars} `}<br></br> {`(${props.totalDayBars - props.defectBarList.length} good + ${props.defectBarList.length} defective)`}</label>
                 <input
