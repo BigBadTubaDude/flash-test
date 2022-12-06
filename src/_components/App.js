@@ -200,60 +200,64 @@ export default function App() {
   //////////////////SQL functions
   
   function submitPaintDayToDatabase(event) {
-    event.preventDefault();            
-    ////////////////////////Insert bars into SQL
-    //make string with queries to insert each bar
-    var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
-    (UserName, BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
-    for (let i = 0; i < defectBarList.length; i++) {
-      insertBarsQuery += `
-          ('${userName}',
-          '${defectBarList[i].barType}',
-          '${defectBarList[i].materialType}',
-          ${parseInt(defectBarList[i].width)},
-          ${parseInt(defectBarList[i].humidity)},
-          '${parseInt(defectBarList[i].temp)}',
-          '${defectBarList[i].phase}','${defectBarList[i].rackPosition}',
-          '${defectBarList[i].dipSpray[0]}',
-          '${submitDate.toISOString().split('T')[0]}')`
-          ;
-      // console.log(insertBarsQuery);
-      if (i != defectBarList.length - 1) {
-        insertBarsQuery += ",";
-      } else {
-        insertBarsQuery += ";";
-      }
-    }
-
-    var insertTotalBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Total_Bars_Data]
-    (UserName, dateEntered, totalBars) VALUES (
-    '${userName}',
-    '${submitDate.toISOString().split('T')[0]}',
-    ${totalDayBars}
-    )`;
-    
-    ///////Create requestOptions 
-    //insert bars request options
-    let insertBarRequestOption = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'query': insertBarsQuery })
-    };
-    //insert bars request options
-    let insertTotalBarsRequestOption = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'query': insertTotalBarsQuery })
-    };
-
-    //insert defects request options
-
-    if (defectBarList.length > 0) { 
-        //Only insert if there are bars to insert
-      insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
-
-      //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
-    }
+    if (window.confirm("Are you ready to submit data for " + submitDate.toISOString().split('T')[0] + "?")) {
+          event.preventDefault();            
+          ////////////////////////Insert bars into SQL
+          //make string with queries to insert each bar
+          var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
+          (UserName, BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
+          for (let i = 0; i < defectBarList.length; i++) {
+            insertBarsQuery += `
+                ('${userName}',
+                '${defectBarList[i].barType}',
+                '${defectBarList[i].materialType}',
+                ${parseInt(defectBarList[i].width)},
+                ${parseInt(defectBarList[i].humidity)},
+                '${parseInt(defectBarList[i].temp)}',
+                '${defectBarList[i].phase}','${defectBarList[i].rackPosition}',
+                '${defectBarList[i].dipSpray[0]}',
+                '${submitDate.toISOString().split('T')[0]}')`
+                ;
+            // console.log(insertBarsQuery);
+            if (i != defectBarList.length - 1) {
+              insertBarsQuery += ",";
+            } else {
+              insertBarsQuery += ";";
+            }
+          }
+      
+          var insertTotalBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Total_Bars_Data]
+          (UserName, dateEntered, totalBars) VALUES (
+          '${userName}',
+          '${submitDate.toISOString().split('T')[0]}',
+          ${totalDayBars}
+          )`;
+          
+          ///////Create requestOptions 
+          //insert bars request options
+          let insertBarRequestOption = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'query': insertBarsQuery })
+          };
+          //insert bars request options
+          let insertTotalBarsRequestOption = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'query': insertTotalBarsQuery })
+          };
+      
+          //insert defects request options
+      
+          if (defectBarList.length > 0) { 
+              //Only insert if there are bars to insert
+            insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
+      
+            //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+          } else if (window.confirm("Submit without reporting any defective bars? This will only submit total bars for the day")) {
+            insertTotalBars(insertTotalBarsRequestOption)
+          }
+}
   }
 
     //https://javascript.info/promise-api
