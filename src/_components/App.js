@@ -148,8 +148,8 @@ export default function App() {
                       '${defectBarList[b]['defects'][d]['orientation'][0]}',
                       '${defectBarList[b]['defects'][d]['side']}',
                       '${defectBarList[b]['defects'][d]['leftRight'][0]}',
-                      '${submitDate.toISOString().split('T')[0]}'),
-                      2459`;
+                      '${submitDate.toISOString().split('T')[0]}',
+                      ${userName}),`;
             }
             currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
           }
@@ -202,63 +202,65 @@ export default function App() {
   
   function submitPaintDayToDatabase(event) {
     event.preventDefault();            
-    ////////////////////////Insert bars into SQL
-    //make string with queries to insert each bar
-    var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
-    (UserName, BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
-    for (let i = 0; i < defectBarList.length; i++) {
-      insertBarsQuery += `
-          ('${userName}',
-          '${defectBarList[i].barType}',
-          '${defectBarList[i].materialType}',
-          ${parseInt(defectBarList[i].width)},
-          ${parseInt(defectBarList[i].humidity)},
-          '${parseInt(defectBarList[i].temp)}',
-          '${defectBarList[i].phase}','${defectBarList[i].rackPosition}',
-          '${defectBarList[i].dipSpray[0]}',
-          '${submitDate.toISOString().split('T')[0]}')`
-          ;
-      // console.log(insertBarsQuery);
-      if (i != defectBarList.length - 1) {
-        insertBarsQuery += ",";
-      } else {
-        insertBarsQuery += ";";
-      }
-    }
-
-    var insertTotalBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Total_Bars_Data]
-    (UserName, dateEntered, totalBars) VALUES (
-    '${userName}',
-    '${submitDate.toISOString().split('T')[0]}',
-    ${totalDayBars}
-    )`;
-    
-    ///////Create requestOptions 
-    //insert bars request options
-    let insertBarRequestOption = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'query': insertBarsQuery })
-    };
-    //insert bars request options
-    let insertTotalBarsRequestOption = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'query': insertTotalBarsQuery })
-    };
-
-    //insert defects request options
-
-    if (defectBarList.length > 0) { 
-        //Only insert if there are bars to insert
-      insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
-      //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
-    }
-    else {
-      if (window.confirm("You have not added any defects. Is this correct?")) { //Verifies that user does not wish to submit any defected bars
-        insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
-      }
-    }
+    if (window.confirm("Are you sure you want to submit?")) {
+	////////////////////////Insert bars into SQL
+	    //make string with queries to insert each bar
+	    var insertBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]
+	    (UserName, BarType, Material, Width, Humidity, Temperature, Phase, Rack, DippedSprayed, dateEntered) VALUES `;
+	    for (let i = 0; i < defectBarList.length; i++) {
+	      insertBarsQuery += `
+	          ('${userName}',
+	          '${defectBarList[i].barType}',
+	          '${defectBarList[i].materialType}',
+	          ${parseInt(defectBarList[i].width)},
+	          ${parseInt(defectBarList[i].humidity)},
+	          '${parseInt(defectBarList[i].temp)}',
+	          '${defectBarList[i].phase}','${defectBarList[i].rackPosition}',
+	          '${defectBarList[i].dipSpray[0]}',
+	          '${submitDate.toISOString().split('T')[0]}')`
+	          ;
+	      // console.log(insertBarsQuery);
+	      if (i != defectBarList.length - 1) {
+	        insertBarsQuery += ",";
+	      } else {
+	        insertBarsQuery += ";";
+	      }
+	    }
+	
+	    var insertTotalBarsQuery = `INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Total_Bars_Data]
+	    (UserName, dateEntered, totalBars) VALUES (
+	    '${userName}',
+	    '${submitDate.toISOString().split('T')[0]}',
+	    ${totalDayBars}
+	    )`;
+	    
+	    ///////Create requestOptions 
+	    //insert bars request options
+	    let insertBarRequestOption = {
+	      method: 'POST',
+	      headers: { 'Content-Type': 'application/json' },
+	      body: JSON.stringify({ 'query': insertBarsQuery })
+	    };
+	    //insert bars request options
+	    let insertTotalBarsRequestOption = {
+	      method: 'POST',
+	      headers: { 'Content-Type': 'application/json' },
+	      body: JSON.stringify({ 'query': insertTotalBarsQuery })
+	    };
+	
+	    //insert defects request options
+	
+	    if (defectBarList.length > 0) { 
+	        //Only insert if there are bars to insert
+	      insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
+	      //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+	    }
+	    else {
+	      if (window.confirm("You have not added any defects. Is this correct?")) { //Verifies that user does not wish to submit any defected bars
+	        insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
+	      }
+	    }
+}
   }
 
     //https://javascript.info/promise-api
@@ -397,7 +399,7 @@ export default function App() {
           setSubmitButtonDisabled(false);
           document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
         })
-      //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+       setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
         // setSubmitButtonDisabled(false);
         // document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
       }
