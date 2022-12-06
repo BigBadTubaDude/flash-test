@@ -3,16 +3,13 @@ import BackButton from "./BackButton"
 
 export default function ReviewForm(props) {
     //////////////////////////Variables
-    const users = [
-        "SAMMY",
-        "EDDIE",
-        "CORY",
-        "SHARON",
-        "TRAVIS",
-        "BERJENATO",
-        "TEMP"
-    ];
-    const userOptionsHTML = users.map( user => {
+    var usersClockNumbers = [];
+    for (let i = 0; i < props.clockNumberArray.length; i++) {
+        usersClockNumbers.push(props.clockNumberArray[i])
+    }
+
+
+    const userOptionsHTML = usersClockNumbers.map( user => {
         return (
             <option
             value={user}

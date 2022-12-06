@@ -56,6 +56,7 @@ export default function App() {
   //Review Page States
   const [submitFailedBCUserName, setSubmitFailedBCUserName] = React.useState(false);
   const [submitButtonDisabled, setSubmitButtonDisabled] = React.useState(false);
+  const [clockNumberArray, setClockNumberArray] = React.useState([]);
   
   ///////////////////////////////EFFECTS
   //SESSION data EFFECTS
@@ -91,73 +92,78 @@ export default function App() {
       // }
     }, [currentRackPosition]
     );
-      
-  //Panel 2 EFFECTS
-  React.useEffect( () => { //When number of defects is reduced, State arrays are truncated so as not to include extra data
-    if (currentDefectCount != "") {
-      setLocationArray(oldArray => {
-        return oldArray.slice(0, currentDefectCount)
-      })
-      setOrientationArray(oldArray => {
-        return oldArray.slice(0, currentDefectCount)
-      })
-      setTypeDefectArray(oldArray => {
-        return oldArray.slice(0, currentDefectCount)
-      })
-    }
-  }, [currentDefectCount]
-  );
-
-  React.useEffect(() => {
-if (submitButtonDisabled) {
-      console.log(firstBarToSubmit + "is the first bar set");
-      var currentBarId = firstBarToSubmit;
-      console.log(currentBarId)
-      // console.log(response.ok)
-      var insertDefectsQuery = `
-                INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
-                (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
-                VALUES `;
-      for (let b = 0; b < defectBarList.length; b++) {
-        for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
-          insertDefectsQuery += `(
-                  ${currentBarId},
-                  '${defectBarList[b]['defects'][d]['location']}',
-                  '${defectBarList[b]['defects'][d]['typeDefect']}',
-                  '${defectBarList[b]['defects'][d]['orientation'][0]}',
-                  '${defectBarList[b]['defects'][d]['side']}',
-                  '${defectBarList[b]['defects'][d]['leftRight'][0]}',
-                  '${submitDate.toISOString().split('T')[0]}'),`;
-        }
-        currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
+    
+    React.useEffect(() => {
+      if (currentBarType != "" 
+      && currentMaterialType != "" 
+      && !locationArray.includes("")
+      && !typeDefectArray.includes("")
+      && currentPhaseSelected != ""
+      && currentHumidity != ""
+      && currentWidth != "") {
+        setShowAddButton(true);
+      } else {
+        setShowAddButton(false);
       }
-      insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";";
-      let insertDefectRequestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'query': insertDefectsQuery })
-      };
-      defectInsert(insertDefectRequestOptions);
-}
-else console.log("did not try to submit defects");
-  }, [firstBarToSubmit]
-  );
+    }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount, currentPhaseSelected, currentWidth, currentHumidity]
+    )
 
-  React.useEffect(() => {
-    if (currentBarType != "" 
-    && currentMaterialType != "" 
-    && !locationArray.includes("")
-    && !typeDefectArray.includes("")
-    && currentPhaseSelected != ""
-    && currentHumidity != ""
-    && currentWidth != "") {
-      setShowAddButton(true);
-    } else {
-      setShowAddButton(false);
+    //Panel 2 EFFECTS
+    React.useEffect( () => { //When number of defects is reduced, State arrays are truncated so as not to include extra data
+      if (currentDefectCount != "") {
+        setLocationArray(oldArray => {
+          return oldArray.slice(0, currentDefectCount)
+        })
+        setOrientationArray(oldArray => {
+          return oldArray.slice(0, currentDefectCount)
+        })
+        setTypeDefectArray(oldArray => {
+          return oldArray.slice(0, currentDefectCount)
+        })
+      }
+    }, [currentDefectCount]
+    );
+
+  //Review page Effects
+    React.useEffect( () => { //On page load, grabs active clock numbers and populates clockNumberArray state
+      getClockNumberData(); //Selects and sets to State
+    }, []
+    );
+
+  //Submit Effects
+  React.useEffect(() => { //Activates after clicking submit button (when process acquires the first barId # to be used for the first defect)
+    if (submitButtonDisabled) { //This prevents submitting on page load. submit button is disabled after clicking submit and enabled again at the end of the process
+          var currentBarId = firstBarToSubmit;
+          // console.log(response.ok)
+          var insertDefectsQuery = `
+                    INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
+                    (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
+                    VALUES `;
+          for (let b = 0; b < defectBarList.length; b++) {
+            for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
+              insertDefectsQuery += `(
+                      ${currentBarId},
+                      '${defectBarList[b]['defects'][d]['location']}',
+                      '${defectBarList[b]['defects'][d]['typeDefect']}',
+                      '${defectBarList[b]['defects'][d]['orientation'][0]}',
+                      '${defectBarList[b]['defects'][d]['side']}',
+                      '${defectBarList[b]['defects'][d]['leftRight'][0]}',
+                      '${submitDate.toISOString().split('T')[0]}'),`;
+            }
+            currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
+          }
+          insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";";
+          let insertDefectRequestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'query': insertDefectsQuery })
+          };
+          defectInsert(insertDefectRequestOptions);
     }
-  }, [locationArray, typeDefectArray, currentMaterialType, currentBarType, currentDefectCount, currentPhaseSelected, currentWidth, currentHumidity]
-  )
-      
+    else console.log("did not try to submit defects");
+      }, [firstBarToSubmit]
+      );
+    
   ////////////////////////////////Variables
   //Review Page
   ////////////Form not ready to be submitted functions
@@ -338,8 +344,6 @@ else console.log("did not try to submit defects");
       alert("response.ok is " + response.ok);
       return reject(error);
     } else {
-
-
     }
   }
   function defectInsert(requestOptions) {
@@ -370,11 +374,37 @@ else console.log("did not try to submit defects");
         document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
       }
   };
+async function getClockNumberData() {
+  var getDataFromDB = `SELECT * FROM 
+  [US_Project_Management_Test].[dbo].[Coleman_Paint_Clock_Numbers_Data]
+  WHERE Active = 'y'`;
+const selectGetLastBarIDFromSQL = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({'query': getDataFromDB})
+};
+const response = await fetch(url, selectGetLastBarIDFromSQL);
+const getData = async function() {
+  response.json().then(data => {
+if (clockNumberArray.length == 0) {
+	    for (let i = 0; i < data.Table1.length; i++) {
+	      setClockNumberArray(oldArray => {
+	        var newArray =  [
+	        ...oldArray,
+	        data.Table1[i].ClockNumber
+	      ]
+        return [...new Set(newArray)]
+      })
+	    }
+}
+    return data;
+  })
+}
+getData();
+}
+
 
         //Sends data to Paint database tables
-
-
-
   //Sends data to Flash Test database tables
   function submitFlashDayToDatabase(event) {
     event.preventDefault();
@@ -696,6 +726,7 @@ else console.log("did not try to submit defects");
                 <Switch>
                   <Route path="/flash">
                     <ReviewForm 
+                      clockNumberArray={clockNumberArray}
                       setSubmitButtonDisabled={setSubmitButtonDisabled}
                       submitButtonDisabled={submitButtonDisabled}
                       defectBarList={defectBarList}
@@ -715,6 +746,7 @@ else console.log("did not try to submit defects");
                   </Route>
                   <Route path="/paint">
                     <ReviewForm 
+                        clockNumberArray={clockNumberArray}
                         setSubmitButtonDisabled={setSubmitButtonDisabled}
                         submitButtonDisabled={submitButtonDisabled}
                         defectBarList={defectBarList}
