@@ -105,8 +105,42 @@ export default function App() {
         return oldArray.slice(0, currentDefectCount)
       })
     }
-    
   }, [currentDefectCount]
+  );
+
+  React.useEffect(() => {
+if (submitButtonDisabled) {
+      console.log(firstBarToSubmit + "is the first bar set");
+      var currentBarId = firstBarToSubmit;
+      console.log(currentBarId)
+      // console.log(response.ok)
+      var insertDefectsQuery = `
+                INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
+                (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
+                VALUES `;
+      for (let b = 0; b < defectBarList.length; b++) {
+        for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
+          insertDefectsQuery += `(
+                  ${currentBarId},
+                  '${defectBarList[b]['defects'][d]['location']}',
+                  '${defectBarList[b]['defects'][d]['typeDefect']}',
+                  '${defectBarList[b]['defects'][d]['orientation'][0]}',
+                  '${defectBarList[b]['defects'][d]['side']}',
+                  '${defectBarList[b]['defects'][d]['leftRight'][0]}',
+                  '${submitDate.toISOString().split('T')[0]}'),`;
+        }
+        currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
+      }
+      insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";";
+      let insertDefectRequestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 'query': insertDefectsQuery })
+      };
+      defectInsert(insertDefectRequestOptions);
+}
+else console.log("did not try to submit defects");
+  }, [firstBarToSubmit]
   );
 
   React.useEffect(() => {
@@ -245,10 +279,10 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({'query': getDataFromDB})
       };
-      const defRequestOptions = await selectSetFirstBarFetchSQL(selectGetLastBarIDFromSQL);
-      // console.log(defRequestOptions + "passing to defectInsert")
-      console.log(firstBarToSubmit);
-      defectInsert(defRequestOptions);
+      //Sets the first bar state which triggers the useEffect that submits the defects
+       selectSetFirstBarFetchSQL(selectGetLastBarIDFromSQL);
+      
+      ;
     }
   }
   async function insertTotalBars(requestOptions) {//Checks if user has already submitted totals for the day. If so,  asks user if they want to override. Then overrides if yes
@@ -304,43 +338,14 @@ export default function App() {
       alert("response.ok is " + response.ok);
       return reject(error);
     } else {
-      console.log(firstBarToSubmit);
-      var currentBarId = firstBarToSubmit;
-      // console.log(response.ok)
-      var insertDefectsQuery = `
-                INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
-                (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
-                VALUES `;
-      for (let b = 0; b < defectBarList.length; b++) {
-        for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
-          insertDefectsQuery += `(
-                  ${currentBarId},
-                  '${defectBarList[b]['defects'][d]['location']}',
-                  '${defectBarList[b]['defects'][d]['typeDefect']}',
-                  '${defectBarList[b]['defects'][d]['orientation'][0]}',
-                  '${defectBarList[b]['defects'][d]['side']}',
-                  '${defectBarList[b]['defects'][d]['leftRight'][0]}',
-                  '${submitDate.toISOString().split('T')[0]}'),`;
-        }
-        currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
-      }
-      
-      insertDefectsQuery = insertDefectsQuery.slice(0, insertDefectsQuery.length - 1) + ";";
-      // console.log(insertDefectsQuery);
-      return Promise.resolve(insertDefectsQuery);
+
+
     }
   }
   function defectInsert(requestOptions) {
     // console.log(requestOptions)
-    
-    let insertDefectRequestOption = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'query': requestOptions })
-      };
-      console.log(insertDefectRequestOption)
       if (defectBarList.length > 0) {   //Only insert if there are bars to insert
-        fetch(url, insertDefectRequestOption)
+        fetch(url, requestOptions)
         .then( response => {
           const isJson = response.headers.get('content-type').includes('application/json');
           const data = isJson &&  response.json();
