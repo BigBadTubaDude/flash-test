@@ -137,7 +137,7 @@ export default function App() {
           // console.log(response.ok)
           var insertDefectsQuery = `
                     INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
-                    (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
+                    (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered, UserName)
                     VALUES `;
           for (let b = 0; b < defectBarList.length; b++) {
             for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
@@ -148,7 +148,8 @@ export default function App() {
                       '${defectBarList[b]['defects'][d]['orientation'][0]}',
                       '${defectBarList[b]['defects'][d]['side']}',
                       '${defectBarList[b]['defects'][d]['leftRight'][0]}',
-                      '${submitDate.toISOString().split('T')[0]}'),`;
+                      '${submitDate.toISOString().split('T')[0]}',
+                      ${userName}),`;
             }
             currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
           }
