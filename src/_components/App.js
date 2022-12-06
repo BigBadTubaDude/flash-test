@@ -137,7 +137,7 @@ export default function App() {
           // console.log(response.ok)
           var insertDefectsQuery = `
                     INSERT INTO [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data]
-                    (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered)
+                    (BarId, Location, DefectType, TopBot, Side, LeftRight, DateEntered, UserName)
                     VALUES `;
           for (let b = 0; b < defectBarList.length; b++) {
             for (let d = 0; d < defectBarList[b]['defects'].length; d++) {
@@ -148,7 +148,8 @@ export default function App() {
                       '${defectBarList[b]['defects'][d]['orientation'][0]}',
                       '${defectBarList[b]['defects'][d]['side']}',
                       '${defectBarList[b]['defects'][d]['leftRight'][0]}',
-                      '${submitDate.toISOString().split('T')[0]}'),`;
+                      '${submitDate.toISOString().split('T')[0]}'),
+                      2459`;
             }
             currentBarId += 1; //after defects for one bar have all been added, increment BarId for next set of defects
           }
@@ -166,6 +167,7 @@ export default function App() {
     
   ////////////////////////////////Variables
   //Review Page
+  const errorReportMessage = "Please report this error by email to Coleman.Alexander@vertivco.com";
   ////////////Form not ready to be submitted functions
   function onSubmitUserNameNotSet(event) {
     event.preventDefault();
@@ -250,8 +252,12 @@ export default function App() {
     if (defectBarList.length > 0) { 
         //Only insert if there are bars to insert
       insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
-
       //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
+    }
+    else {
+      if (window.confirm("You have not added any defects. Is this correct?")) { //Verifies that user does not wish to submit any defected bars
+        insertFetchSQL(insertBarRequestOption, insertTotalBarsRequestOption)
+      }
     }
   }
 
@@ -261,23 +267,25 @@ export default function App() {
       return;
     } 
     else {
+      //Sets submit button/state to disabled/true
       document.getElementsByClassName('finalSubmitButton')[0].disabled = true;
       setSubmitButtonDisabled(true);
-      const response = 
-        await Promise.all( //Trys to insert bars and total amount for day. If either fails, returns error
-          [
-            fetch(url, barRequestOptions),
-            insertTotalBars(totalRequestOptions)
-          ]
-      )
-      // .catch()
-      for (let i = 0; i < response.length; i++) {
-        const isJson = response[i].headers.get('content-type').includes('application/json');
-        const data = isJson && response[i].json();
-        if (!response[i].ok) {
-          const error = (data && data.message) || response[i].status;
+
+      const totalResponse = await insertTotalBars(totalRequestOptions) //inserts total bars ran for submit date
+      let isJson = totalResponse.headers.get('content-type').includes('application/json'); //throws error if does not work
+      let data = isJson && totalResponse.json();
+      if (!totalResponse.ok) {
+        let error = (data && data.message) || totalResponse.status;
+        console.log("ERROR: " + error + " total bars not submitted");
+        return Promise.reject(error);
+    }
+      
+      const barsResponse = await fetch(url, barRequestOptions) //Submits bar data         
+        isJson = barsResponse.headers.get('content-type').includes('application/json');//throws error if does not work
+        data = isJson && barsResponse.json();
+        if (!barsResponse.ok) {
+          let error = (data && data.message) || barsResponse.status;
           return Promise.reject(error);
-        } 
       }
       var getDataFromDB = "SELECT * FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data]";
       const selectGetLastBarIDFromSQL = {
@@ -307,19 +315,38 @@ export default function App() {
     const data = await response.json()
     // console.log(data);
     // console.log(response)
-    if (Object.keys(data).length == 0) {
+    if (Object.keys(data).length == 0) { //if date/user select query returns no rows, user has not entered for specified date
       // console.log("total for " + submitDate.toISOString().split('T')[0] + " submitted.")
       return fetch(url, requestOptions)
       .catch(error => {
-        console.log(error + " total not submitted");
+        alert("ERROR: " + error + " total not submitted. " + errorReportMessage);
         return error;
       })
-    } else { //If user already has a total day bars entry for submitdate date
-      alert("User already submiited for this day"); //add feature to allow user to override old data
-      setSubmitButtonDisabled(false);
-      document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
-      throw new Error("Already user/date match in database");
-    }
+    } else {
+        if (window.confirm("WARNING! User already submiited for this day. Would you like to override data for this date?")) { //If user already has a total day bars entry for submitdate date
+          //add feature to allow user to override old data
+          console.log("yes");
+          const deleteSubmitDateEntries =
+          `DELETE FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Total_Bars_Data] WHERE dateEntered = ${submitDate} AND userName = ${userName};
+          DELETE FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Bar_Data] WHERE dateEntered = ${submitDate} AND UserName = ${userName};
+          DELETE FROM [US_Project_Management_Test].[dbo].[Coleman_Paint_Defect_Data] WHERE DateEntered = ${submitDate} AND userName = ${userName};`
+          
+          let deleteSubmitDateEntriesRequestOptions;
+            selectTotalEntriesRequestOptions = {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({'query': deleteSubmitDateEntries})
+            };
+          fetch(url, deleteSubmitDateEntriesRequestOptions) 
+          insertTotalBars(requestOptions);
+      }
+      else {
+        console.log("no");
+        setSubmitButtonDisabled(false);
+        document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
+        throw new Error("Already user/date match in database");
+      }
+  }
   }
   async function selectSetFirstBarFetchSQL(requestOptions, reject, resolve) { //Submits SQL queries and resets / 
     // console.log(requestOptions)
@@ -355,7 +382,7 @@ export default function App() {
           const data = isJson &&  response.json();
           if (!response.ok) {
             const error = (data && data.message) || response.status;
-            alert(response.ok)
+            alert("Tried but defects not submitted. " + errorReportMessage);
             return Promise.reject(error);
           } else {
             return Promise.resolve(response.ok)
@@ -365,13 +392,14 @@ export default function App() {
           console.error('an error!defect', error);
           return error;
         })
-        // .finally(() => {
-        //   setSubmitButtonDisabled(false);
-        //   document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
-        // })
+        .finally(() => {
+          console.log("Reached finally")
+          setSubmitButtonDisabled(false);
+          document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
+        })
       //  setDefectBarList([]); //Resets list of bars on review page and in state !!!!!!!!UNCOMMENT
-        setSubmitButtonDisabled(false);
-        document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
+        // setSubmitButtonDisabled(false);
+        // document.getElementsByClassName('finalSubmitButton')[0].disabled = false;
       }
   };
 async function getClockNumberData() {
